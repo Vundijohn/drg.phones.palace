@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const config = require('./src/config');
+const db = require('./src/db');
+const { testFirestoreAccess } = require('./src/firebase');
 
 // Routes
 const phonesRouter = require('./src/routes/phones');
@@ -23,12 +25,16 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname))); // Serves index.html, admin.html, styles, etc.
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  const status = await db.getStatus();
   res.json({
     status: 'healthy',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
-    service: 'DRG Phones Palace API'
+    service: 'DRG Phones Palace API',
+    database: status.database,
+    firebaseProjectId: status.projectId,
+    firestoreActive: status.firestoreActive
   });
 });
 
@@ -56,14 +62,22 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
-const server = app.listen(config.PORT, () => {
-  console.log(`=============================================`);
-  console.log(`🚀 DRG Phones Palace Server running!`);
-  console.log(`🌐 Public Website:  http://localhost:${config.PORT}/`);
-  console.log(`👑 Admin Dashboard: http://localhost:${config.PORT}/admin.html`);
-  console.log(`⚡ API Health:      http://localhost:${config.PORT}/api/health`);
-  console.log(`=============================================`);
-});
+// Start Server (when run directly)
+let server = null;
+if (require.main === module || !process.env.FIREBASE_CONFIG) {
+  server = app.listen(config.PORT, async () => {
+    console.log(`=============================================`);
+    console.log(`🚀 DRG Phones Palace Server running!`);
+    console.log(`🌐 Public Website:   http://localhost:${config.PORT}/`);
+    console.log(`👑 Admin Dashboard:  http://localhost:${config.PORT}/admin.html`);
+    console.log(`⚡ API Health:       http://localhost:${config.PORT}/api/health`);
+    console.log(`🔥 Firebase Project: ${config.firebaseConfig.projectId}`);
+    console.log(`=============================================`);
 
+    // Verify Firestore connection in background
+    testFirestoreAccess().catch(() => {});
+  });
+}
+
+// Export for standalone server or Firebase Cloud Functions
 module.exports = { app, server };

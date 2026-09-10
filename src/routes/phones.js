@@ -4,10 +4,10 @@ const db = require('../db');
 const { requireAdminAuth } = require('../middleware/auth');
 
 // Public: GET /api/phones
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { category, search } = req.query;
-    const phones = db.getAllPhones({ category, search });
+    const phones = await db.getAllPhones({ category, search });
     res.json({
       success: true,
       count: phones.length,
@@ -19,9 +19,9 @@ router.get('/', (req, res) => {
 });
 
 // Public: GET /api/phones/:id
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const phone = db.getPhoneById(req.params.id);
+    const phone = await db.getPhoneById(req.params.id);
     if (!phone) {
       return res.status(404).json({ success: false, message: 'Device not found' });
     }
@@ -32,7 +32,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Protected: POST /api/phones (Add new phone)
-router.post('/', requireAdminAuth, (req, res) => {
+router.post('/', requireAdminAuth, async (req, res) => {
   try {
     const { model, category, cashPrice, plans } = req.body;
     if (!model || !category || !cashPrice || !plans) {
@@ -42,7 +42,7 @@ router.post('/', requireAdminAuth, (req, res) => {
       });
     }
 
-    const created = db.createPhone(req.body);
+    const created = await db.createPhone(req.body);
     res.status(201).json({
       success: true,
       message: 'Phone added to catalogue successfully',
@@ -54,9 +54,9 @@ router.post('/', requireAdminAuth, (req, res) => {
 });
 
 // Protected: PUT /api/phones/:id (Edit phone)
-router.put('/:id', requireAdminAuth, (req, res) => {
+router.put('/:id', requireAdminAuth, async (req, res) => {
   try {
-    const updated = db.updatePhone(req.params.id, req.body);
+    const updated = await db.updatePhone(req.params.id, req.body);
     if (!updated) {
       return res.status(404).json({ success: false, message: 'Device not found' });
     }
@@ -71,9 +71,9 @@ router.put('/:id', requireAdminAuth, (req, res) => {
 });
 
 // Protected: DELETE /api/phones/:id (Delete phone)
-router.delete('/:id', requireAdminAuth, (req, res) => {
+router.delete('/:id', requireAdminAuth, async (req, res) => {
   try {
-    const removed = db.deletePhone(req.params.id);
+    const removed = await db.deletePhone(req.params.id);
     if (!removed) {
       return res.status(404).json({ success: false, message: 'Device not found' });
     }
@@ -88,9 +88,9 @@ router.delete('/:id', requireAdminAuth, (req, res) => {
 });
 
 // Protected: POST /api/phones/reset (Restore defaults)
-router.post('/reset', requireAdminAuth, (req, res) => {
+router.post('/reset', requireAdminAuth, async (req, res) => {
   try {
-    const phones = db.resetPhones();
+    const phones = await db.resetPhones();
     res.json({
       success: true,
       message: 'Catalogue restored to defaults',
@@ -103,7 +103,7 @@ router.post('/reset', requireAdminAuth, (req, res) => {
 });
 
 // Protected: POST /api/phones/import (Bulk import)
-router.post('/import', requireAdminAuth, (req, res) => {
+router.post('/import', requireAdminAuth, async (req, res) => {
   try {
     const { phones } = req.body;
     if (!Array.isArray(phones) || phones.length === 0) {
@@ -112,7 +112,7 @@ router.post('/import', requireAdminAuth, (req, res) => {
         message: 'Request body must include an array of phones under key "phones".'
       });
     }
-    const imported = db.importPhones(phones);
+    const imported = await db.importPhones(phones);
     res.json({
       success: true,
       message: `Imported ${imported.length} phones successfully`,

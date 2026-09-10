@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "firebase:seed": "node scripts/seedFirebase.js",
+    "firebase:status": "node -e \"require('./src/firebase').testFirestoreAccess()\""
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,8 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "firebase": "^12.19.0",
+    "firebase-admin": "^14.3.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.3.0"
   }

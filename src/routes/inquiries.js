@@ -4,10 +4,10 @@ const db = require('../db');
 const { requireAdminAuth } = require('../middleware/auth');
 
 // Public: POST /api/inquiries
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { phoneId, model, storage, planKey, planLabel, cashPrice } = req.body;
-    const inquiry = db.createInquiry({
+    const inquiry = await db.createInquiry({
       phoneId,
       model,
       storage,
@@ -29,10 +29,10 @@ router.post('/', (req, res) => {
 });
 
 // Protected: GET /api/inquiries
-router.get('/', requireAdminAuth, (req, res) => {
+router.get('/', requireAdminAuth, async (req, res) => {
   try {
     const limit = parseInt(req.query.limit, 10) || 50;
-    const list = db.getInquiries(limit);
+    const list = await db.getInquiries(limit);
     res.json({
       success: true,
       count: list.length,

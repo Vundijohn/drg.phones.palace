@@ -544,14 +544,6 @@
     opacity:1;
   }
 
-  /* Offers WhatsApp Buttons */
-  .offer-card .btn-whatsapp{
-    margin-top:auto;
-    padding:11px 16px;
-    font-size:13.5px;
-    width:100%;
-    box-shadow:none;
-  }
 
   /* ---------- HOW IT WORKS ---------- */
   .how-section{
@@ -581,30 +573,6 @@
   .step h3{font-size:16px;margin-bottom:6px;color:var(--text-primary);}
   .step p{font-size:13.5px;color:var(--text-muted);margin:0;}
 
-  /* ---------- OFFERS ---------- */
-  .offers-grid{
-    display:grid;gap:18px;
-  }
-  @media(min-width:760px){
-    .offers-grid{grid-template-columns:repeat(3,1fr);}
-  }
-  .offer-card{
-    border-radius:18px;
-    padding:26px 22px;
-    background:linear-gradient(150deg,var(--purple-deep),var(--bg-panel-2));
-    border:1px solid rgba(217,166,83,0.25);
-    display:flex;flex-direction:column;gap:10px;
-    min-height:190px;
-  }
-  .offer-card h3{font-size:19px;color:var(--gold-bright);}
-  .offer-card p{font-size:14px;color:var(--text-muted);margin:0;flex:1;}
-  .offer-card .tag{
-    align-self:flex-start;
-    font-size:11.5px;font-weight:800;
-    color:#241505;
-    background:var(--gold-bright);
-    padding:4px 10px;border-radius:var(--radius-pill);
-  }
 
   /* ---------- ABOUT ---------- */
   .about-section{
@@ -743,7 +711,6 @@
       <a href="#home">Home</a>
       <a href="#phones">Phones</a>
       <a href="#how">How It Works</a>
-      <a href="#offers">Offers</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -765,7 +732,6 @@
     <a href="#home">Home</a>
     <a href="#phones">Phones</a>
     <a href="#how">How It Works</a>
-    <a href="#offers">Offers</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
     <button class="theme-toggle-btn" id="mobileThemeToggleBtn" style="margin-top:10px;justify-content:center;">
@@ -846,35 +812,6 @@
   </div>
 </section>
 
-<!-- ---------- OFFERS ---------- -->
-<section id="offers">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>This week's offers</h2>
-      <p>Fresh deals, dropped often — check back or follow us so you never miss a discount.</p>
-    </div>
-    <div class="offers-grid">
-      <div class="offer-card">
-        <span class="tag">Referral</span>
-        <h3>Bring a Friend</h3>
-        <p>Refer a friend who buys a phone and get KES 500 off your next deposit.</p>
-        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%20referred%20a%20friend%20and%20would%20like%20to%20claim%20my%20KES%20500%20deposit%20discount." target="_blank" rel="noopener">Claim KES 500 Off</a>
-      </div>
-      <div class="offer-card">
-        <span class="tag">Friday Only</span>
-        <h3>Free Extras Friday</h3>
-        <p>Buy any phone on a Friday and walk away with a free case or earphones.</p>
-        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20order%20a%20phone%20today%20and%20claim%20the%20Free%20Extras%20Friday%20gift." target="_blank" rel="noopener">Claim Friday Gift</a>
-      </div>
-      <div class="offer-card">
-        <span class="tag">Clearance</span>
-        <h3>Clearance Corner</h3>
-        <p>Selected UK-used phones with reduced deposits — while stock lasts.</p>
-        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20which%20UK-used%20phones%20are%20currently%20on%20clearance%20with%20reduced%20deposits%3F" target="_blank" rel="noopener">Inquire Clearance Deals</a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ---------- ABOUT ---------- -->
 <section class="about-section" id="about">

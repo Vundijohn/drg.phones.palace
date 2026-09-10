@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
+  :root, [data-theme="dark"] {
     --bg-void:#0a0812;
     --bg-panel:#150f22;
     --bg-panel-2:#1d1530;
@@ -22,9 +22,30 @@
     --text-muted:#b7adc7;
     --line:rgba(217,166,83,0.18);
     --whatsapp:#2fc35b;
+    --danger:#ff4d4d;
+    --danger-bg:rgba(255,77,77,0.12);
+    --header-bg:rgba(10,8,18,0.88);
     --radius-card:18px;
     --radius-pill:999px;
     --maxw:1180px;
+  }
+
+  [data-theme="light"] {
+    --bg-void:#f7f5fa;
+    --bg-panel:#ffffff;
+    --bg-panel-2:#ede7f6;
+    --purple-deep:#53388c;
+    --purple:#6c4baf;
+    --purple-soft:#685296;
+    --gold:#b8802a;
+    --gold-bright:#8c5d10;
+    --text-primary:#1a1429;
+    --text-muted:#675e7a;
+    --line:rgba(184,128,42,0.22);
+    --whatsapp:#1ea94a;
+    --danger:#d32f2f;
+    --danger-bg:rgba(211,47,47,0.1);
+    --header-bg:rgba(247,245,250,0.92);
   }
 
   *{box-sizing:border-box;}
@@ -36,6 +57,7 @@
     font-family:'Manrope',sans-serif;
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
+    transition:background-color .25s ease, color .25s ease;
   }
   h1,h2,h3,.display{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -53,9 +75,10 @@
   /* ---------- NAV ---------- */
   header{
     position:sticky;top:0;z-index:50;
-    background:rgba(10,8,18,0.86);
+    background:var(--header-bg);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
+    transition:background-color .25s ease, border-color .25s ease;
   }
   .nav{
     display:flex;align-items:center;justify-content:space-between;
@@ -76,6 +99,38 @@
   }
   .nav-links a{color:var(--text-muted);transition:color .2s;}
   .nav-links a:hover{color:var(--gold-bright);}
+  .nav-right-cluster{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .theme-toggle-btn{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-pill);
+    padding:7px 12px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:var(--text-primary);
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .theme-toggle-btn:hover{
+    border-color:var(--gold);
+    transform:translateY(-1px);
+  }
+  .theme-toggle-btn .key-hint{
+    background:rgba(217,166,83,0.14);
+    font-size:10px;
+    padding:1px 5px;
+    border-radius:4px;
+    color:var(--gold-bright);
+    border:1px solid var(--line);
+    font-family:monospace;
+  }
   .nav-cta{
     display:none;
     align-items:center;gap:8px;
@@ -388,7 +443,164 @@
     min-height:16px;
   }
 
-  .phone-body .btn{width:100%;margin-top:auto;padding:13px 18px;font-size:14.5px;}
+  .card-action-row{
+    display:flex;
+    gap:8px;
+    margin-top:auto;
+    align-items:center;
+  }
+  .card-action-row .btn-whatsapp{
+    flex:1;
+    margin-top:0;
+    padding:12px 14px;
+    font-size:14px;
+  }
+  .btn-delete{
+    flex:0 0 auto;
+    background:var(--danger-bg);
+    border:1px solid rgba(255,77,77,0.3);
+    color:var(--danger);
+    font-weight:700;
+    font-size:12.5px;
+    padding:11px 13px;
+    border-radius:var(--radius-pill);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    transition:all .2s ease;
+  }
+  .btn-delete:hover{
+    background:var(--danger);
+    color:#ffffff;
+    border-color:var(--danger);
+    transform:translateY(-1px);
+  }
+
+  /* Catalog Management Header */
+  .phones-header-bar{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:24px;
+  }
+  .phones-header-bar .section-head{margin-bottom:0;}
+  .catalog-manage-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .btn-sm{
+    padding:9px 18px;
+    font-size:13.5px;
+    border-radius:var(--radius-pill);
+    cursor:pointer;
+  }
+
+  /* Modal Backdrop & Dialog */
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(5,3,10,0.78);
+    backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-backdrop.open{display:flex;}
+  .modal-box{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:22px;
+    width:100%;
+    max-width:580px;
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+    padding:26px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px;
+  }
+  .modal-header h3{font-size:22px;color:var(--text-primary);}
+  .modal-close{
+    background:none;
+    border:none;
+    font-size:28px;
+    color:var(--text-muted);
+    cursor:pointer;
+    line-height:1;
+    padding:4px;
+    transition:color .2s;
+  }
+  .modal-close:hover{color:var(--gold-bright);}
+  .form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-group.full-width{grid-column:1/-1;}
+  .form-group label{font-size:12.5px;font-weight:700;color:var(--text-muted);}
+  .form-group input, .form-group select{
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    color:var(--text-primary);
+    font-family:inherit;
+    font-size:13.5px;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .form-group input:focus, .form-group select:focus{
+    border-color:var(--gold-bright);
+    box-shadow:0 0 0 3px rgba(217,166,83,0.18);
+  }
+  .modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    border-top:1px solid var(--line);
+    padding-top:16px;
+    margin-top:10px;
+  }
+
+  /* Toast notification */
+  .toast-notification{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:var(--bg-panel);
+    border:1px solid var(--gold);
+    color:var(--text-primary);
+    padding:12px 22px;
+    border-radius:var(--radius-pill);
+    box-shadow:0 12px 40px rgba(0,0,0,0.5);
+    font-size:13.5px;
+    font-weight:700;
+    z-index:9999;
+    transition:transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity .3s ease;
+    opacity:0;
+    pointer-events:none;
+  }
+  .toast-notification.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+  }
 
   /* Offers WhatsApp Buttons */
   .offer-card .btn-whatsapp{
@@ -590,12 +802,19 @@
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="nav-cta" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20phones." target="_blank" rel="noopener">
-      WhatsApp Us
-    </a>
-    <button class="burger" id="burgerBtn" aria-label="Open menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
+    <div class="nav-right-cluster">
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light or dark theme" title="Toggle Light/Dark Mode (Shortcut: T)">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+        <span class="theme-label" id="themeLabel">Dark</span>
+        <span class="key-hint">T</span>
+      </button>
+      <a class="nav-cta" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20phones." target="_blank" rel="noopener">
+        WhatsApp Us
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
     <a href="#home">Home</a>
@@ -604,6 +823,10 @@
     <a href="#offers">Offers</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
+    <button class="theme-toggle-btn" id="mobileThemeToggleBtn" style="margin-top:10px;justify-content:center;">
+      <span class="theme-icon" id="mobileThemeIcon">🌙</span>
+      <span class="theme-label" id="mobileThemeLabel">Dark Mode</span>
+    </button>
     <a class="btn btn-whatsapp nav-cta" href="https://wa.me/254797951374" target="_blank" rel="noopener">WhatsApp Us</a>
   </div>
 </header>
@@ -632,9 +855,19 @@
 <!-- ---------- PHONES ---------- -->
 <section class="phones-section" id="phones">
   <div class="wrap">
-    <div class="section-head">
-      <h2>Choose your phone</h2>
-      <p>Every phone comes with its condition, key specs and a weekly plan spelled out upfront — no hidden costs.</p>
+    <div class="phones-header-bar">
+      <div class="section-head">
+        <h2>Choose your phone</h2>
+        <p>Every phone comes with its condition, key specs and a weekly plan spelled out upfront — no hidden costs.</p>
+      </div>
+      <div class="catalog-manage-actions">
+        <button class="btn btn-gold btn-sm" id="openAddPhoneModalBtn">
+          <span>➕</span> Add New Phone
+        </button>
+        <button class="btn btn-outline btn-sm" id="resetCatalogBtn" title="Restore default catalog lineup">
+          <span>🔄</span> Reset Catalog
+        </button>
+      </div>
     </div>
     <div class="filter-row" id="filterRow">
       <button class="filter-pill active" data-cat="all">All Phones</button>
@@ -774,6 +1007,77 @@
 
 <a class="sticky-wa" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
 
+<!-- ---------- ADD PHONE MODAL ---------- -->
+<div class="modal-backdrop" id="addPhoneModal" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add New Phone</h3>
+      <button class="modal-close" id="closeAddPhoneModalBtn" aria-label="Close modal">&times;</button>
+    </div>
+    <form id="addPhoneForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="phoneModel">Model Name *</label>
+          <input type="text" id="phoneModel" required placeholder="e.g. iPhone 13, Galaxy S23">
+        </div>
+        <div class="form-group">
+          <label for="phoneStorage">Storage *</label>
+          <input type="text" id="phoneStorage" required placeholder="e.g. 128GB, 256GB">
+        </div>
+        <div class="form-group">
+          <label for="phoneCategory">Brand / Category *</label>
+          <select id="phoneCategory" required>
+            <option value="samsung">Samsung</option>
+            <option value="iphone">iPhone</option>
+            <option value="motorola">Motorola</option>
+            <option value="other">Other Phones</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="phoneCondition">Condition *</label>
+          <select id="phoneCondition" required>
+            <option value="UK Used · Grade A">UK Used · Grade A</option>
+            <option value="Brand New">Brand New</option>
+            <option value="Excellent · Grade A+">Excellent · Grade A+</option>
+            <option value="Refurbished">Refurbished</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="phoneSpecs">Key Specs (comma-separated) *</label>
+          <input type="text" id="phoneSpecs" required placeholder="e.g. 6.1 OLED display, 50MP camera, 5000mAh battery">
+        </div>
+        <div class="form-group full-width">
+          <label for="phoneImage">Image Path or URL (optional)</label>
+          <input type="text" id="phoneImage" placeholder="e.g. images/my-phone.jpg or https://...">
+        </div>
+        <div class="form-group">
+          <label for="phoneCashPrice">Cash Price (KES) *</label>
+          <input type="number" id="phoneCashPrice" required min="1000" step="100" placeholder="e.g. 35000">
+        </div>
+        <div class="form-group">
+          <label for="phoneDeposit">Deposit (KES) *</label>
+          <input type="number" id="phoneDeposit" required min="500" step="50" placeholder="e.g. 8000">
+        </div>
+        <div class="form-group">
+          <label for="phoneWeekly">Weekly Payment (KES) *</label>
+          <input type="number" id="phoneWeekly" required min="100" step="50" placeholder="e.g. 1200">
+        </div>
+        <div class="form-group">
+          <label for="phoneWeeks">Duration (Weeks) *</label>
+          <input type="number" id="phoneWeeks" required min="1" max="104" value="8">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="cancelAddPhoneBtn">Cancel</button>
+        <button type="submit" class="btn btn-gold">Save Phone to Catalogue</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ---------- TOAST NOTIFICATION ---------- -->
+<div class="toast-notification" id="toastNotification"></div>
+
 <script>
   // ---- Mobile menu toggle ----
   const burgerBtn = document.getElementById('burgerBtn');
@@ -787,10 +1091,10 @@
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // ---- Phone catalogue data ----
+  // ---- Default phone catalogue data ----
   const WHATSAPP_NUMBER = "254797951374";
 
-  const phones = [
+  const DEFAULT_PHONES = [
     // --- NEW SAMSUNG FLAGSHIPS & PREMIUM DEVICES ---
     {
       id: "s25-ultra-256",
@@ -1062,32 +1366,124 @@
     return "KES " + Number(n).toLocaleString("en-KE");
   }
 
+  // ---- Light / Dark Theme Engine ----
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const mobileThemeToggleBtn = document.getElementById('mobileThemeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+  const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+  const mobileThemeLabel = document.getElementById('mobileThemeLabel');
+
+  function getSavedTheme(){
+    const stored = localStorage.getItem('drg_theme');
+    if(stored === 'light' || stored === 'dark') return stored;
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+  }
+
+  function applyTheme(theme, notify = false){
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('drg_theme', theme); } catch(e){}
+    const isDark = theme === 'dark';
+    const icon = isDark ? '🌙' : '☀️';
+    const label = isDark ? 'Dark' : 'Light';
+
+    if(themeIcon) themeIcon.textContent = icon;
+    if(themeLabel) themeLabel.textContent = label;
+    if(mobileThemeIcon) mobileThemeIcon.textContent = icon;
+    if(mobileThemeLabel) mobileThemeLabel.textContent = `${label} Mode`;
+
+    if(notify){
+      showToast(`${icon} Switched to ${label} Mode (Press T to toggle)`);
+    }
+  }
+
+  function toggleTheme(notify = true){
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next, notify);
+  }
+
+  if(themeToggleBtn){
+    themeToggleBtn.addEventListener('click', () => toggleTheme(true));
+  }
+  if(mobileThemeToggleBtn){
+    mobileThemeToggleBtn.addEventListener('click', () => toggleTheme(true));
+  }
+
+  // Keyboard shortcut: Press 'T' or 'D' to toggle theme (unless typing in a form input)
+  window.addEventListener('keydown', (e) => {
+    const active = document.activeElement;
+    const isInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
+    if(!isInput && (e.key === 't' || e.key === 'T' || e.key === 'd' || e.key === 'D')){
+      toggleTheme(true);
+    }
+  });
+
+  // Apply theme immediately
+  applyTheme(getSavedTheme(), false);
+
+  // ---- Toast Notification Engine ----
+  let toastTimer = null;
+  function showToast(msg){
+    const toast = document.getElementById('toastNotification');
+    if(!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2800);
+  }
+
+  // ---- Phone Data Management (localStorage) ----
+  let phones = [];
+
+  function loadPhones(){
+    try {
+      const stored = localStorage.getItem('drg_phones_data');
+      if(stored){
+        const parsed = JSON.parse(stored);
+        if(Array.isArray(parsed) && parsed.length > 0){
+          phones = parsed;
+          return;
+        }
+      }
+    } catch(err){}
+    phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
+  }
+
+  function savePhones(){
+    try {
+      localStorage.setItem('drg_phones_data', JSON.stringify(phones));
+    } catch(e){}
+  }
+
+  loadPhones();
+
   // Active state
   let currentCategory = "all";
   let globalPlanMode = "default";
   const activePlanByPhone = {};
 
   phones.forEach(p => {
-    activePlanByPhone[p.id] = p.defaultPlan;
+    activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
   });
 
   function getEffectivePlan(phone){
     if(globalPlanMode === "default"){
-      return activePlanByPhone[phone.id] || phone.defaultPlan;
+      return activePlanByPhone[phone.id] || phone.defaultPlan || Object.keys(phone.plans)[0];
     }
-    // Check if the phone supports the global plan
     if(phone.plans[globalPlanMode]){
       return globalPlanMode;
     }
-    // Fallback: if user picked mosaver/mostandard on a phone with standard plan
     if(globalPlanMode === "mosaver" || globalPlanMode === "mostandard"){
       return phone.plans.standard ? "standard" : "cash";
     }
-    return phone.defaultPlan;
+    return phone.defaultPlan || Object.keys(phone.plans)[0];
   }
 
   function getWaLink(phone, planKey){
-    const plan = phone.plans[planKey];
+    const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
     let msg = "";
     if(planKey === "cash"){
       msg = `Hi DRG Phones Palace, I'd like to buy the ${phone.model} ${phone.storage} (${phone.condition}) in Cash for ${money(plan.total)}. Is it available?`;
@@ -1102,7 +1498,7 @@
   }
 
   function renderPlanBox(phone, activeKey){
-    const plan = phone.plans[activeKey];
+    const plan = phone.plans[activeKey] || Object.values(phone.plans)[0];
     const isCash = activeKey === "cash";
 
     let detailsHtml = "";
@@ -1190,6 +1586,19 @@
     }
   }
 
+  function deletePhone(phoneId){
+    const phone = phones.find(p => p.id === phoneId);
+    if(!phone) return;
+    const ok = confirm(`Delete "${phone.model} (${phone.storage})"? This cannot be undone.`);
+    if(!ok) return;
+
+    phones = phones.filter(p => p.id !== phoneId);
+    delete activePlanByPhone[phoneId];
+    savePhones();
+    renderPhones();
+    showToast(`🗑️ Deleted ${phone.model}`);
+  }
+
   function renderPhones(){
     const grid = document.getElementById('phoneGrid');
     grid.innerHTML = "";
@@ -1197,6 +1606,18 @@
     const list = currentCategory === "all" 
       ? phones 
       : phones.filter(p => p.category === currentCategory);
+
+    if(list.length === 0){
+      grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 48px 20px; background: var(--bg-panel); border: 1px dashed var(--line); border-radius: var(--radius-card);">
+          <div style="font-size: 38px; margin-bottom: 12px;">📱</div>
+          <h3 style="font-size: 20px; margin-bottom: 6px;">No phones found in this category</h3>
+          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 18px;">Click "Add New Phone" above to add your first device here.</p>
+          <button class="btn btn-gold btn-sm" onclick="document.getElementById('openAddPhoneModalBtn').click()">➕ Add Phone</button>
+        </div>
+      `;
+      return;
+    }
 
     list.forEach(phone => {
       const activeKey = getEffectivePlan(phone);
@@ -1220,7 +1641,10 @@
             ${phone.specs.map(s => `<li>${s}</li>`).join("")}
           </ul>
           ${renderPlanBox(phone, activeKey)}
-          <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" target="_blank" rel="noopener">Get This Phone</a>
+          <div class="card-action-row">
+            <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" target="_blank" rel="noopener">Get This Phone</a>
+            <button class="btn-delete" data-action="delete" data-phone="${phone.id}" title="Delete ${phone.model}">🗑️ Delete</button>
+          </div>
         </div>
       `;
       grid.appendChild(card);
@@ -1247,13 +1671,121 @@
     renderPhones();
   });
 
-  // In-card plan tab click delegation
+  // In-card click delegation (Plan switch and Delete)
   document.getElementById('phoneGrid').addEventListener('click', (e) => {
+    const delBtn = e.target.closest('.btn-delete');
+    if(delBtn){
+      const phoneId = delBtn.dataset.phone;
+      deletePhone(phoneId);
+      return;
+    }
+
     const tab = e.target.closest('.card-plan-tab');
     if(!tab) return;
     const phoneId = tab.dataset.phone;
     const planKey = tab.dataset.plan;
     updateCardPlanView(phoneId, planKey);
+  });
+
+  // ---- Modal & Form Handlers ----
+  const addPhoneModal = document.getElementById('addPhoneModal');
+  const openAddPhoneModalBtn = document.getElementById('openAddPhoneModalBtn');
+  const closeAddPhoneModalBtn = document.getElementById('closeAddPhoneModalBtn');
+  const cancelAddPhoneBtn = document.getElementById('cancelAddPhoneBtn');
+  const addPhoneForm = document.getElementById('addPhoneForm');
+  const resetCatalogBtn = document.getElementById('resetCatalogBtn');
+
+  function openModal(){
+    addPhoneModal.classList.add('open');
+    addPhoneModal.setAttribute('aria-hidden', 'false');
+    document.getElementById('phoneModel').focus();
+  }
+
+  function closeModal(){
+    addPhoneModal.classList.remove('open');
+    addPhoneModal.setAttribute('aria-hidden', 'true');
+    addPhoneForm.reset();
+  }
+
+  openAddPhoneModalBtn.addEventListener('click', openModal);
+  closeAddPhoneModalBtn.addEventListener('click', closeModal);
+  cancelAddPhoneBtn.addEventListener('click', closeModal);
+
+  addPhoneModal.addEventListener('click', (e) => {
+    if(e.target === addPhoneModal) closeModal();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && addPhoneModal.classList.contains('open')){
+      closeModal();
+    }
+  });
+
+  resetCatalogBtn.addEventListener('click', () => {
+    const ok = confirm("Restore default catalogue? Any newly added custom phones will be removed.");
+    if(!ok) return;
+    phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
+    savePhones();
+    phones.forEach(p => {
+      activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
+    });
+    renderPhones();
+    showToast("🔄 Catalogue restored to default models!");
+  });
+
+  addPhoneForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const model = document.getElementById('phoneModel').value.trim();
+    const storage = document.getElementById('phoneStorage').value.trim();
+    const category = document.getElementById('phoneCategory').value;
+    const condition = document.getElementById('phoneCondition').value;
+    const specsRaw = document.getElementById('phoneSpecs').value.trim();
+    const image = document.getElementById('phoneImage').value.trim() || `images/${model.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.jpg`;
+    const cashPrice = Number(document.getElementById('phoneCashPrice').value);
+    const deposit = Number(document.getElementById('phoneDeposit').value);
+    const weekly = Number(document.getElementById('phoneWeekly').value);
+    const weeks = Number(document.getElementById('phoneWeeks').value);
+
+    const specs = specsRaw.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
+    const catLabels = {
+      samsung: "Samsung",
+      iphone: "iPhone",
+      motorola: "Motorola",
+      other: "Other Phones"
+    };
+
+    const newId = "phone-" + Date.now();
+    const totalInstallment = deposit + (weekly * weeks);
+
+    const newPhone = {
+      id: newId,
+      category: category,
+      categoryLabel: catLabels[category] || "Other Phones",
+      model: model,
+      storage: storage,
+      condition: condition,
+      image: image,
+      specs: specs.length ? specs : ["Genuine device", "Tested & inspected", "Clean IMEI"],
+      cashPrice: cashPrice,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: cashPrice, hint: "One-time cash payment" },
+        standard: { label: `Weekly (${weeks} Wks)`, deposit: deposit, weekly: weekly, weeks: weeks, total: totalInstallment, hint: `${weeks} Weeks Lipa Mdogo Mdogo` }
+      },
+      defaultPlan: "standard"
+    };
+
+    phones.unshift(newPhone);
+    activePlanByPhone[newId] = "standard";
+    savePhones();
+    closeModal();
+
+    if(currentCategory !== "all" && currentCategory !== category){
+      currentCategory = category;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === category));
+    }
+
+    renderPhones();
+    showToast(`✅ Added ${model} (${storage}) to catalogue!`);
   });
 
   renderPhones();

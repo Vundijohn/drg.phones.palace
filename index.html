@@ -443,113 +443,13 @@
     min-height:16px;
   }
 
-  .card-action-row{
-    display:flex;
-    gap:8px;
+  .phone-card .btn-whatsapp{
     margin-top:auto;
-    align-items:center;
-  }
-  .card-action-row .btn-whatsapp{
-    flex:1;
-    margin-top:0;
     padding:12px 14px;
     font-size:14px;
   }
-  /* Delete button - Hidden by default, visible only to Admin */
-  .btn-delete{
-    display:none; /* hidden for regular visitors */
-    flex:0 0 auto;
-    background:var(--danger-bg);
-    border:1px solid rgba(255,77,77,0.3);
-    color:var(--danger);
-    font-weight:700;
-    font-size:12.5px;
-    padding:11px 13px;
-    border-radius:var(--radius-pill);
-    cursor:pointer;
-    align-items:center;
-    gap:4px;
-    transition:all .2s ease;
-  }
-  body.is-admin .btn-delete{
-    display:inline-flex; /* visible only to admin */
-  }
-  .btn-delete:hover{
-    background:var(--danger);
-    color:#ffffff;
-    border-color:var(--danger);
-    transform:translateY(-1px);
-  }
 
-  /* Catalog Management Header */
-  .phones-header-bar{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:16px;
-    margin-bottom:24px;
-  }
-  .phones-header-bar .section-head{margin-bottom:0;}
-  
-  /* Add & Reset controls - Hidden by default, visible only to Admin */
-  .catalog-manage-actions{
-    display:none; /* hidden for regular visitors */
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-  body.is-admin .catalog-manage-actions{
-    display:flex; /* visible only to admin */
-  }
-  .btn-sm{
-    padding:9px 18px;
-    font-size:13.5px;
-    border-radius:var(--radius-pill);
-    cursor:pointer;
-  }
-
-  /* Admin Top Status Banner */
-  .admin-banner{
-    background:linear-gradient(90deg, #1c1032, #291544);
-    border-bottom:1px solid var(--gold);
-    color:var(--gold-bright);
-    padding:9px 18px;
-    font-size:13px;
-    font-weight:700;
-    position:sticky;
-    top:0;
-    z-index:95;
-    box-shadow:0 4px 20px rgba(0,0,0,0.35);
-  }
-  [data-theme="light"] .admin-banner{
-    background:linear-gradient(90deg, #f2e9fc, #faebff);
-    color:#4a154b;
-    border-bottom-color:var(--gold);
-  }
-  .admin-banner-content{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:10px;
-    max-width:var(--maxw);
-    margin:0 auto;
-  }
-  .admin-banner-actions{
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .btn-xs{
-    padding:5px 12px;
-    font-size:12px;
-    border-radius:var(--radius-pill);
-    cursor:pointer;
-    font-weight:700;
-  }
-
-  /* Footer Admin Trigger Link */
+  /* Footer Staff Portal Link */
   .admin-trigger-link{
     background:none;
     border:1px solid var(--line);
@@ -561,111 +461,15 @@
     display:inline-flex;
     align-items:center;
     gap:5px;
-    padding:5px 11px;
+    padding:5px 12px;
     border-radius:var(--radius-pill);
     transition:all .2s;
+    text-decoration:none;
   }
   .admin-trigger-link:hover{
     color:var(--gold-bright);
     border-color:var(--gold);
-  }
-
-  .modal-sm{
-    max-width:390px;
-  }
-  .form-hint{
-    font-size:11.5px;
-    color:var(--text-muted);
-    margin-top:5px;
-    display:block;
-  }
-  .form-error{
-    color:var(--danger);
-    font-size:12px;
-    font-weight:700;
-    margin-top:8px;
-    padding:7px 10px;
-    background:var(--danger-bg);
-    border-radius:8px;
-    border:1px solid rgba(255,77,77,0.25);
-  }
-
-  /* Modal Backdrop & Dialog */
-  .modal-backdrop{
-    position:fixed;
-    inset:0;
-    z-index:1000;
-    background:rgba(5,3,10,0.78);
-    backdrop-filter:blur(8px);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
-  .modal-backdrop.open{display:flex;}
-  .modal-box{
-    background:var(--bg-panel);
-    border:1px solid var(--line);
-    border-radius:22px;
-    width:100%;
-    max-width:580px;
-    max-height:90vh;
-    overflow-y:auto;
-    box-shadow:0 30px 80px rgba(0,0,0,0.6);
-    padding:26px 28px;
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-  }
-  .modal-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid var(--line);
-    padding-bottom:14px;
-  }
-  .modal-header h3{font-size:22px;color:var(--text-primary);}
-  .modal-close{
-    background:none;
-    border:none;
-    font-size:28px;
-    color:var(--text-muted);
-    cursor:pointer;
-    line-height:1;
-    padding:4px;
-    transition:color .2s;
-  }
-  .modal-close:hover{color:var(--gold-bright);}
-  .form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-  }
-  .form-group{display:flex;flex-direction:column;gap:5px;}
-  .form-group.full-width{grid-column:1/-1;}
-  .form-group label{font-size:12.5px;font-weight:700;color:var(--text-muted);}
-  .form-group input, .form-group select{
-    background:var(--bg-void);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:10px 12px;
-    color:var(--text-primary);
-    font-family:inherit;
-    font-size:13.5px;
-    outline:none;
-    transition:border-color .2s, box-shadow .2s;
-  }
-  .form-group input:focus, .form-group select:focus{
-    border-color:var(--gold-bright);
-    box-shadow:0 0 0 3px rgba(217,166,83,0.18);
-  }
-  .modal-footer{
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-    border-top:1px solid var(--line);
-    padding-top:16px;
-    margin-top:10px;
+    transform:translateY(-1px);
   }
 
   /* Toast notification */
@@ -881,18 +685,6 @@
 </head>
 <body>
 
-<!-- ---------- ADMIN STATUS BANNER (Hidden until unlocked) ---------- -->
-<div class="admin-banner" id="adminBanner" style="display:none;">
-  <div class="admin-banner-content">
-    <span>🛡️ <strong>Admin Mode Active</strong> — Add & Delete controls unlocked</span>
-    <div class="admin-banner-actions">
-      <button class="btn btn-gold btn-xs" id="adminBannerAddBtn">➕ Add Phone</button>
-      <button class="btn btn-outline btn-xs" id="adminChangePinBtn">Change PIN</button>
-      <button class="btn btn-outline btn-xs" id="adminLogoutBtn">Exit Admin</button>
-    </div>
-  </div>
-</div>
-
 <header>
   <div class="nav">
     <div class="logo">DRG <em>Phones Palace</em></div>
@@ -957,19 +749,9 @@
 <!-- ---------- PHONES ---------- -->
 <section class="phones-section" id="phones">
   <div class="wrap">
-    <div class="phones-header-bar">
-      <div class="section-head">
-        <h2>Choose your phone</h2>
-        <p>Every phone comes with its condition, key specs and a weekly plan spelled out upfront — no hidden costs.</p>
-      </div>
-      <div class="catalog-manage-actions">
-        <button class="btn btn-gold btn-sm" id="openAddPhoneModalBtn">
-          <span>➕</span> Add New Phone
-        </button>
-        <button class="btn btn-outline btn-sm" id="resetCatalogBtn" title="Restore default catalog lineup">
-          <span>🔄</span> Reset Catalog
-        </button>
-      </div>
+    <div class="section-head">
+      <h2>Choose your phone</h2>
+      <p>Every phone comes with its condition, key specs and a weekly plan spelled out upfront — no hidden costs.</p>
     </div>
     <div class="filter-row" id="filterRow">
       <button class="filter-pill active" data-cat="all">All Phones</button>
@@ -1104,126 +886,11 @@
   <div class="wrap footer-row">
     <div class="logo">DRG <em>Phones Palace</em></div>
     <div>© <span id="year"></span> DRG Phones Palace. All prices in KES. Terms apply to weekly payment plans.</div>
-    <button class="admin-trigger-link" id="footerAdminTriggerBtn" title="Owner / Staff Admin Login (Shortcut: Alt + A)">🔒 Staff Login</button>
+    <a href="admin.html" class="admin-trigger-link" title="Staff Portal">🔒 Staff Portal</a>
   </div>
 </footer>
 
 <a class="sticky-wa" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
-
-<!-- ---------- ADD PHONE MODAL ---------- -->
-<div class="modal-backdrop" id="addPhoneModal" aria-hidden="true">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>Add New Phone</h3>
-      <button class="modal-close" id="closeAddPhoneModalBtn" aria-label="Close modal">&times;</button>
-    </div>
-    <form id="addPhoneForm">
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="phoneModel">Model Name *</label>
-          <input type="text" id="phoneModel" required placeholder="e.g. iPhone 13, Galaxy S23">
-        </div>
-        <div class="form-group">
-          <label for="phoneStorage">Storage *</label>
-          <input type="text" id="phoneStorage" required placeholder="e.g. 128GB, 256GB">
-        </div>
-        <div class="form-group">
-          <label for="phoneCategory">Brand / Category *</label>
-          <select id="phoneCategory" required>
-            <option value="samsung">Samsung</option>
-            <option value="iphone">iPhone</option>
-            <option value="motorola">Motorola</option>
-            <option value="other">Other Phones</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="phoneCondition">Condition *</label>
-          <select id="phoneCondition" required>
-            <option value="UK Used · Grade A">UK Used · Grade A</option>
-            <option value="Brand New">Brand New</option>
-            <option value="Excellent · Grade A+">Excellent · Grade A+</option>
-            <option value="Refurbished">Refurbished</option>
-          </select>
-        </div>
-        <div class="form-group full-width">
-          <label for="phoneSpecs">Key Specs (comma-separated) *</label>
-          <input type="text" id="phoneSpecs" required placeholder="e.g. 6.1 OLED display, 50MP camera, 5000mAh battery">
-        </div>
-        <div class="form-group full-width">
-          <label for="phoneImage">Image Path or URL (optional)</label>
-          <input type="text" id="phoneImage" placeholder="e.g. images/my-phone.jpg or https://...">
-        </div>
-        <div class="form-group">
-          <label for="phoneCashPrice">Cash Price (KES) *</label>
-          <input type="number" id="phoneCashPrice" required min="1000" step="100" placeholder="e.g. 35000">
-        </div>
-        <div class="form-group">
-          <label for="phoneDeposit">Deposit (KES) *</label>
-          <input type="number" id="phoneDeposit" required min="500" step="50" placeholder="e.g. 8000">
-        </div>
-        <div class="form-group">
-          <label for="phoneWeekly">Weekly Payment (KES) *</label>
-          <input type="number" id="phoneWeekly" required min="100" step="50" placeholder="e.g. 1200">
-        </div>
-        <div class="form-group">
-          <label for="phoneWeeks">Duration (Weeks) *</label>
-          <input type="number" id="phoneWeeks" required min="1" max="104" value="8">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" id="cancelAddPhoneBtn">Cancel</button>
-        <button type="submit" class="btn btn-gold">Save Phone to Catalogue</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- ---------- ADMIN LOGIN MODAL ---------- -->
-<div class="modal-backdrop" id="adminLoginModal" aria-hidden="true">
-  <div class="modal-box modal-sm">
-    <div class="modal-header">
-      <h3>🛡️ Staff / Admin Login</h3>
-      <button class="modal-close" id="closeAdminLoginModalBtn" aria-label="Close modal">&times;</button>
-    </div>
-    <form id="adminLoginForm">
-      <div class="form-group">
-        <label for="adminPinInput">Enter 4-Digit Admin PIN *</label>
-        <input type="password" id="adminPinInput" required placeholder="••••" maxlength="10" autocomplete="current-password">
-        <span class="form-hint">Default PIN: <strong>2540</strong> (Can be changed in Admin Mode)</span>
-      </div>
-      <div id="adminLoginError" class="form-error" style="display:none;"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" id="cancelAdminLoginBtn">Cancel</button>
-        <button type="submit" class="btn btn-gold">Unlock Admin</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- ---------- CHANGE PIN MODAL ---------- -->
-<div class="modal-backdrop" id="changePinModal" aria-hidden="true">
-  <div class="modal-box modal-sm">
-    <div class="modal-header">
-      <h3>🔑 Change Admin PIN</h3>
-      <button class="modal-close" id="closeChangePinModalBtn" aria-label="Close modal">&times;</button>
-    </div>
-    <form id="changePinForm">
-      <div class="form-group">
-        <label for="currentPinInput">Current PIN *</label>
-        <input type="password" id="currentPinInput" required placeholder="••••" maxlength="10">
-      </div>
-      <div class="form-group">
-        <label for="newPinInput">New PIN (4+ digits) *</label>
-        <input type="password" id="newPinInput" required placeholder="Enter new PIN" minlength="4" maxlength="10">
-      </div>
-      <div id="changePinError" class="form-error" style="display:none;"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" id="cancelChangePinBtn">Cancel</button>
-        <button type="submit" class="btn btn-gold">Update PIN</button>
-      </div>
-    </form>
-  </div>
-</div>
 
 <!-- ---------- TOAST NOTIFICATION ---------- -->
 <div class="toast-notification" id="toastNotification"></div>
@@ -1736,53 +1403,6 @@
     }
   }
 
-  // ---- Admin Authentication & Access Engine ----
-  let isAdmin = false;
-
-  function getStoredAdminPin(){
-    return localStorage.getItem('drg_admin_pin') || "2540";
-  }
-
-  function setAdminMode(active, notify = false){
-    isAdmin = !!active;
-    try {
-      sessionStorage.setItem('drg_admin_active', isAdmin ? 'true' : 'false');
-    } catch(e){}
-
-    document.body.classList.toggle('is-admin', isAdmin);
-    const banner = document.getElementById('adminBanner');
-    if(banner){
-      banner.style.display = isAdmin ? 'block' : 'none';
-    }
-
-    renderPhones();
-
-    if(notify){
-      if(isAdmin){
-        showToast("👑 Admin Mode Active — Add/Delete buttons unlocked!");
-      } else {
-        showToast("🔒 Logged out of Admin mode");
-      }
-    }
-  }
-
-  function deletePhone(phoneId){
-    if(!isAdmin){
-      showToast("⚠️ Only admins can delete phones");
-      return;
-    }
-    const phone = phones.find(p => p.id === phoneId);
-    if(!phone) return;
-    const ok = confirm(`Delete "${phone.model} (${phone.storage})"? This cannot be undone.`);
-    if(!ok) return;
-
-    phones = phones.filter(p => p.id !== phoneId);
-    delete activePlanByPhone[phoneId];
-    savePhones();
-    renderPhones();
-    showToast(`🗑️ Deleted ${phone.model}`);
-  }
-
   function renderPhones(){
     const grid = document.getElementById('phoneGrid');
     grid.innerHTML = "";
@@ -1796,8 +1416,8 @@
         <div style="grid-column: 1/-1; text-align: center; padding: 48px 20px; background: var(--bg-panel); border: 1px dashed var(--line); border-radius: var(--radius-card);">
           <div style="font-size: 38px; margin-bottom: 12px;">📱</div>
           <h3 style="font-size: 20px; margin-bottom: 6px;">No phones found in this category</h3>
-          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 18px;">${isAdmin ? 'Click "Add New Phone" to add a device.' : 'Check back soon for available phones.'}</p>
-          ${isAdmin ? `<button class="btn btn-gold btn-sm" onclick="document.getElementById('openAddPhoneModalBtn').click()">➕ Add Phone</button>` : ''}
+          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 18px;">Check back soon for available phones or chat with us on WhatsApp.</p>
+          <a class="btn btn-whatsapp" style="display:inline-flex;" href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20DRG%20Phones%20Palace%2C%20do%20you%20have%20any%20phones%20in%20stock%3F" target="_blank" rel="noopener">Inquire on WhatsApp</a>
         </div>
       `;
       return;
@@ -1808,11 +1428,6 @@
       const card = document.createElement('article');
       card.className = 'phone-card';
       card.id = `phone-card-${phone.id}`;
-
-      // Only show Delete button if logged in as Admin
-      const deleteActionHtml = isAdmin 
-        ? `<button class="btn-delete" data-action="delete" data-phone="${phone.id}" title="Delete ${phone.model}">🗑️ Delete</button>`
-        : ``;
 
       card.innerHTML = `
         <div class="phone-media">
@@ -1831,10 +1446,7 @@
             ${phone.specs.map(s => `<li>${s}</li>`).join("")}
           </ul>
           ${renderPlanBox(phone, activeKey)}
-          <div class="card-action-row">
-            <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" target="_blank" rel="noopener">Get This Phone</a>
-            ${deleteActionHtml}
-          </div>
+          <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" target="_blank" rel="noopener">Get This Phone</a>
         </div>
       `;
       grid.appendChild(card);
@@ -1861,15 +1473,8 @@
     renderPhones();
   });
 
-  // In-card click delegation (Plan switch and Delete)
+  // In-card click delegation (Plan switch)
   document.getElementById('phoneGrid').addEventListener('click', (e) => {
-    const delBtn = e.target.closest('.btn-delete');
-    if(delBtn){
-      const phoneId = delBtn.dataset.phone;
-      deletePhone(phoneId);
-      return;
-    }
-
     const tab = e.target.closest('.card-plan-tab');
     if(!tab) return;
     const phoneId = tab.dataset.phone;
@@ -1877,234 +1482,17 @@
     updateCardPlanView(phoneId, planKey);
   });
 
-  // ---- Modal & Form Handlers ----
-  const addPhoneModal = document.getElementById('addPhoneModal');
-  const openAddPhoneModalBtn = document.getElementById('openAddPhoneModalBtn');
-  const closeAddPhoneModalBtn = document.getElementById('closeAddPhoneModalBtn');
-  const cancelAddPhoneBtn = document.getElementById('cancelAddPhoneBtn');
-  const addPhoneForm = document.getElementById('addPhoneForm');
-  const resetCatalogBtn = document.getElementById('resetCatalogBtn');
-
-  // Admin Modals & Elements
-  const adminLoginModal = document.getElementById('adminLoginModal');
-  const closeAdminLoginModalBtn = document.getElementById('closeAdminLoginModalBtn');
-  const cancelAdminLoginBtn = document.getElementById('cancelAdminLoginBtn');
-  const adminLoginForm = document.getElementById('adminLoginForm');
-  const adminPinInput = document.getElementById('adminPinInput');
-  const adminLoginError = document.getElementById('adminLoginError');
-  const footerAdminTriggerBtn = document.getElementById('footerAdminTriggerBtn');
-  const adminLogoutBtn = document.getElementById('adminLogoutBtn');
-  const adminBannerAddBtn = document.getElementById('adminBannerAddBtn');
-  const adminChangePinBtn = document.getElementById('adminChangePinBtn');
-
-  const changePinModal = document.getElementById('changePinModal');
-  const closeChangePinModalBtn = document.getElementById('closeChangePinModalBtn');
-  const cancelChangePinBtn = document.getElementById('cancelChangePinBtn');
-  const changePinForm = document.getElementById('changePinForm');
-  const currentPinInput = document.getElementById('currentPinInput');
-  const newPinInput = document.getElementById('newPinInput');
-  const changePinError = document.getElementById('changePinError');
-
-  function openAddModal(){
-    if(!isAdmin){
-      openAdminLoginModal();
-      return;
+  // Real-time synchronization when catalogue is modified in admin.html
+  window.addEventListener('storage', (e) => {
+    if(e.key === 'drg_phones_data'){
+      loadPhones();
+      phones.forEach(p => {
+        if(!activePlanByPhone[p.id]){
+          activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
+        }
+      });
+      renderPhones();
     }
-    addPhoneModal.classList.add('open');
-    addPhoneModal.setAttribute('aria-hidden', 'false');
-    document.getElementById('phoneModel').focus();
-  }
-
-  function closeAddModal(){
-    addPhoneModal.classList.remove('open');
-    addPhoneModal.setAttribute('aria-hidden', 'true');
-    addPhoneForm.reset();
-  }
-
-  function openAdminLoginModal(){
-    adminLoginModal.classList.add('open');
-    adminLoginModal.setAttribute('aria-hidden', 'false');
-    adminPinInput.value = "";
-    adminLoginError.style.display = "none";
-    setTimeout(() => adminPinInput.focus(), 100);
-  }
-
-  function closeAdminLoginModal(){
-    adminLoginModal.classList.remove('open');
-    adminLoginModal.setAttribute('aria-hidden', 'true');
-    adminPinInput.value = "";
-    adminLoginError.style.display = "none";
-  }
-
-  function openChangePinModal(){
-    changePinModal.classList.add('open');
-    changePinModal.setAttribute('aria-hidden', 'false');
-    currentPinInput.value = "";
-    newPinInput.value = "";
-    changePinError.style.display = "none";
-    setTimeout(() => currentPinInput.focus(), 100);
-  }
-
-  function closeChangePinModal(){
-    changePinModal.classList.remove('open');
-    changePinModal.setAttribute('aria-hidden', 'true');
-    changePinError.style.display = "none";
-  }
-
-  openAddPhoneModalBtn.addEventListener('click', openAddModal);
-  closeAddPhoneModalBtn.addEventListener('click', closeAddModal);
-  cancelAddPhoneBtn.addEventListener('click', closeAddModal);
-  addPhoneModal.addEventListener('click', (e) => { if(e.target === addPhoneModal) closeAddModal(); });
-
-  if(adminBannerAddBtn) adminBannerAddBtn.addEventListener('click', openAddModal);
-  if(footerAdminTriggerBtn) footerAdminTriggerBtn.addEventListener('click', openAdminLoginModal);
-  if(closeAdminLoginModalBtn) closeAdminLoginModalBtn.addEventListener('click', closeAdminLoginModal);
-  if(cancelAdminLoginBtn) cancelAdminLoginBtn.addEventListener('click', closeAdminLoginModal);
-  adminLoginModal.addEventListener('click', (e) => { if(e.target === adminLoginModal) closeAdminLoginModal(); });
-
-  if(adminLogoutBtn) adminLogoutBtn.addEventListener('click', () => setAdminMode(false, true));
-  if(adminChangePinBtn) adminChangePinBtn.addEventListener('click', openChangePinModal);
-  if(closeChangePinModalBtn) closeChangePinModalBtn.addEventListener('click', closeChangePinModal);
-  if(cancelChangePinBtn) cancelChangePinBtn.addEventListener('click', closeChangePinModal);
-  changePinModal.addEventListener('click', (e) => { if(e.target === changePinModal) closeChangePinModal(); });
-
-  // Admin Login submit
-  adminLoginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const entered = adminPinInput.value.trim();
-    if(entered === getStoredAdminPin()){
-      closeAdminLoginModal();
-      setAdminMode(true, true);
-    } else {
-      adminLoginError.textContent = "❌ Incorrect Admin PIN. Try again.";
-      adminLoginError.style.display = "block";
-      adminPinInput.focus();
-    }
-  });
-
-  // Change PIN submit
-  changePinForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const cur = currentPinInput.value.trim();
-    const next = newPinInput.value.trim();
-    if(cur !== getStoredAdminPin()){
-      changePinError.textContent = "❌ Current PIN is incorrect.";
-      changePinError.style.display = "block";
-      currentPinInput.focus();
-      return;
-    }
-    if(next.length < 4){
-      changePinError.textContent = "❌ New PIN must be at least 4 digits.";
-      changePinError.style.display = "block";
-      newPinInput.focus();
-      return;
-    }
-    try {
-      localStorage.setItem('drg_admin_pin', next);
-    } catch(err){}
-    closeChangePinModal();
-    showToast("🔑 Admin PIN updated successfully!");
-  });
-
-  // Escape key & Admin keyboard shortcut (Alt + A)
-  window.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape'){
-      closeAddModal();
-      closeAdminLoginModal();
-      closeChangePinModal();
-    }
-    // Alt + A to toggle / open admin
-    if((e.altKey && (e.key === 'a' || e.key === 'A')) || (e.ctrlKey && e.shiftKey && (e.key === 'a' || e.key === 'A'))){
-      if(!isAdmin){
-        openAdminLoginModal();
-      } else {
-        setAdminMode(false, true);
-      }
-    }
-  });
-
-  // Check URL query parameter for ?admin=true or ?admin=1
-  if(new URLSearchParams(window.location.search).has('admin')){
-    openAdminLoginModal();
-  }
-
-  // Restore session admin if active
-  const initialAdmin = sessionStorage.getItem('drg_admin_active') === 'true';
-  setAdminMode(initialAdmin, false);
-
-  resetCatalogBtn.addEventListener('click', () => {
-    if(!isAdmin){
-      showToast("⚠️ Only admins can reset the catalogue");
-      return;
-    }
-    const ok = confirm("Restore default catalogue? Any newly added custom phones will be removed.");
-    if(!ok) return;
-    phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
-    savePhones();
-    phones.forEach(p => {
-      activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
-    });
-    renderPhones();
-    showToast("🔄 Catalogue restored to default models!");
-  });
-
-  addPhoneForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if(!isAdmin){
-      showToast("⚠️ Only admins can add phones");
-      return;
-    }
-    const model = document.getElementById('phoneModel').value.trim();
-    const storage = document.getElementById('phoneStorage').value.trim();
-    const category = document.getElementById('phoneCategory').value;
-    const condition = document.getElementById('phoneCondition').value;
-    const specsRaw = document.getElementById('phoneSpecs').value.trim();
-    const image = document.getElementById('phoneImage').value.trim() || `images/${model.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.jpg`;
-    const cashPrice = Number(document.getElementById('phoneCashPrice').value);
-    const deposit = Number(document.getElementById('phoneDeposit').value);
-    const weekly = Number(document.getElementById('phoneWeekly').value);
-    const weeks = Number(document.getElementById('phoneWeeks').value);
-
-    const specs = specsRaw.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
-    const catLabels = {
-      samsung: "Samsung",
-      iphone: "iPhone",
-      motorola: "Motorola",
-      other: "Other Phones"
-    };
-
-    const newId = "phone-" + Date.now();
-    const totalInstallment = deposit + (weekly * weeks);
-
-    const newPhone = {
-      id: newId,
-      category: category,
-      categoryLabel: catLabels[category] || "Other Phones",
-      model: model,
-      storage: storage,
-      condition: condition,
-      image: image,
-      specs: specs.length ? specs : ["Genuine device", "Tested & inspected", "Clean IMEI"],
-      cashPrice: cashPrice,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: cashPrice, hint: "One-time cash payment" },
-        standard: { label: `Weekly (${weeks} Wks)`, deposit: deposit, weekly: weekly, weeks: weeks, total: totalInstallment, hint: `${weeks} Weeks Lipa Mdogo Mdogo` }
-      },
-      defaultPlan: "standard"
-    };
-
-    phones.unshift(newPhone);
-    activePlanByPhone[newId] = "standard";
-    savePhones();
-    closeAddModal();
-
-    if(currentCategory !== "all" && currentCategory !== category){
-      currentCategory = category;
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === category));
-    }
-
-    renderPhones();
-    showToast(`✅ Added ${model} (${storage}) to catalogue!`);
   });
 
   renderPhones();

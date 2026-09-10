@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRG Phones Palace — Admin Dashboard</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root, [data-theme="dark"] {
+    --bg-void:#0a0812;
+    --bg-panel:#150f22;
+    --bg-panel-2:#1d1530;
+    --bg-panel-3:#271b40;
+    --purple-deep:#3a2266;
+    --purple:#6c4baf;
+    --purple-soft:#8f76c4;
+    --gold:#d9a653;
+    --gold-bright:#f2c878;
+    --text-primary:#f6f0e6;
+    --text-muted:#b7adc7;
+    --line:rgba(217,166,83,0.18);
+    --whatsapp:#2fc35b;
+    --danger:#ff4d4d;
+    --danger-bg:rgba(255,77,77,0.14);
+    --header-bg:rgba(10,8,18,0.92);
+    --radius-card:16px;
+    --radius-pill:999px;
+    --maxw:1240px;
+    --shadow-box:0 18px 45px rgba(0,0,0,0.45);
+  }
+
+  [data-theme="light"] {
+    --bg-void:#f7f5fa;
+    --bg-panel:#ffffff;
+    --bg-panel-2:#ede7f6;
+    --bg-panel-3:#e2d9f3;
+    --purple-deep:#53388c;
+    --purple:#6c4baf;
+    --purple-soft:#685296;
+    --gold:#b8802a;
+    --gold-bright:#8c5d10;
+    --text-primary:#1a1429;
+    --text-muted:#675e7a;
+    --line:rgba(184,128,42,0.22);
+    --whatsapp:#1ea94a;
+    --danger:#d32f2f;
+    --danger-bg:rgba(211,47,47,0.1);
+    --header-bg:rgba(247,245,250,0.95);
+    --shadow-box:0 12px 35px rgba(80,50,120,0.1);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg-void);
+    color:var(--text-primary);
+    font-family:'Manrope',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .25s ease, color .25s ease;
+    min-height:100vh;
+  }
+  h1,h2,h3,h4{
+    font-family:'Bricolage Grotesque',sans-serif;
+    line-height:1.15;
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  /* ---------------- PIN GATE SCREEN ---------------- */
+  .pin-gate-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:radial-gradient(circle at 50% 30%, rgba(108,75,175,0.18), transparent 70%), var(--bg-void);
+  }
+  .pin-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:38px 32px;
+    width:100%;
+    max-width:440px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.55);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .pin-card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;height:4px;
+    background:linear-gradient(90deg, var(--gold), var(--purple), var(--gold));
+  }
+  .pin-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(217,166,83,0.14);
+    color:var(--gold-bright);
+    font-size:12px;
+    font-weight:700;
+    padding:5px 12px;
+    border-radius:var(--radius-pill);
+    border:1px solid var(--line);
+    margin-bottom:18px;
+  }
+  .pin-card h1{
+    font-size:26px;
+    margin-bottom:8px;
+    color:var(--text-primary);
+  }
+  .pin-card p{
+    color:var(--text-muted);
+    font-size:14px;
+    margin:0 0 24px 0;
+  }
+  .pin-input-wrap{
+    margin-bottom:20px;
+  }
+  .pin-input{
+    width:100%;
+    background:var(--bg-void);
+    border:2px solid var(--line);
+    border-radius:14px;
+    padding:14px 18px;
+    font-size:24px;
+    text-align:center;
+    letter-spacing:10px;
+    color:var(--text-primary);
+    font-family:monospace;
+    font-weight:800;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .pin-input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 4px rgba(217,166,83,0.22);
+  }
+  .btn-unlock{
+    width:100%;
+    background:linear-gradient(135deg, var(--gold), var(--gold-bright));
+    color:#120c04;
+    border:none;
+    border-radius:var(--radius-pill);
+    padding:14px 24px;
+    font-size:15px;
+    font-weight:800;
+    font-family:'Manrope',sans-serif;
+    cursor:pointer;
+    transition:transform .2s, box-shadow .2s;
+    box-shadow:0 8px 24px rgba(217,166,83,0.3);
+  }
+  .btn-unlock:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 30px rgba(217,166,83,0.45);
+  }
+  .pin-footer-links{
+    margin-top:24px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    font-size:13px;
+  }
+  .pin-footer-links a{
+    color:var(--gold);
+    font-weight:600;
+  }
+  .pin-footer-links a:hover{
+    text-decoration:underline;
+  }
+  .pin-hint{
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .form-error{
+    color:var(--danger);
+    font-size:12.5px;
+    font-weight:700;
+    margin-bottom:16px;
+    padding:8px 12px;
+    background:var(--danger-bg);
+    border-radius:8px;
+    border:1px solid rgba(255,77,77,0.3);
+  }
+  .shake{
+    animation:shake .35s ease;
+  }
+  @keyframes shake {
+    0%,100%{transform:translateX(0);}
+    20%,60%{transform:translateX(-8px);}
+    40%,80%{transform:translateX(8px);}
+  }
+
+  /* ---------------- ADMIN DASHBOARD ---------------- */
+  .admin-layout{
+    display:none; /* Shown when authenticated */
+  }
+  .admin-header{
+    position:sticky;
+    top:0;
+    z-index:60;
+    background:var(--header-bg);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+  }
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .nav-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand-group{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-size:20px;
+    font-weight:800;
+    color:var(--text-primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .brand-title em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .admin-badge{
+    background:rgba(217,166,83,0.18);
+    color:var(--gold-bright);
+    font-size:11.5px;
+    font-weight:800;
+    padding:3px 8px;
+    border-radius:var(--radius-pill);
+    border:1px solid var(--line);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    padding:8px 16px;
+    border-radius:var(--radius-pill);
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:all .2s ease;
+    text-decoration:none;
+  }
+  .btn-gold{
+    background:linear-gradient(135deg, var(--gold), var(--gold-bright));
+    color:#120c04;
+    box-shadow:0 4px 14px rgba(217,166,83,0.25);
+  }
+  .btn-gold:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 18px rgba(217,166,83,0.38);
+  }
+  .btn-outline{
+    background:var(--bg-panel);
+    border-color:var(--line);
+    color:var(--text-primary);
+  }
+  .btn-outline:hover{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+    transform:translateY(-1px);
+  }
+  .btn-danger-outline{
+    background:var(--danger-bg);
+    border-color:rgba(255,77,77,0.3);
+    color:var(--danger);
+  }
+  .btn-danger-outline:hover{
+    background:var(--danger);
+    color:#ffffff;
+  }
+  .btn-sm{
+    padding:6px 12px;
+    font-size:12px;
+  }
+
+  /* KPI METRICS */
+  .dashboard-body{
+    padding:32px 0 64px 0;
+  }
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+    gap:16px;
+    margin-bottom:32px;
+  }
+  .kpi-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:20px;
+    box-shadow:var(--shadow-box);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    transition:transform .2s;
+  }
+  .kpi-card:hover{
+    transform:translateY(-2px);
+    border-color:var(--gold);
+  }
+  .kpi-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .kpi-label{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .kpi-icon{
+    font-size:18px;
+    opacity:0.85;
+  }
+  .kpi-value{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-size:30px;
+    font-weight:800;
+    color:var(--text-primary);
+    line-height:1;
+    margin-top:4px;
+  }
+  .kpi-sub{
+    font-size:12px;
+    color:var(--text-muted);
+  }
+
+  /* CONTROLS & SEARCH BAR */
+  .controls-bar{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:16px 20px;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    box-shadow:var(--shadow-box);
+  }
+  .search-wrap{
+    flex:1;
+    min-width:240px;
+    position:relative;
+  }
+  .search-input{
+    width:100%;
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    border-radius:var(--radius-pill);
+    padding:10px 16px 10px 38px;
+    color:var(--text-primary);
+    font-family:inherit;
+    font-size:13.5px;
+    outline:none;
+    transition:border-color .2s;
+  }
+  .search-input:focus{
+    border-color:var(--gold);
+  }
+  .search-icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:var(--text-muted);
+    pointer-events:none;
+  }
+  .filter-pills{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .pill-btn{
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    color:var(--text-muted);
+    border-radius:var(--radius-pill);
+    padding:6px 14px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .2s;
+  }
+  .pill-btn.active, .pill-btn:hover{
+    background:var(--gold);
+    color:#120c04;
+    border-color:var(--gold);
+  }
+  .action-buttons-group{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  /* INVENTORY LIST / TABLE */
+  .inventory-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    overflow:hidden;
+    box-shadow:var(--shadow-box);
+  }
+  .table-responsive{
+    width:100%;
+    overflow-x:auto;
+  }
+  .admin-table{
+    width:100%;
+    border-collapse:collapse;
+    text-align:left;
+    font-size:13.5px;
+  }
+  .admin-table th{
+    background:var(--bg-panel-2);
+    color:var(--text-muted);
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .admin-table td{
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+    vertical-align:middle;
+  }
+  .admin-table tr:last-child td{
+    border-bottom:none;
+  }
+  .admin-table tr:hover{
+    background:rgba(217,166,83,0.03);
+  }
+
+  /* Table device cell */
+  .device-cell{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:240px;
+  }
+  .device-thumb{
+    width:48px;
+    height:48px;
+    border-radius:10px;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    object-fit:cover;
+    flex-shrink:0;
+  }
+  .device-thumb-fallback{
+    width:48px;
+    height:48px;
+    border-radius:10px;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    flex-shrink:0;
+  }
+  .device-info-meta{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .device-model{
+    font-weight:700;
+    color:var(--text-primary);
+    font-size:14px;
+  }
+  .device-storage{
+    font-size:12px;
+    color:var(--gold-bright);
+    font-weight:600;
+  }
+  .brand-pill{
+    display:inline-block;
+    padding:2px 8px;
+    font-size:11px;
+    font-weight:700;
+    border-radius:var(--radius-pill);
+    text-transform:uppercase;
+    background:rgba(108,75,175,0.18);
+    color:var(--purple-soft);
+    border:1px solid rgba(108,75,175,0.3);
+  }
+  .brand-pill.samsung{
+    background:rgba(47,195,91,0.14);
+    color:var(--whatsapp);
+    border-color:rgba(47,195,91,0.3);
+  }
+  .brand-pill.iphone{
+    background:rgba(217,166,83,0.14);
+    color:var(--gold-bright);
+    border-color:rgba(217,166,83,0.3);
+  }
+  .condition-tag{
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+  .price-cell{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    color:var(--text-primary);
+    white-space:nowrap;
+  }
+  .financing-cell{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    font-size:12px;
+    min-width:180px;
+  }
+  .financing-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    color:var(--text-primary);
+  }
+  .financing-pill strong{
+    color:var(--gold-bright);
+  }
+  .table-actions{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  /* MODALS */
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(5,3,10,0.82);
+    backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-backdrop.open{
+    display:flex;
+  }
+  .modal-box{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:22px;
+    width:100%;
+    max-width:620px;
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 30px 80px rgba(0,0,0,0.65);
+    padding:26px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .modal-box.modal-sm{
+    max-width:400px;
+  }
+  .modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px;
+  }
+  .modal-header h3{
+    font-size:22px;
+    color:var(--text-primary);
+  }
+  .modal-close{
+    background:none;
+    border:none;
+    font-size:26px;
+    color:var(--text-muted);
+    cursor:pointer;
+    line-height:1;
+    padding:4px;
+    transition:color .2s;
+  }
+  .modal-close:hover{
+    color:var(--gold-bright);
+  }
+  .form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .form-group{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .form-group.full-width{
+    grid-column:1/-1;
+  }
+  .form-group label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--text-muted);
+  }
+  .form-group input, .form-group select, .form-group textarea{
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    color:var(--text-primary);
+    font-family:inherit;
+    font-size:13.5px;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+    border-color:var(--gold-bright);
+    box-shadow:0 0 0 3px rgba(217,166,83,0.18);
+  }
+  .form-hint{
+    font-size:11px;
+    color:var(--text-muted);
+  }
+  .plan-type-selector{
+    display:flex;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .plan-type-btn{
+    flex:1;
+    padding:8px;
+    font-size:12px;
+    font-weight:700;
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    color:var(--text-muted);
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .plan-type-btn.active{
+    background:var(--purple-deep);
+    border-color:var(--purple);
+    color:#fff;
+  }
+  .modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    border-top:1px solid var(--line);
+    padding-top:16px;
+    margin-top:8px;
+  }
+
+  /* TOAST NOTIFICATION */
+  .toast{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:var(--bg-panel);
+    border:1px solid var(--gold);
+    color:var(--text-primary);
+    padding:12px 22px;
+    border-radius:var(--radius-pill);
+    box-shadow:0 14px 40px rgba(0,0,0,0.6);
+    font-size:13.5px;
+    font-weight:700;
+    z-index:9999;
+    transition:transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity .3s ease;
+    opacity:0;
+    pointer-events:none;
+  }
+  .toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+  }
+
+  /* EMPTY STATE */
+  .empty-state{
+    text-align:center;
+    padding:60px 20px;
+  }
+  .empty-icon{
+    font-size:42px;
+    margin-bottom:12px;
+  }
+  .empty-state h3{
+    font-size:18px;
+    margin-bottom:6px;
+  }
+  .empty-state p{
+    color:var(--text-muted);
+    font-size:13.5px;
+    margin-bottom:18px;
+  }
+
+  /* PRESET BUTTONS FOR QUICK FILL */
+  .preset-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .preset-chip{
+    font-size:11px;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    color:var(--text-muted);
+    padding:3px 8px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .preset-chip:hover{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+  }
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    .nav-bar{flex-direction:column;align-items:flex-start;}
+    .header-actions{width:100%;justify-content:space-between;}
+    .controls-bar{flex-direction:column;align-items:stretch;}
+    .form-grid{grid-template-columns:1fr;}
+    .form-group.full-width{grid-column:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PIN GATE SCREEN ==================== -->
+<div class="pin-gate-wrap" id="pinGateScreen">
+  <div class="pin-card" id="pinCard">
+    <div class="pin-badge">🛡️ Staff Security Gate</div>
+    <h1>DRG Phones Palace</h1>
+    <p>Enter your 4-digit security PIN to unlock store catalogue management and pricing.</p>
+    
+    <form id="pinGateForm">
+      <div class="pin-input-wrap">
+        <input type="password" id="gatePinInput" class="pin-input" placeholder="••••" maxlength="10" autocomplete="current-password" autofocus required>
+      </div>
+      <div id="gatePinError" class="form-error" style="display:none;"></div>
+      <button type="submit" class="btn-unlock">🔓 Unlock Admin Dashboard</button>
+    </form>
+
+    <div class="pin-footer-links">
+      <span class="pin-hint">Default Security PIN: <strong>2540</strong> (Can be changed inside)</span>
+      <a href="index.html">← Back to Customer Storefront</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN DASHBOARD ==================== -->
+<div class="admin-layout" id="adminDashboardScreen">
+  <!-- TOP NAV -->
+  <header class="admin-header">
+    <div class="wrap nav-bar">
+      <div class="brand-group">
+        <div class="brand-title">DRG <em>Phones Palace</em></div>
+        <span class="admin-badge">Admin Console</span>
+      </div>
+      <div class="header-actions">
+        <a href="index.html" target="_blank" class="btn btn-outline" title="Open customer website in new tab">
+          <span>🏪</span> View Live Storefront
+        </a>
+        <button class="btn btn-outline" id="themeToggleBtn" title="Toggle Light / Dark Mode (Shortcut: T)">
+          <span id="themeIcon">🌙</span> <span id="themeLabel">Dark</span>
+        </button>
+        <button class="btn btn-outline" id="changePinBtn" title="Change Admin Security PIN">
+          <span>🔑</span> Change PIN
+        </button>
+        <button class="btn btn-danger-outline" id="logoutBtn" title="Lock Admin Console">
+          <span>🚪</span> Exit Admin
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD MAIN -->
+  <main class="dashboard-body">
+    <div class="wrap">
+      
+      <!-- KPI STATS CARDS -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Total Inventory</span>
+            <span class="kpi-icon">📱</span>
+          </div>
+          <div class="kpi-value" id="kpiTotalDevices">0</div>
+          <div class="kpi-sub">Phones in live catalogue</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Samsung Devices</span>
+            <span class="kpi-icon">⚡</span>
+          </div>
+          <div class="kpi-value" id="kpiSamsungCount">0</div>
+          <div class="kpi-sub">Flagships & Galaxy series</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">iPhones</span>
+            <span class="kpi-icon">🍏</span>
+          </div>
+          <div class="kpi-value" id="kpiIphoneCount">0</div>
+          <div class="kpi-sub">UK Used & Brand New</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Avg Weekly Payment</span>
+            <span class="kpi-icon">💰</span>
+          </div>
+          <div class="kpi-value" id="kpiAvgWeekly">KES 0</div>
+          <div class="kpi-sub">Financing installment average</div>
+        </div>
+      </section>
+
+      <!-- CONTROLS & FILTER BAR -->
+      <section class="controls-bar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="adminSearchInput" class="search-input" placeholder="Search by model, storage, specs, or price...">
+        </div>
+        <div class="filter-pills" id="adminCategoryFilter">
+          <button class="pill-btn active" data-cat="all">All</button>
+          <button class="pill-btn" data-cat="samsung">Samsung</button>
+          <button class="pill-btn" data-cat="iphone">iPhone</button>
+          <button class="pill-btn" data-cat="motorola">Motorola</button>
+          <button class="pill-btn" data-cat="other">Other</button>
+        </div>
+        <div class="action-buttons-group">
+          <button class="btn btn-gold" id="openAddPhoneModalBtn">
+            <span>➕</span> Add New Phone
+          </button>
+          <button class="btn btn-outline" id="backupModalBtn" title="Export or import inventory backup">
+            <span>💾</span> Backup / JSON
+          </button>
+          <button class="btn btn-danger-outline" id="resetCatalogueBtn" title="Restore standard default devices">
+            <span>🔄</span> Reset Defaults
+          </button>
+        </div>
+      </section>
+
+      <!-- INVENTORY TABLE -->
+      <section class="inventory-card">
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Device</th>
+                <th>Category</th>
+                <th>Cash Price</th>
+                <th>Financing Details</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="tableEmptyState" class="empty-state" style="display:none;">
+          <div class="empty-icon">📱</div>
+          <h3>No phones match your search or filter</h3>
+          <p>Try searching for a different keyword or add a new device.</p>
+          <button class="btn btn-gold btn-sm" onclick="document.getElementById('openAddPhoneModalBtn').click()">➕ Add New Phone</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==================== ADD PHONE MODAL ==================== -->
+<div class="modal-backdrop" id="addPhoneModal" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>➕ Add Phone to Catalogue</h3>
+      <button class="modal-close" id="closeAddPhoneModalBtn" aria-label="Close modal">&times;</button>
+    </div>
+    <form id="addPhoneForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="newPhoneModel">Model Name *</label>
+          <input type="text" id="newPhoneModel" required placeholder="e.g. Galaxy S24 FE, iPhone 14 Pro">
+        </div>
+        <div class="form-group">
+          <label for="newPhoneStorage">Storage *</label>
+          <input type="text" id="newPhoneStorage" required placeholder="e.g. 128GB, 256GB, 512GB">
+        </div>
+        <div class="form-group">
+          <label for="newPhoneCategory">Brand / Category *</label>
+          <select id="newPhoneCategory" required>
+            <option value="samsung">Samsung</option>
+            <option value="iphone">iPhone</option>
+            <option value="motorola">Motorola</option>
+            <option value="other">Other Phones</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newPhoneCondition">Condition *</label>
+          <select id="newPhoneCondition" required>
+            <option value="Excellent · Grade A+">Excellent · Grade A+</option>
+            <option value="Brand New">Brand New</option>
+            <option value="UK Used · Grade A">UK Used · Grade A</option>
+            <option value="Refurbished">Refurbished</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="newPhoneSpecs">Key Specs (Comma-separated) *</label>
+          <input type="text" id="newPhoneSpecs" required placeholder="e.g. 50MP OIS Camera, 6.7 AMOLED 120Hz, 5000mAh battery">
+        </div>
+        <div class="form-group full-width">
+          <label for="newPhoneImage">Image Path or URL (Optional)</label>
+          <input type="text" id="newPhoneImage" placeholder="images/galaxy-s24-ultra.jpg or https://...">
+          <div class="preset-row">
+            <span style="font-size:11px;color:var(--text-muted);">Presets:</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s25-ultra.jpg'">S25 Ultra</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s24-ultra.jpg'">S24 Ultra</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s23-ultra.jpg'">S23 Ultra</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s22-ultra.jpg'">S22 Ultra</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s21-ultra.jpg'">S21 Ultra</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s22-plus.jpg'">S22+</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/iphone-12.jpg'">iPhone 12</span>
+            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/iphone-11.jpg'">iPhone 11</span>
+          </div>
+        </div>
+        <div class="form-group full-width">
+          <label for="newPhoneCashPrice">Full Cash Price (KES) *</label>
+          <input type="number" id="newPhoneCashPrice" required min="1000" step="50" placeholder="e.g. 55000">
+        </div>
+
+        <!-- FINANCING PLAN CONFIG -->
+        <div class="form-group full-width">
+          <label>Financing Structure *</label>
+          <div class="plan-type-selector">
+            <button type="button" class="plan-type-btn active" id="planTypeSamsungBtn">Multi-Tier Flagship (MoSaver 6M + MoStandard 12M)</button>
+            <button type="button" class="plan-type-btn" id="planTypeStandardBtn">Standard Lipa Mdogo Mdogo (Single Tier)</button>
+          </div>
+        </div>
+
+        <!-- MULTI TIER SECTION -->
+        <div id="multiTierFields" class="full-width form-grid" style="grid-column:1/-1;">
+          <div class="form-group">
+            <label for="newMoSaverDeposit">MoSaver (6M) Deposit (KES) *</label>
+            <input type="number" id="newMoSaverDeposit" min="0" step="50" placeholder="e.g. 24000">
+            <span class="form-hint">Typically ~45% of cash price</span>
+          </div>
+          <div class="form-group">
+            <label for="newMoSaverWeekly">MoSaver (6M) Weekly (KES) *</label>
+            <input type="number" id="newMoSaverWeekly" min="0" step="10" placeholder="e.g. 2100">
+            <span class="form-hint">26 Weekly payments</span>
+          </div>
+          <div class="form-group">
+            <label for="newMoStandardDeposit">MoStandard (12M) Deposit (KES) *</label>
+            <input type="number" id="newMoStandardDeposit" min="0" step="50" placeholder="e.g. 15000">
+            <span class="form-hint">Low deposit (25-35%)</span>
+          </div>
+          <div class="form-group">
+            <label for="newMoStandardWeekly">MoStandard (12M) Weekly (KES) *</label>
+            <input type="number" id="newMoStandardWeekly" min="0" step="10" placeholder="e.g. 1650">
+            <span class="form-hint">52 Weekly payments</span>
+          </div>
+        </div>
+
+        <!-- STANDARD SINGLE TIER SECTION -->
+        <div id="singleTierFields" class="full-width form-grid" style="display:none;grid-column:1/-1;">
+          <div class="form-group">
+            <label for="newStandardDeposit">Deposit (KES) *</label>
+            <input type="number" id="newStandardDeposit" min="0" step="50" placeholder="e.g. 5000">
+          </div>
+          <div class="form-group">
+            <label for="newStandardWeekly">Weekly Payment (KES) *</label>
+            <input type="number" id="newStandardWeekly" min="0" step="10" placeholder="e.g. 1500">
+          </div>
+          <div class="form-group full-width">
+            <label for="newStandardWeeks">Duration (Weeks) *</label>
+            <input type="number" id="newStandardWeeks" min="1" max="104" value="8">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="cancelAddPhoneBtn">Cancel</button>
+        <button type="submit" class="btn btn-gold">Save Device to Store</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== DELETE CONFIRM MODAL ==================== -->
+<div class="modal-backdrop" id="deleteConfirmModal" aria-hidden="true">
+  <div class="modal-box modal-sm">
+    <div class="modal-header">
+      <h3 style="color:var(--danger);">🗑️ Delete Device</h3>
+      <button class="modal-close" id="closeDeleteModalBtn" aria-label="Close modal">&times;</button>
+    </div>
+    <div>
+      <p id="deleteModalMessage" style="margin:0 0 8px 0;font-size:14px;color:var(--text-primary);"></p>
+      <p style="margin:0;font-size:12.5px;color:var(--text-muted);">This action will immediately remove the phone from the customer storefront.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="cancelDeleteBtn">Cancel</button>
+      <button type="button" class="btn btn-danger-outline" id="confirmDeleteBtn">Delete Device</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CHANGE PIN MODAL ==================== -->
+<div class="modal-backdrop" id="changePinModal" aria-hidden="true">
+  <div class="modal-box modal-sm">
+    <div class="modal-header">
+      <h3>🔑 Change Admin PIN</h3>
+      <button class="modal-close" id="closeChangePinModalBtn" aria-label="Close modal">&times;</button>
+    </div>
+    <form id="changePinForm">
+      <div class="form-group">
+        <label for="currentPinInput">Current PIN *</label>
+        <input type="password" id="currentPinInput" required placeholder="••••" maxlength="10">
+      </div>
+      <div class="form-group" style="margin-top:10px;">
+        <label for="newPinInput">New PIN (4+ digits) *</label>
+        <input type="password" id="newPinInput" required placeholder="Enter new PIN" minlength="4" maxlength="10">
+      </div>
+      <div id="changePinError" class="form-error" style="display:none;margin-top:12px;"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="cancelChangePinBtn">Cancel</button>
+        <button type="submit" class="btn btn-gold">Update PIN</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== BACKUP / RESTORE MODAL ==================== -->
+<div class="modal-backdrop" id="backupModal" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>💾 Catalogue Backup & Restore</h3>
+      <button class="modal-close" id="closeBackupModalBtn" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="form-group">
+      <label for="backupJsonTextarea">Catalogue JSON Data</label>
+      <textarea id="backupJsonTextarea" rows="10" style="font-family:monospace;font-size:12px;"></textarea>
+      <span class="form-hint">You can copy this JSON to back up your phones catalogue, or paste valid JSON to restore.</span>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <button type="button" class="btn btn-outline" id="copyJsonBtn">📋 Copy to Clipboard</button>
+      <div style="display:flex;gap:8px;">
+        <button type="button" class="btn btn-outline" id="cancelBackupBtn">Close</button>
+        <button type="button" class="btn btn-gold" id="importJsonBtn">📥 Import JSON</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TOAST NOTIFICATION ==================== -->
+<div class="toast" id="adminToast"></div>
+
+<script>
+  // ---- WhatsApp Config & Default Catalogue Data ----
+  const WHATSAPP_NUMBER = "254797951374";
+
+  const DEFAULT_PHONES = [
+    {
+      id: "s25-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S25 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s25-ultra.jpg",
+      specs: ["Snapdragon 8 Elite, 5G ready", "200MP Quad Camera, 100x Space Zoom", "Built-in S-Pen, Titanium Armor Frame"],
+      cashPrice: 115999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 115999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 52199, weekly: 4410, weeks: 26, total: 166859, hint: "⚡ 6 Months · Save KES 45,340 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 40599, weekly: 3300, weeks: 52, total: 212199, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s24-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S24 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s24-ultra.jpg",
+      specs: ["Galaxy AI built-in, 5G flagship", "200MP Quad Pro-visual camera", "Flat 120Hz display, S-Pen included"],
+      cashPrice: 94999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 94999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 42699, weekly: 3610, weeks: 26, total: 136559, hint: "⚡ 6 Months · Save KES 37,040 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 33199, weekly: 2700, weeks: 52, total: 173599, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s23-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S23 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s23-ultra.jpg",
+      specs: ["200MP camera, 100x Space Zoom", "6.8\" Dynamic AMOLED 2X 120Hz", "Built-in S-Pen, 5,000mAh battery"],
+      cashPrice: 76999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 76999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 34599, weekly: 2930, weeks: 26, total: 110779, hint: "⚡ 6 Months · Save KES 30,000 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 26899, weekly: 2190, weeks: 52, total: 140779, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s22-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S22 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s22-ultra.jpg",
+      specs: ["108MP Quad camera, 100x zoom", "Dynamic AMOLED 120Hz display", "Integrated S-Pen, 45W fast charge"],
+      cashPrice: 66999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 66999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 30099, weekly: 2550, weeks: 26, total: 96399, hint: "⚡ 6 Months · Save KES 25,800 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 23399, weekly: 1900, weeks: 52, total: 122199, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s21-ultra-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21 Ultra 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s21-ultra.jpg",
+      specs: ["108MP Pro Grade Camera, 8K video", "6.8\" Quad HD+ 120Hz display", "S-Pen support, 5,000mAh battery"],
+      cashPrice: 45999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 45999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 20699, weekly: 1750, weeks: 26, total: 66199, hint: "⚡ 6 Months · Save KES 22,780 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 11499, weekly: 1490, weeks: 52, total: 88979, hint: "Entry deposit (25%) · KES 1,490/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s21-plus-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21+ 5G", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s21-plus.jpg",
+      specs: ["256GB storage, 6.7\" AMOLED 120Hz", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
+      cashPrice: 43999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 43999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 19799, weekly: 1670, weeks: 26, total: 63219, hint: "⚡ 6 Months · Save KES 21,620 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 10999, weekly: 1420, weeks: 52, total: 84839, hint: "Entry deposit (25%) · KES 1,420/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s22-plus-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S22+", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s22-plus.jpg",
+      specs: ["Bright 6.6\" AMOLED 120Hz display", "50MP Nightography triple camera", "Armor Aluminum frame, 5G ready"],
+      cashPrice: 37999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 37999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 17099, weekly: 1440, weeks: 26, total: 54539, hint: "⚡ 6 Months · Save KES 18,920 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 9499, weekly: 1230, weeks: 52, total: 73459, hint: "Entry deposit (25%) · KES 1,230/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s20-ultra-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S20 Ultra 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s20-ultra.jpg",
+      specs: ["108MP camera, 100x Space Zoom", "Massive 6.9\" Dynamic AMOLED 120Hz", "5,000mAh battery, 5G ready"],
+      cashPrice: 37999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 37999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 17099, weekly: 1440, weeks: 26, total: 54539, hint: "⚡ 6 Months · Save KES 18,920 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 9499, weekly: 1230, weeks: 52, total: 73459, hint: "Entry deposit (25%) · KES 1,230/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "note-20-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy Note 20 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-note-20.jpg",
+      specs: ["Signature S-Pen stylus with air gestures", "6.7\" Super AMOLED Plus display", "64MP triple camera, 5G ready"],
+      cashPrice: 35999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 35999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 16199, weekly: 1370, weeks: 26, total: 51819, hint: "⚡ 6 Months · Save KES 17,500 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 8999, weekly: 1160, weeks: 52, total: 69319, hint: "Entry deposit (25%) · KES 1,160/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s21-plus-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21+ 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s21-plus.jpg",
+      specs: ["6.7\" Dynamic AMOLED 120Hz display", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
+      cashPrice: 34199,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 34199, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 15399, weekly: 1300, weeks: 26, total: 49199, hint: "⚡ 6 Months · Save KES 17,020 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 8499, weekly: 1110, weeks: 52, total: 66219, hint: "Lowest deposit (KES 8,499) · KES 1,110/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "iphone-11",
+      category: "iphone", categoryLabel: "iPhone",
+      model: "iPhone 11", storage: "64GB",
+      condition: "UK Used · Grade A",
+      image: "images/iphone-11.jpg",
+      specs: ["6.1\" Liquid Retina display", "12MP dual camera, Face ID", "89% battery health"],
+      cashPrice: 16000,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 16000, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 4000, weekly: 1500, weeks: 8, total: 16000, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "iphone-xr",
+      category: "iphone", categoryLabel: "iPhone",
+      model: "iPhone XR", storage: "128GB",
+      condition: "UK Used · Grade A",
+      image: "images/iphone-xr.jpg",
+      specs: ["6.1\" Liquid Retina display", "12MP camera, Face ID", "Clean IMEI, tested"],
+      cashPrice: 13900,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 13900, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 3500, weekly: 1300, weeks: 8, total: 13900, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "iphone-12",
+      category: "iphone", categoryLabel: "iPhone",
+      model: "iPhone 12", storage: "128GB",
+      condition: "UK Used · Grade A",
+      image: "images/iphone-12.jpg",
+      specs: ["5G ready flagship", "12MP dual camera, Night mode", "Face ID, Ceramic Shield"],
+      cashPrice: 23000,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 23000, hint: "One-time cash payment" },
+        standard: { label: "Weekly (10 Wks)", deposit: 5000, weekly: 1800, weeks: 10, total: 23000, hint: "10 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "galaxy-a14",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy A14", storage: "128GB",
+      condition: "Brand New",
+      image: "images/galaxy-a14.jpg",
+      specs: ["6.6\" 90Hz display", "50MP triple camera", "5,000mAh battery"],
+      cashPrice: 9700,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 9700, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2500, weekly: 900, weeks: 8, total: 9700, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "moto-g54",
+      category: "motorola", categoryLabel: "Motorola",
+      model: "Moto G54", storage: "256GB",
+      condition: "Brand New",
+      image: "images/moto-g54.jpg",
+      specs: ["5G, 6.5\" 120Hz display", "50MP OIS camera", "6,000mAh massive battery"],
+      cashPrice: 10400,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 10400, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2800, weekly: 950, weeks: 8, total: 10400, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "moto-edge-40",
+      category: "motorola", categoryLabel: "Motorola",
+      model: "Moto Edge 40", storage: "256GB",
+      condition: "Brand New",
+      image: "images/moto-edge-40.jpg",
+      specs: ["Curved pOLED 144Hz display", "50MP camera, OIS", "68W fast charging"],
+      cashPrice: 15950,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 15950, hint: "One-time cash payment" },
+        standard: { label: "Weekly (9 Wks)", deposit: 3800, weekly: 1350, weeks: 9, total: 15950, hint: "9 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "infinix-note-30",
+      category: "other", categoryLabel: "Other Phones",
+      model: "Infinix Note 30", storage: "128GB",
+      condition: "Brand New",
+      image: "images/infinix-note-30.jpg",
+      specs: ["6.78\" AMOLED, 120Hz", "108MP camera", "5,000mAh, 45W charge"],
+      cashPrice: 8000,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8000, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2000, weekly: 750, weeks: 8, total: 8000, hint: "Lowest weekly instalment (KES 750/wk)" }
+      },
+      defaultPlan: "standard"
+    },
+    {
+      id: "tecno-camon-20",
+      category: "other", categoryLabel: "Other Phones",
+      model: "Tecno Camon 20", storage: "128GB",
+      condition: "Brand New",
+      image: "images/tecno-camon-20.jpg",
+      specs: ["6.67\" AMOLED display", "64MP RGBW camera", "5,000mAh battery"],
+      cashPrice: 8600,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8600, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2200, weekly: 800, weeks: 8, total: 8600, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
+    }
+  ];
+
+  function money(n){
+    return "KES " + Number(n).toLocaleString("en-KE");
+  }
+
+  // ---- Light / Dark Theme Engine ----
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function getSavedTheme(){
+    const stored = localStorage.getItem('drg_theme');
+    if(stored === 'light' || stored === 'dark') return stored;
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+  }
+
+  function applyTheme(theme, notify = false){
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('drg_theme', theme); } catch(e){}
+    const isDark = theme === 'dark';
+    if(themeIcon) themeIcon.textContent = isDark ? '🌙' : '☀️';
+    if(themeLabel) themeLabel.textContent = isDark ? 'Dark' : 'Light';
+    if(notify) showToast(`${isDark ? '🌙' : '☀️'} Switched to ${isDark ? 'Dark' : 'Light'} Mode`);
+  }
+
+  themeToggleBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyTheme(current === 'dark' ? 'light' : 'dark', true);
+  });
+  applyTheme(getSavedTheme(), false);
+
+  // ---- Toast Engine ----
+  const toast = document.getElementById('adminToast');
+  let toastTimer = null;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  // ---- Data Management ----
+  let phones = [];
+  function loadPhones(){
+    try {
+      const stored = localStorage.getItem('drg_phones_data');
+      if(stored){
+        const parsed = JSON.parse(stored);
+        if(Array.isArray(parsed) && parsed.length > 0){
+          phones = parsed;
+          return;
+        }
+      }
+    } catch(e){}
+    phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
+  }
+
+  function savePhones(){
+    try {
+      localStorage.setItem('drg_phones_data', JSON.stringify(phones));
+    } catch(e){}
+    updateMetrics();
+  }
+
+  loadPhones();
+
+  // ---- Admin Authentication Engine ----
+  const pinGateScreen = document.getElementById('pinGateScreen');
+  const adminDashboardScreen = document.getElementById('adminDashboardScreen');
+  const pinGateForm = document.getElementById('pinGateForm');
+  const gatePinInput = document.getElementById('gatePinInput');
+  const gatePinError = document.getElementById('gatePinError');
+  const pinCard = document.getElementById('pinCard');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function getStoredAdminPin(){
+    return localStorage.getItem('drg_admin_pin') || "2540";
+  }
+
+  function setAuthenticated(auth){
+    if(auth){
+      try { sessionStorage.setItem('drg_admin_active', 'true'); } catch(e){}
+      pinGateScreen.style.display = 'none';
+      adminDashboardScreen.style.display = 'block';
+      renderInventory();
+      updateMetrics();
+    } else {
+      try { sessionStorage.removeItem('drg_admin_active'); } catch(e){}
+      pinGateScreen.style.display = 'flex';
+      adminDashboardScreen.style.display = 'none';
+      gatePinInput.value = '';
+      gatePinError.style.display = 'none';
+      setTimeout(() => gatePinInput.focus(), 100);
+    }
+  }
+
+  pinGateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entered = gatePinInput.value.trim();
+    if(entered === getStoredAdminPin()){
+      setAuthenticated(true);
+      showToast("👑 Welcome to DRG Staff Portal!");
+    } else {
+      gatePinError.textContent = "❌ Incorrect PIN. Please try again.";
+      gatePinError.style.display = "block";
+      pinCard.classList.remove('shake');
+      void pinCard.offsetWidth; // trigger reflow
+      pinCard.classList.add('shake');
+      gatePinInput.focus();
+      gatePinInput.select();
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    setAuthenticated(false);
+    showToast("🔒 Admin session locked");
+  });
+
+  // Check existing session
+  const hasActiveSession = sessionStorage.getItem('drg_admin_active') === 'true';
+  setAuthenticated(hasActiveSession);
+
+  // ---- KPI Calculations ----
+  function updateMetrics(){
+    document.getElementById('kpiTotalDevices').textContent = phones.length;
+    const samsungCount = phones.filter(p => p.category === 'samsung').length;
+    const iphoneCount = phones.filter(p => p.category === 'iphone').length;
+    document.getElementById('kpiSamsungCount').textContent = samsungCount;
+    document.getElementById('kpiIphoneCount').textContent = iphoneCount;
+
+    // Calculate average weekly payment across available plans
+    let weeklySum = 0;
+    let weeklyCount = 0;
+    phones.forEach(p => {
+      if(p.plans.mostandard && p.plans.mostandard.weekly){
+        weeklySum += p.plans.mostandard.weekly;
+        weeklyCount++;
+      } else if(p.plans.standard && p.plans.standard.weekly){
+        weeklySum += p.plans.standard.weekly;
+        weeklyCount++;
+      } else if(p.plans.mosaver && p.plans.mosaver.weekly){
+        weeklySum += p.plans.mosaver.weekly;
+        weeklyCount++;
+      }
+    });
+
+    const avg = weeklyCount > 0 ? Math.round(weeklySum / weeklyCount) : 0;
+    document.getElementById('kpiAvgWeekly').textContent = money(avg) + "/wk";
+  }
+
+  // ---- Table Rendering & Search / Filter ----
+  let currentCategory = "all";
+  let searchQuery = "";
+
+  const adminSearchInput = document.getElementById('adminSearchInput');
+  const inventoryTableBody = document.getElementById('inventoryTableBody');
+  const tableEmptyState = document.getElementById('tableEmptyState');
+  const adminCategoryFilter = document.getElementById('adminCategoryFilter');
+
+  adminSearchInput.addEventListener('input', (e) => {
+    searchQuery = e.target.value.trim().toLowerCase();
+    renderInventory();
+  });
+
+  adminCategoryFilter.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pill-btn');
+    if(!btn) return;
+    adminCategoryFilter.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.dataset.cat;
+    renderInventory();
+  });
+
+  function renderInventory(){
+    let list = phones;
+
+    if(currentCategory !== "all"){
+      list = list.filter(p => p.category === currentCategory);
+    }
+
+    if(searchQuery){
+      list = list.filter(p => {
+        const text = `${p.model} ${p.storage} ${p.category} ${p.specs ? p.specs.join(' ') : ''} ${p.cashPrice}`.toLowerCase();
+        return text.includes(searchQuery);
+      });
+    }
+
+    if(list.length === 0){
+      inventoryTableBody.innerHTML = "";
+      tableEmptyState.style.display = "block";
+      return;
+    }
+
+    tableEmptyState.style.display = "none";
+    inventoryTableBody.innerHTML = list.map(phone => {
+      // Build financing summary
+      let finHtml = "";
+      if(phone.plans.mosaver && phone.plans.mostandard){
+        finHtml = `
+          <div class="financing-cell">
+            <span class="financing-pill">MoSaver: Dep <strong>${money(phone.plans.mosaver.deposit)}</strong> · ${money(phone.plans.mosaver.weekly)}/wk (26w)</span>
+            <span class="financing-pill">MoStandard: Dep <strong>${money(phone.plans.mostandard.deposit)}</strong> · ${money(phone.plans.mostandard.weekly)}/wk (52w)</span>
+          </div>
+        `;
+      } else if(phone.plans.standard){
+        finHtml = `
+          <div class="financing-cell">
+            <span class="financing-pill">Dep <strong>${money(phone.plans.standard.deposit)}</strong> · ${money(phone.plans.standard.weekly)}/wk (${phone.plans.standard.weeks}w)</span>
+          </div>
+        `;
+      } else {
+        finHtml = `<div class="financing-cell"><span style="color:var(--text-muted);">Cash Only</span></div>`;
+      }
+
+      const imgHtml = phone.image 
+        ? `<img src="${phone.image}" class="device-thumb" alt="${phone.model}" onerror="this.outerHTML='<div class=\\'device-thumb-fallback\\'>📱</div>'">`
+        : `<div class="device-thumb-fallback">📱</div>`;
+
+      return `
+        <tr id="row-${phone.id}">
+          <td>
+            <div class="device-cell">
+              ${imgHtml}
+              <div class="device-info-meta">
+                <div class="device-model">${phone.model}</div>
+                <div class="device-storage">${phone.storage} · <span class="condition-tag">${phone.condition}</span></div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="brand-pill ${phone.category}">${phone.categoryLabel || phone.category}</span>
+          </td>
+          <td class="price-cell">
+            ${money(phone.cashPrice)}
+          </td>
+          <td>
+            ${finHtml}
+          </td>
+          <td style="text-align:right;">
+            <div class="table-actions" style="justify-content:flex-end;">
+              <button class="btn btn-outline btn-sm" onclick="testWaLink('${phone.id}')" title="Test Customer WhatsApp Inquiry Link">
+                💬 WhatsApp
+              </button>
+              <button class="btn btn-danger-outline btn-sm" onclick="openDeleteModal('${phone.id}')" title="Delete from Store">
+                🗑️ Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  // ---- Test WhatsApp Link ----
+  window.testWaLink = function(phoneId){
+    const phone = phones.find(p => p.id === phoneId);
+    if(!phone) return;
+    const plan = phone.plans.mostandard || phone.plans.standard || phone.plans.mosaver || phone.plans.cash;
+    let msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} (${phone.condition}). Cash Price: ${money(phone.cashPrice)}. Is it available?`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  };
+
+  // ---- Delete Device Modal ----
+  let phoneIdToDelete = null;
+  const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+  const deleteModalMessage = document.getElementById('deleteModalMessage');
+  const closeDeleteModalBtn = document.getElementById('closeDeleteModalBtn');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+  window.openDeleteModal = function(id){
+    const phone = phones.find(p => p.id === id);
+    if(!phone) return;
+    phoneIdToDelete = id;
+    deleteModalMessage.innerHTML = `Are you sure you want to permanently delete <strong>"${phone.model} (${phone.storage})"</strong>?`;
+    deleteConfirmModal.classList.add('open');
+  };
+
+  function closeDeleteModal(){
+    deleteConfirmModal.classList.remove('open');
+    phoneIdToDelete = null;
+  }
+
+  closeDeleteModalBtn.addEventListener('click', closeDeleteModal);
+  cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+  deleteConfirmModal.addEventListener('click', (e) => { if(e.target === deleteConfirmModal) closeDeleteModal(); });
+
+  confirmDeleteBtn.addEventListener('click', () => {
+    if(!phoneIdToDelete) return;
+    const deletedPhone = phones.find(p => p.id === phoneIdToDelete);
+    phones = phones.filter(p => p.id !== phoneIdToDelete);
+    savePhones();
+    renderInventory();
+    closeDeleteModal();
+    showToast(`🗑️ Deleted ${deletedPhone ? deletedPhone.model : 'device'} from store catalogue!`);
+  });
+
+  // ---- Add Phone Modal ----
+  const addPhoneModal = document.getElementById('addPhoneModal');
+  const openAddPhoneModalBtn = document.getElementById('openAddPhoneModalBtn');
+  const closeAddPhoneModalBtn = document.getElementById('closeAddPhoneModalBtn');
+  const cancelAddPhoneBtn = document.getElementById('cancelAddPhoneBtn');
+  const addPhoneForm = document.getElementById('addPhoneForm');
+
+  const planTypeSamsungBtn = document.getElementById('planTypeSamsungBtn');
+  const planTypeStandardBtn = document.getElementById('planTypeStandardBtn');
+  const multiTierFields = document.getElementById('multiTierFields');
+  const singleTierFields = document.getElementById('singleTierFields');
+  let currentPlanType = "multi"; // "multi" or "single"
+
+  function setPlanType(type){
+    currentPlanType = type;
+    if(type === "multi"){
+      planTypeSamsungBtn.classList.add('active');
+      planTypeStandardBtn.classList.remove('active');
+      multiTierFields.style.display = 'grid';
+      singleTierFields.style.display = 'none';
+      document.getElementById('newMoSaverDeposit').required = true;
+      document.getElementById('newMoSaverWeekly').required = true;
+      document.getElementById('newMoStandardDeposit').required = true;
+      document.getElementById('newMoStandardWeekly').required = true;
+      document.getElementById('newStandardDeposit').required = false;
+      document.getElementById('newStandardWeekly').required = false;
+    } else {
+      planTypeSamsungBtn.classList.remove('active');
+      planTypeStandardBtn.classList.add('active');
+      multiTierFields.style.display = 'none';
+      singleTierFields.style.display = 'grid';
+      document.getElementById('newMoSaverDeposit').required = false;
+      document.getElementById('newMoSaverWeekly').required = false;
+      document.getElementById('newMoStandardDeposit').required = false;
+      document.getElementById('newMoStandardWeekly').required = false;
+      document.getElementById('newStandardDeposit').required = true;
+      document.getElementById('newStandardWeekly').required = true;
+    }
+  }
+
+  planTypeSamsungBtn.addEventListener('click', () => setPlanType("multi"));
+  planTypeStandardBtn.addEventListener('click', () => setPlanType("single"));
+
+  // Auto-calculate suggested deposit/weekly when Cash Price changes
+  document.getElementById('newPhoneCashPrice').addEventListener('input', (e) => {
+    const cash = Number(e.target.value);
+    if(cash > 1000){
+      if(!document.getElementById('newMoSaverDeposit').value){
+        document.getElementById('newMoSaverDeposit').value = Math.round(cash * 0.45);
+      }
+      if(!document.getElementById('newMoSaverWeekly').value){
+        document.getElementById('newMoSaverWeekly').value = Math.round((cash * 1.4 - (cash * 0.45)) / 26);
+      }
+      if(!document.getElementById('newMoStandardDeposit').value){
+        document.getElementById('newMoStandardDeposit').value = Math.round(cash * 0.35);
+      }
+      if(!document.getElementById('newMoStandardWeekly').value){
+        document.getElementById('newMoStandardWeekly').value = Math.round((cash * 1.8 - (cash * 0.35)) / 52);
+      }
+      if(!document.getElementById('newStandardDeposit').value){
+        document.getElementById('newStandardDeposit').value = Math.round(cash * 0.25);
+      }
+      if(!document.getElementById('newStandardWeekly').value){
+        document.getElementById('newStandardWeekly').value = Math.round((cash - (cash * 0.25)) / 8);
+      }
+    }
+  });
+
+  // Category change auto-selects plan type
+  document.getElementById('newPhoneCategory').addEventListener('change', (e) => {
+    if(e.target.value === "samsung"){
+      setPlanType("multi");
+    } else {
+      setPlanType("single");
+    }
+  });
+
+  function openAddModal(){
+    addPhoneModal.classList.add('open');
+    setPlanType("multi");
+    document.getElementById('newPhoneModel').focus();
+  }
+
+  function closeAddModal(){
+    addPhoneModal.classList.remove('open');
+    addPhoneForm.reset();
+  }
+
+  openAddPhoneModalBtn.addEventListener('click', openAddModal);
+  closeAddPhoneModalBtn.addEventListener('click', closeAddModal);
+  cancelAddPhoneBtn.addEventListener('click', closeAddModal);
+  addPhoneModal.addEventListener('click', (e) => { if(e.target === addPhoneModal) closeAddModal(); });
+
+  addPhoneForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const model = document.getElementById('newPhoneModel').value.trim();
+    const storage = document.getElementById('newPhoneStorage').value.trim();
+    const category = document.getElementById('newPhoneCategory').value;
+    const condition = document.getElementById('newPhoneCondition').value;
+    const specsRaw = document.getElementById('newPhoneSpecs').value.trim();
+    const image = document.getElementById('newPhoneImage').value.trim() || `images/${model.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.jpg`;
+    const cashPrice = Number(document.getElementById('newPhoneCashPrice').value);
+
+    const specs = specsRaw.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
+    const catLabels = {
+      samsung: "Samsung",
+      iphone: "iPhone",
+      motorola: "Motorola",
+      other: "Other Phones"
+    };
+
+    const newId = "phone-" + Date.now();
+    let plans = {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: cashPrice, hint: "One-time payment · 0% financing fee" }
+    };
+    let defaultPlan = "cash";
+
+    if(currentPlanType === "multi"){
+      const saverDep = Number(document.getElementById('newMoSaverDeposit').value) || Math.round(cashPrice * 0.45);
+      const saverWk = Number(document.getElementById('newMoSaverWeekly').value) || Math.round(cashPrice / 26);
+      const saverTot = saverDep + (saverWk * 26);
+
+      const stdDep = Number(document.getElementById('newMoStandardDeposit').value) || Math.round(cashPrice * 0.35);
+      const stdWk = Number(document.getElementById('newMoStandardWeekly').value) || Math.round(cashPrice / 52);
+      const stdTot = stdDep + (stdWk * 52);
+
+      plans.mosaver = {
+        label: "MoSaver (6M)",
+        deposit: saverDep,
+        weekly: saverWk,
+        weeks: 26,
+        total: saverTot,
+        hint: `⚡ 6 Months · Save ${money(stdTot - saverTot)} vs 12M`
+      };
+      plans.mostandard = {
+        label: "MoStandard (12M)",
+        deposit: stdDep,
+        weekly: stdWk,
+        weeks: 52,
+        total: stdTot,
+        hint: "Low deposit · 52 easy weekly payments"
+      };
+      defaultPlan = "mostandard";
+    } else {
+      const dep = Number(document.getElementById('newStandardDeposit').value) || Math.round(cashPrice * 0.25);
+      const wk = Number(document.getElementById('newStandardWeekly').value) || Math.round(cashPrice / 8);
+      const wks = Number(document.getElementById('newStandardWeeks').value) || 8;
+      const tot = dep + (wk * wks);
+
+      plans.standard = {
+        label: `Weekly (${wks} Wks)`,
+        deposit: dep,
+        weekly: wk,
+        weeks: wks,
+        total: tot,
+        hint: `${wks} Weeks Lipa Mdogo Mdogo`
+      };
+      defaultPlan = "standard";
+    }
+
+    const newPhone = {
+      id: newId,
+      category: category,
+      categoryLabel: catLabels[category] || "Other Phones",
+      model: model,
+      storage: storage,
+      condition: condition,
+      image: image,
+      specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
+      cashPrice: cashPrice,
+      plans: plans,
+      defaultPlan: defaultPlan
+    };
+
+    phones.unshift(newPhone);
+    savePhones();
+    closeAddModal();
+    renderInventory();
+    showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
+  });
+
+  // ---- Change PIN Modal ----
+  const changePinBtn = document.getElementById('changePinBtn');
+  const changePinModal = document.getElementById('changePinModal');
+  const closeChangePinModalBtn = document.getElementById('closeChangePinModalBtn');
+  const cancelChangePinBtn = document.getElementById('cancelChangePinBtn');
+  const changePinForm = document.getElementById('changePinForm');
+  const currentPinInput = document.getElementById('currentPinInput');
+  const newPinInput = document.getElementById('newPinInput');
+  const changePinError = document.getElementById('changePinError');
+
+  changePinBtn.addEventListener('click', () => {
+    changePinModal.classList.add('open');
+    currentPinInput.value = "";
+    newPinInput.value = "";
+    changePinError.style.display = "none";
+    currentPinInput.focus();
+  });
+
+  function closeChangePinModal(){
+    changePinModal.classList.remove('open');
+  }
+
+  closeChangePinModalBtn.addEventListener('click', closeChangePinModal);
+  cancelChangePinBtn.addEventListener('click', closeChangePinModal);
+  changePinModal.addEventListener('click', (e) => { if(e.target === changePinModal) closeChangePinModal(); });
+
+  changePinForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const cur = currentPinInput.value.trim();
+    const next = newPinInput.value.trim();
+
+    if(cur !== getStoredAdminPin()){
+      changePinError.textContent = "❌ Current PIN is incorrect.";
+      changePinError.style.display = "block";
+      currentPinInput.focus();
+      return;
+    }
+
+    if(next.length < 4){
+      changePinError.textContent = "❌ New PIN must be at least 4 digits.";
+      changePinError.style.display = "block";
+      newPinInput.focus();
+      return;
+    }
+
+    try {
+      localStorage.setItem('drg_admin_pin', next);
+    } catch(err){}
+
+    closeChangePinModal();
+    showToast("🔑 Security PIN updated successfully!");
+  });
+
+  // ---- Backup & Restore JSON Modal ----
+  const backupModalBtn = document.getElementById('backupModalBtn');
+  const backupModal = document.getElementById('backupModal');
+  const closeBackupModalBtn = document.getElementById('closeBackupModalBtn');
+  const cancelBackupBtn = document.getElementById('cancelBackupBtn');
+  const backupJsonTextarea = document.getElementById('backupJsonTextarea');
+  const copyJsonBtn = document.getElementById('copyJsonBtn');
+  const importJsonBtn = document.getElementById('importJsonBtn');
+
+  backupModalBtn.addEventListener('click', () => {
+    backupJsonTextarea.value = JSON.stringify(phones, null, 2);
+    backupModal.classList.add('open');
+  });
+
+  function closeBackupModal(){
+    backupModal.classList.remove('open');
+  }
+
+  closeBackupModalBtn.addEventListener('click', closeBackupModal);
+  cancelBackupBtn.addEventListener('click', closeBackupModal);
+  backupModal.addEventListener('click', (e) => { if(e.target === backupModal) closeBackupModal(); });
+
+  copyJsonBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(backupJsonTextarea.value).then(() => {
+      showToast("📋 Catalogue JSON copied to clipboard!");
+    }).catch(() => {
+      backupJsonTextarea.select();
+      document.execCommand('copy');
+      showToast("📋 Catalogue JSON copied to clipboard!");
+    });
+  });
+
+  importJsonBtn.addEventListener('click', () => {
+    try {
+      const parsed = JSON.parse(backupJsonTextarea.value);
+      if(!Array.isArray(parsed) || parsed.length === 0){
+        alert("Invalid JSON: Catalogue must be an array of phone objects.");
+        return;
+      }
+      const ok = confirm(`Import ${parsed.length} devices? This will replace current catalogue.`);
+      if(!ok) return;
+      phones = parsed;
+      savePhones();
+      renderInventory();
+      closeBackupModal();
+      showToast(`📥 Successfully imported ${parsed.length} phones!`);
+    } catch(err){
+      alert("Error parsing JSON: " + err.message);
+    }
+  });
+
+  // ---- Reset Catalogue Defaults ----
+  document.getElementById('resetCatalogueBtn').addEventListener('click', () => {
+    const ok = confirm("Restore default catalogue? Any newly added devices will be removed.");
+    if(!ok) return;
+    phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
+    savePhones();
+    renderInventory();
+    showToast("🔄 Catalogue reset to default models!");
+  });
+
+  // ---- Global Keyboard Shortcuts ----
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){
+      closeAddModal();
+      closeDeleteModal();
+      closeChangePinModal();
+      closeBackupModal();
+    }
+    // 'T' to toggle theme when not typing in an input
+    if((e.key === 't' || e.key === 'T') && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)){
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark', true);
+    }
+  });
+
+  // Listen for storage events from other tabs
+  window.addEventListener('storage', (e) => {
+    if(e.key === 'drg_phones_data'){
+      loadPhones();
+      renderInventory();
+      updateMetrics();
+    }
+  });
+</script>
+
+</body>
+</html>

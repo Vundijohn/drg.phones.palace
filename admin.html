@@ -840,6 +840,7 @@
       <div class="brand-group">
         <div class="brand-title">DRG <em>Phones Palace</em></div>
         <span class="admin-badge">Admin Console</span>
+        <span id="backendStatusBadge" class="admin-badge" style="background:rgba(255,160,0,0.18); border: 1px solid #ffa000; color:#ffb300; display:none; font-size: 11px;">🔥 Firebase</span>
       </div>
       <div class="header-actions">
         <a href="index.html" target="_blank" class="btn btn-outline" title="Open customer website in new tab">
@@ -1493,8 +1494,12 @@
       adminDashboardScreen.style.display = 'block';
       renderInventory();
       updateMetrics();
+      syncAdminData();
     } else {
-      try { sessionStorage.removeItem('drg_admin_active'); } catch(e){}
+      try {
+        sessionStorage.removeItem('drg_admin_active');
+        sessionStorage.removeItem('drg_admin_token');
+      } catch(e){}
       pinGateScreen.style.display = 'flex';
       adminDashboardScreen.style.display = 'none';
       gatePinInput.value = '';
@@ -1503,9 +1508,75 @@
     }
   }
 
-  pinGateForm.addEventListener('submit', (e) => {
+  // Background sync with Backend & Firebase
+  async function syncAdminData(){
+    // 1. Fetch system & database status
+    try {
+      const sRes = await fetch('/api/admin/status');
+      if(sRes.ok){
+        const status = await sRes.json();
+        const badge = document.getElementById('backendStatusBadge');
+        if(badge){
+          if(status.rtdbActive){
+            badge.textContent = '📡 Realtime Database';
+            badge.style.borderColor = '#2fc35b';
+            badge.style.color = '#2fc35b';
+            badge.style.background = 'rgba(47,195,91,0.15)';
+          } else if(status.firestoreActive){
+            badge.textContent = '🔥 Cloud Firestore';
+            badge.style.borderColor = '#2fc35b';
+            badge.style.color = '#2fc35b';
+            badge.style.background = 'rgba(47,195,91,0.15)';
+          } else {
+            badge.textContent = '💾 Local Store';
+            badge.style.borderColor = '#d9a653';
+            badge.style.color = '#f2c878';
+            badge.style.background = 'rgba(217,166,83,0.15)';
+          }
+          badge.style.display = 'inline-flex';
+          badge.title = `Project: ${status.projectId || 'local'} | Mode: ${status.database}`;
+        }
+      }
+    } catch(e){}
+
+    // 2. Fetch live inventory
+    try {
+      const pRes = await fetch('/api/phones');
+      if(pRes.ok){
+        const pJson = await pRes.json();
+        if(pJson.success && Array.isArray(pJson.data) && pJson.data.length > 0){
+          phones = pJson.data;
+          savePhones();
+          renderInventory();
+          updateMetrics();
+        }
+      }
+    } catch(e){}
+  }
+
+  pinGateForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const entered = gatePinInput.value.trim();
+
+    // 1. Attempt API authentication with backend / Firebase
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: entered })
+      });
+      if(res.ok){
+        const json = await res.json();
+        if(json.success && json.token){
+          sessionStorage.setItem('drg_admin_token', json.token);
+          setAuthenticated(true);
+          showToast("👑 Welcome to DRG Staff Portal!");
+          return;
+        }
+      }
+    } catch(err){}
+
+    // 2. Offline / Local PIN verification fallback
     if(entered === getStoredAdminPin()){
       setAuthenticated(true);
       showToast("👑 Welcome to DRG Staff Portal!");
@@ -1698,11 +1769,20 @@
   confirmDeleteBtn.addEventListener('click', () => {
     if(!phoneIdToDelete) return;
     const deletedPhone = phones.find(p => p.id === phoneIdToDelete);
+    const idToDelete = phoneIdToDelete;
     phones = phones.filter(p => p.id !== phoneIdToDelete);
     savePhones();
     renderInventory();
     closeDeleteModal();
     showToast(`🗑️ Deleted ${deletedPhone ? deletedPhone.model : 'device'} from store catalogue!`);
+
+    const token = sessionStorage.getItem('drg_admin_token');
+    if(token){
+      fetch(`/api/phones/${idToDelete}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).catch(err => console.warn('Backend delete sync error:', err));
+    }
   });
 
   // ---- Add Phone Modal ----
@@ -1884,6 +1964,19 @@
     closeAddModal();
     renderInventory();
     showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
+
+    // Sync to backend / Firebase
+    const token = sessionStorage.getItem('drg_admin_token');
+    if(token){
+      fetch('/api/phones', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newPhone)
+      }).catch(err => console.warn('Backend add sync error:', err));
+    }
   });
 
   // ---- Change PIN Modal ----

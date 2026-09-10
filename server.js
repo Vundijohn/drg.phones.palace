@@ -64,7 +64,7 @@ app.use((err, req, res, next) => {
 
 // Start Server (when run directly)
 let server = null;
-if (require.main === module || !process.env.FIREBASE_CONFIG) {
+if (require.main === module) {
   server = app.listen(config.PORT, async () => {
     console.log(`=============================================`);
     console.log(`🚀 DRG Phones Palace Server running!`);

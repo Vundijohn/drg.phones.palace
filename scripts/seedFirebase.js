@@ -1,6 +1,7 @@
 /**
- * DRG Phones Palace — Firebase Firestore Seeder
- * Seeds default phones catalogue, admin PIN, and settings into Cloud Firestore.
+ * DRG Phones Palace — Firebase Seeder
+ * Seeds default phones catalogue, admin PIN, and settings into
+ * Firebase Realtime Database and Cloud Firestore.
  * 
  * Usage: npm run firebase:seed
  */
@@ -10,68 +11,109 @@ require('dotenv').config();
 
 const config = require('../src/config');
 const { DEFAULT_PHONES } = require('../data/seedData');
-const { firestoreOps, testFirestoreAccess } = require('../src/firebase');
+const {
+  rtdbOps,
+  firestoreOps,
+  testRtdbAccess,
+  testFirestoreAccess
+} = require('../src/firebase');
 const bcrypt = require('bcryptjs');
 
 async function seed() {
   console.log(`=============================================================`);
-  console.log(`🚀 Starting DRG Phones Palace Firebase Firestore Seeding...`);
-  console.log(`📦 Target Project ID: ${config.firebaseConfig.projectId}`);
+  console.log(`🚀 Starting DRG Phones Palace Firebase Seeding...`);
+  console.log(`📦 Project ID:   ${config.firebaseConfig.projectId}`);
+  if (config.firebaseConfig.databaseURL) {
+    console.log(`🌐 RTDB URL:     ${config.firebaseConfig.databaseURL}`);
+  }
   console.log(`=============================================================`);
 
-  // Verify connection
-  const ready = await testFirestoreAccess();
-  if (!ready) {
-    console.error(`\n❌ Could not connect to Cloud Firestore on project "${config.firebaseConfig.projectId}".`);
-    console.error(`👉 Please ensure Cloud Firestore is enabled:`);
-    console.error(`   https://console.firebase.google.com/project/${config.firebaseConfig.projectId}/firestore`);
-    console.error(`   Click "Create Database" -> "Start in test mode" -> "Enable".\n`);
+  const isRtdb = await testRtdbAccess();
+  const isFirestore = await testFirestoreAccess();
+
+  if (!isRtdb && !isFirestore) {
+    console.error(`\n❌ Could not connect with write permissions to Firebase.`);
+    console.error(`\n👉 FOR FIREBASE REALTIME DATABASE:`);
+    console.error(`   1. Open: https://console.firebase.google.com/project/${config.firebaseConfig.projectId}/database`);
+    console.error(`   2. Click the "Rules" tab and paste:`);
+    console.error(`      {`);
+    console.error(`        "rules": {`);
+    console.error(`          ".read": true,`);
+    console.error(`          ".write": true`);
+    console.error(`        }`);
+    console.error(`      }`);
+    console.error(`   3. Click "Publish".`);
+    console.error(`\n👉 OR DOWNLOAD SERVICE ACCOUNT KEY:`);
+    console.error(`   1. Go to Project Settings -> Service Accounts -> Generate new private key.`);
+    console.error(`   2. Save as "serviceAccountKey.json" in project root for full admin access.`);
+    console.error(`\n=============================================================\n`);
     process.exit(1);
   }
 
-  try {
-    // 1. Seed Phones
-    console.log(`\n📱 Seeding ${DEFAULT_PHONES.length} devices into collection "phones"...`);
-    let count = 0;
+  const salt = bcrypt.genSaltSync(10);
+  const pinHash = bcrypt.hashSync(config.ADMIN_DEFAULT_PIN, salt);
+  const now = new Date().toISOString();
+
+  // 1. Seed Realtime Database if accessible
+  if (isRtdb) {
+    console.log(`\n📡 Seeding into Firebase Realtime Database...`);
+    const phoneMap = {};
+    for (const phone of DEFAULT_PHONES) {
+      phoneMap[phone.id] = { ...phone, updatedAt: now };
+    }
+    await rtdbOps.set('phones', phoneMap);
+    console.log(`   ✓ Seeded ${DEFAULT_PHONES.length} devices to /phones`);
+
+    await rtdbOps.set('admin/security', {
+      pinHash,
+      updatedAt: now
+    });
+    console.log(`   ✓ Seeded Admin PIN to /admin/security (Default: ${config.ADMIN_DEFAULT_PIN})`);
+
+    await rtdbOps.set('settings/general', {
+      whatsappNumber: config.WHATSAPP_NUMBER,
+      storeName: 'DRG Phones Palace',
+      location: 'Nairobi, Kenya',
+      updatedAt: now
+    });
+    console.log(`   ✓ Seeded Store Settings to /settings/general`);
+  }
+
+  // 2. Seed Cloud Firestore if accessible
+  if (isFirestore) {
+    console.log(`\n🔥 Seeding into Google Cloud Firestore...`);
     for (const phone of DEFAULT_PHONES) {
       await firestoreOps.setDoc('phones', phone.id, {
         ...phone,
-        updatedAt: new Date().toISOString()
+        updatedAt: now
       });
-      count++;
-      process.stdout.write(`   ✓ [${count}/${DEFAULT_PHONES.length}] Seeded: ${phone.model} (${phone.storage || 'Standard'})\n`);
     }
+    console.log(`   ✓ Seeded ${DEFAULT_PHONES.length} devices to collection "phones"`);
 
-    // 2. Seed Admin Security PIN
-    console.log(`\n🔑 Seeding Admin PIN hash into collection "admin" (doc: "security")...`);
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(config.ADMIN_DEFAULT_PIN, salt);
     await firestoreOps.setDoc('admin', 'security', {
-      pinHash: hash,
-      updatedAt: new Date().toISOString()
+      pinHash,
+      updatedAt: now
     });
-    console.log(`   ✓ Admin PIN hash stored (Default PIN: ${config.ADMIN_DEFAULT_PIN})`);
+    console.log(`   ✓ Seeded Admin PIN to collection "admin" (doc: "security")`);
 
-    // 3. Seed Settings
-    console.log(`\n⚙️ Seeding Store Settings into collection "settings" (doc: "general")...`);
     await firestoreOps.setDoc('settings', 'general', {
       whatsappNumber: config.WHATSAPP_NUMBER,
       storeName: 'DRG Phones Palace',
       location: 'Nairobi, Kenya',
-      updatedAt: new Date().toISOString()
+      updatedAt: now
     });
-    console.log(`   ✓ Store settings saved (WhatsApp: +${config.WHATSAPP_NUMBER})`);
-
-    console.log(`\n=============================================================`);
-    console.log(`🎉 Firebase Firestore successfully seeded!`);
-    console.log(`📱 ${count} Phones catalogue documents ready`);
-    console.log(`👑 Admin credentials & store settings configured`);
-    console.log(`=============================================================\n`);
-    process.exit(0);
-  } catch (err) {
-    console.error(`\n❌ Error during seeding:`, err.message);
-    process.exit(1);
+    console.log(`   ✓ Seeded Store Settings to collection "settings" (doc: "general")`);
   }
+
+  console.log(`\n=============================================================`);
+  console.log(`🎉 Firebase Database successfully seeded!`);
+  console.log(`📱 ${DEFAULT_PHONES.length} Devices active in inventory`);
+  console.log(`👑 Admin & Store Configuration applied`);
+  console.log(`=============================================================\n`);
+  process.exit(0);
 }
 
-seed();
+seed().catch(err => {
+  console.error(`\n❌ Error during seeding:`, err.message);
+  process.exit(1);
+});

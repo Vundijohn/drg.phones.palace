@@ -3,8 +3,10 @@ const path = require('path');
 const config = require('./config');
 
 let admin = null;
+let getAdminDatabase = null;
 try {
   admin = require('firebase-admin');
+  getAdminDatabase = require('firebase-admin/database').getDatabase;
 } catch (e) {
   // admin optional
 }
@@ -20,16 +22,28 @@ const {
   updateDoc,
   deleteDoc,
   query,
-  where,
   limit: firestoreLimit,
   getDocsFromServer
 } = require('firebase/firestore');
 
-let isConnected = false;
-let connectionTested = false;
+const {
+  getDatabase: getClientDatabase,
+  ref: rtdbRef,
+  get: rtdbGet,
+  set: rtdbSet,
+  update: rtdbUpdate,
+  remove: rtdbRemove
+} = require('firebase/database');
+
+let isFirestoreConnected = false;
+let isRtdbConnected = false;
 let firestoreMode = 'none'; // 'admin' | 'client' | 'none'
+let rtdbMode = 'none';      // 'admin' | 'client' | 'none'
+
 let adminDb = null;
+let adminRtdb = null;
 let clientDb = null;
+let clientRtdb = null;
 let clientApp = null;
 
 function initializeFirebase() {
@@ -47,11 +61,18 @@ function initializeFirebase() {
           admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
             storageBucket: config.firebaseConfig.storageBucket,
+            databaseURL: config.firebaseConfig.databaseURL,
             projectId: config.firebaseConfig.projectId
           });
         }
         adminDb = admin.firestore();
         firestoreMode = 'admin';
+
+        if (getAdminDatabase) {
+          adminRtdb = getAdminDatabase();
+          rtdbMode = 'admin';
+        }
+
         console.log(`[Firebase] 🔥 Initialized Firebase Admin SDK via serviceAccountKey.json (Project: ${config.firebaseConfig.projectId})`);
         return true;
       } catch (err) {
@@ -64,65 +85,174 @@ function initializeFirebase() {
   try {
     const apps = getClientApps();
     clientApp = apps.length > 0 ? apps[0] : initClientApp(config.firebaseConfig);
-    clientDb = getClientFirestore(clientApp);
-    firestoreMode = 'client';
+    
+    // Firestore
+    try {
+      clientDb = getClientFirestore(clientApp);
+      firestoreMode = 'client';
+    } catch (e) {}
+
+    // Realtime Database
+    try {
+      clientRtdb = getClientDatabase(clientApp, config.firebaseConfig.databaseURL);
+      rtdbMode = 'client';
+    } catch (e) {}
+
     console.log(`[Firebase] 🔥 Initialized Firebase SDK with Project: ${config.firebaseConfig.projectId}`);
+    if (config.firebaseConfig.databaseURL) {
+      console.log(`[Firebase] 🌐 Realtime Database URL: ${config.firebaseConfig.databaseURL}`);
+    }
     return true;
   } catch (err) {
     console.warn(`[Firebase] Failed initializing Firebase Client SDK: ${err.message}`);
-    firestoreMode = 'none';
     return false;
   }
 }
 
-// Check if Firestore is reachable (and enabled in Firebase Console)
-async function testFirestoreAccess() {
-  if (firestoreMode === 'none') {
-    isConnected = false;
-    connectionTested = true;
+let lastFirestoreTestTime = 0;
+let lastRtdbTestTime = 0;
+const TEST_COOLDOWN_MS = 30000;
+
+// Test Realtime Database connectivity
+async function testRtdbAccess(force = false) {
+  if (rtdbMode === 'none' || !config.firebaseConfig.databaseURL) {
+    isRtdbConnected = false;
     return false;
   }
 
+  const now = Date.now();
+  if (!force && lastRtdbTestTime && (now - lastRtdbTestTime < TEST_COOLDOWN_MS)) {
+    return isRtdbConnected;
+  }
+  lastRtdbTestTime = now;
+
   try {
-    if (firestoreMode === 'admin' && adminDb) {
-      // Test read from admin
-      await adminDb.collection('_health').limit(1).get();
-      isConnected = true;
-      connectionTested = true;
-      console.log(`[Firebase] ✅ Cloud Firestore connection verified and active.`);
+    if (rtdbMode === 'admin' && adminRtdb) {
+      await adminRtdb.ref('_health').once('value');
+      isRtdbConnected = true;
+      console.log(`[Firebase] ✅ Realtime Database connected and active via Admin SDK.`);
       return true;
-    } else if (firestoreMode === 'client' && clientDb) {
-      // Test remote server read with client SDK
-      const testCol = collection(clientDb, '_health');
-      const q = query(testCol, firestoreLimit(1));
-      await getDocsFromServer(q);
-      isConnected = true;
-      connectionTested = true;
-      console.log(`[Firebase] ✅ Cloud Firestore connection verified and active.`);
+    } else if (rtdbMode === 'client' && clientRtdb) {
+      const snap = await rtdbGet(rtdbRef(clientRtdb, '_health'));
+      isRtdbConnected = true;
+      console.log(`[Firebase] ✅ Realtime Database connected and active.`);
       return true;
     }
   } catch (err) {
-    isConnected = false;
-    connectionTested = true;
-    const isApiDisabled = err.message && (err.message.includes('not been used') || err.message.includes('disabled') || err.message.includes('PERMISSION_DENIED'));
-    
+    isRtdbConnected = false;
+    const isPermissionDenied = err.message && err.message.toLowerCase().includes('permission denied');
     console.warn(`\n================================================================`);
-    console.warn(`⚠️  FIREBASE FIRESTORE NOTICE:`);
-    if (isApiDisabled) {
-      console.warn(`   Cloud Firestore is not yet activated on project "${config.firebaseConfig.projectId}".`);
-      console.warn(`   👉 To activate Firestore in 1 minute:`);
-      console.warn(`      1. Visit: https://console.firebase.google.com/project/${config.firebaseConfig.projectId}/firestore`);
-      console.warn(`      2. Click "Create Database" and select "Start in test mode".`);
+    console.warn(`⚠️  FIREBASE REALTIME DATABASE NOTICE:`);
+    console.warn(`   Database URL: ${config.firebaseConfig.databaseURL}`);
+    if (isPermissionDenied) {
+      console.warn(`   Status: 🔒 Permission Denied (Database is currently locked by security rules).`);
+      console.warn(`   👉 To allow read/write in Firebase Console:`);
+      console.warn(`      1. Visit: https://console.firebase.google.com/project/${config.firebaseConfig.projectId}/database/phones-3355c-default-rtdb/rules`);
+      console.warn(`      2. Update the rules to:`);
+      console.warn(`         {`);
+      console.warn(`           "rules": {`);
+      console.warn(`             ".read": true,`);
+      console.warn(`             ".write": true`);
+      console.warn(`           }`);
+      console.warn(`         }`);
+      console.warn(`      3. Click "Publish".`);
+      console.warn(`   👉 Or place your "serviceAccountKey.json" in project root for admin bypass.`);
     } else {
-      console.warn(`   Firestore connection check: ${err.message}`);
+      console.warn(`   Connection check error: ${err.message}`);
     }
-    console.warn(`   ⚡ The server is running smoothly using the local data store as fallback.`);
+    console.warn(`   ⚡ Fallback to local store active until rules are published.`);
     console.warn(`================================================================\n`);
     return false;
   }
+  return false;
 }
 
-// Universal Firestore Document & Collection operations
+// Test Firestore connectivity
+async function testFirestoreAccess(force = false) {
+  if (firestoreMode === 'none') {
+    isFirestoreConnected = false;
+    return false;
+  }
+
+  const now = Date.now();
+  if (!force && lastFirestoreTestTime && (now - lastFirestoreTestTime < TEST_COOLDOWN_MS)) {
+    return isFirestoreConnected;
+  }
+  lastFirestoreTestTime = now;
+
+  try {
+    if (firestoreMode === 'admin' && adminDb) {
+      await adminDb.collection('_health').limit(1).get();
+      isFirestoreConnected = true;
+      console.log(`[Firebase] ✅ Cloud Firestore connected and active.`);
+      return true;
+    } else if (firestoreMode === 'client' && clientDb) {
+      const testCol = collection(clientDb, '_health');
+      const q = query(testCol, firestoreLimit(1));
+      await getDocsFromServer(q);
+      isFirestoreConnected = true;
+      console.log(`[Firebase] ✅ Cloud Firestore connected and active.`);
+      return true;
+    }
+  } catch (err) {
+    isFirestoreConnected = false;
+    return false;
+  }
+  return false;
+}
+
+// Realtime Database Universal Operations
+const rtdbOps = {
+  async get(pathStr) {
+    if (rtdbMode === 'admin' && adminRtdb) {
+      const snap = await adminRtdb.ref(pathStr).once('value');
+      return snap.val();
+    }
+    if (rtdbMode === 'client' && clientRtdb) {
+      const snap = await rtdbGet(rtdbRef(clientRtdb, pathStr));
+      return snap.val();
+    }
+    return null;
+  },
+
+  async set(pathStr, data) {
+    if (rtdbMode === 'admin' && adminRtdb) {
+      await adminRtdb.ref(pathStr).set(data);
+      return data;
+    }
+    if (rtdbMode === 'client' && clientRtdb) {
+      await rtdbSet(rtdbRef(clientRtdb, pathStr), data);
+      return data;
+    }
+    return null;
+  },
+
+  async update(pathStr, updates) {
+    if (rtdbMode === 'admin' && adminRtdb) {
+      await adminRtdb.ref(pathStr).update(updates);
+      return updates;
+    }
+    if (rtdbMode === 'client' && clientRtdb) {
+      await rtdbUpdate(rtdbRef(clientRtdb, pathStr), updates);
+      return updates;
+    }
+    return null;
+  },
+
+  async remove(pathStr) {
+    if (rtdbMode === 'admin' && adminRtdb) {
+      await adminRtdb.ref(pathStr).remove();
+      return true;
+    }
+    if (rtdbMode === 'client' && clientRtdb) {
+      await rtdbRemove(rtdbRef(clientRtdb, pathStr));
+      return true;
+    }
+    return false;
+  }
+};
+
+// Firestore Universal Operations
 const firestoreOps = {
   async getDoc(colName, docId) {
     if (firestoreMode === 'admin' && adminDb) {
@@ -202,16 +332,21 @@ const firestoreOps = {
   }
 };
 
-// Initialize right away
 initializeFirebase();
 
 module.exports = {
   admin,
   adminDb,
+  adminRtdb,
   clientDb,
+  clientRtdb,
   firestoreMode,
+  rtdbMode,
   initializeFirebase,
   testFirestoreAccess,
-  isFirebaseConnected: () => isConnected,
-  firestoreOps
+  testRtdbAccess,
+  isFirestoreConnected: () => isFirestoreConnected,
+  isRtdbConnected: () => isRtdbConnected,
+  firestoreOps,
+  rtdbOps
 };

@@ -1270,6 +1270,38 @@
 
   loadPhones();
 
+  // Fetch live phone catalogue and settings from Backend / Firebase
+  async function syncBackendData(){
+    try {
+      // 1. Fetch settings (WhatsApp number, store info)
+      const settingsRes = await fetch('/api/settings');
+      if(settingsRes.ok){
+        const sJson = await settingsRes.json();
+        if(sJson.success && sJson.data && sJson.data.whatsappNumber){
+          WHATSAPP_NUMBER = sJson.data.whatsappNumber;
+        }
+      }
+    } catch(e){}
+
+    try {
+      // 2. Fetch live inventory
+      const phonesRes = await fetch('/api/phones');
+      if(phonesRes.ok){
+        const pJson = await phonesRes.json();
+        if(pJson.success && Array.isArray(pJson.data) && pJson.data.length > 0){
+          phones = pJson.data;
+          savePhones();
+          phones.forEach(p => {
+            if(!activePlanByPhone[p.id]){
+              activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
+            }
+          });
+          renderPhones();
+        }
+      }
+    } catch(e){}
+  }
+
   // Active state
   let currentCategory = "all";
   let globalPlanMode = "default";
@@ -1278,6 +1310,9 @@
   phones.forEach(p => {
     activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
   });
+
+  // Trigger background sync
+  syncBackendData();
 
   function getEffectivePlan(phone){
     if(globalPlanMode === "default"){
@@ -1439,11 +1474,31 @@
             ${phone.specs.map(s => `<li>${s}</li>`).join("")}
           </ul>
           ${renderPlanBox(phone, activeKey)}
-          <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" target="_blank" rel="noopener">Get This Phone</a>
+          <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">Get This Phone</a>
         </div>
       `;
       grid.appendChild(card);
     });
+  }
+
+  function recordInquiry(phoneId, planKey){
+    const phone = phones.find(p => p.id === phoneId);
+    if(!phone) return;
+    const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
+    try {
+      fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phoneId: phone.id,
+          model: phone.model,
+          storage: phone.storage,
+          planKey: planKey,
+          planLabel: plan ? plan.label : planKey,
+          cashPrice: phone.cashPrice
+        })
+      }).catch(()=>{});
+    } catch(e){}
   }
 
   // Category filter

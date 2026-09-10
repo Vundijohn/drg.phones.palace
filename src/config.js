@@ -15,6 +15,7 @@ module.exports = {
     authDomain: process.env.FIREBASE_AUTH_DOMAIN || 'phones-3355c.firebaseapp.com',
     projectId: process.env.FIREBASE_PROJECT_ID || 'phones-3355c',
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'phones-3355c.firebasestorage.app',
+    databaseURL: process.env.FIREBASE_DATABASE_URL || 'https://phones-3355c-default-rtdb.firebaseio.com/',
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || '812106459053',
     appId: process.env.FIREBASE_APP_ID || '1:812106459053:web:efbff10513c9abd7406324',
     measurementId: process.env.FIREBASE_MEASUREMENT_ID || 'G-E2NF0RZQWJ'

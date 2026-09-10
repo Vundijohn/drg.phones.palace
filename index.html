@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRG Phones Palace — Simu Top, Bei Poa!</title>
+<meta name="description" content="Quality iPhones, Samsung, Motorola & more in Nairobi. Deposit today, weekly payments, phone in hand. WhatsApp us now.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-void:#0a0812;
+    --bg-panel:#150f22;
+    --bg-panel-2:#1d1530;
+    --purple-deep:#3a2266;
+    --purple:#6c4baf;
+    --purple-soft:#8f76c4;
+    --gold:#d9a653;
+    --gold-bright:#f2c878;
+    --text-primary:#f6f0e6;
+    --text-muted:#b7adc7;
+    --line:rgba(217,166,83,0.18);
+    --whatsapp:#2fc35b;
+    --radius-card:18px;
+    --radius-pill:999px;
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-void);
+    color:var(--text-primary);
+    font-family:'Manrope',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Bricolage Grotesque',sans-serif;
+    line-height:1.05;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px;}
+  section{padding:72px 0;}
+  .eyebrow-free-heading{font-size:clamp(28px,5vw,42px);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,8,18,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 20px;max-width:var(--maxw);margin:0 auto;
+  }
+  .logo{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:800;font-size:20px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo em{
+    font-style:normal;color:var(--gold);
+  }
+  .nav-links{
+    display:none;
+    gap:28px;
+    font-weight:600;font-size:15px;
+  }
+  .nav-links a{color:var(--text-muted);transition:color .2s;}
+  .nav-links a:hover{color:var(--gold-bright);}
+  .nav-cta{
+    display:none;
+    align-items:center;gap:8px;
+    background:var(--whatsapp);
+    color:#08170c;
+    font-weight:700;font-size:14px;
+    padding:10px 18px;border-radius:var(--radius-pill);
+  }
+  .burger{
+    background:none;border:1px solid var(--line);
+    border-radius:10px;width:42px;height:42px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-primary);
+  }
+  .burger svg{width:20px;height:20px;}
+  .mobile-menu{
+    display:none;flex-direction:column;gap:2px;
+    background:var(--bg-panel);
+    border-top:1px solid var(--line);
+    padding:8px 20px 18px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{
+    padding:12px 4px;font-weight:600;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    color:var(--text-muted);
+  }
+  .mobile-menu .nav-cta{display:flex;margin-top:12px;justify-content:center;}
+
+  @media(min-width:860px){
+    .nav-links{display:flex;}
+    .nav-cta{display:flex;}
+    .burger{display:none;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:64px 0 56px;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(108,75,175,0.35), transparent 55%),
+      radial-gradient(circle at 90% 15%, rgba(217,166,83,0.16), transparent 45%),
+      var(--bg-void);
+  }
+  .hero-grid{
+    display:grid;gap:36px;align-items:center;
+  }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(217,166,83,0.1);
+    border:1px solid var(--line);
+    color:var(--gold-bright);
+    font-weight:700;font-size:13px;
+    padding:7px 14px;border-radius:var(--radius-pill);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(38px,9vw,66px);
+    font-weight:800;
+    color:var(--text-primary);
+  }
+  .hero h1 span{color:var(--gold);}
+  .hero p.lead{
+    margin-top:18px;
+    font-size:17px;
+    color:var(--text-muted);
+    max-width:46ch;
+  }
+  .hero-actions{
+    display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:15px 26px;border-radius:var(--radius-pill);
+    font-weight:700;font-size:15px;
+    border:1px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-gold{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#241505;
+    box-shadow:0 10px 30px -10px rgba(217,166,83,0.55);
+  }
+  .btn-whatsapp{
+    background:var(--whatsapp);
+    color:#07220f;
+    box-shadow:0 10px 30px -10px rgba(47,195,91,0.5);
+  }
+  .btn-outline{
+    background:transparent;border-color:var(--line);color:var(--text-primary);
+  }
+  .hero-delivery{
+    margin-top:22px;display:flex;align-items:center;gap:10px;
+    color:var(--text-muted);font-size:14px;font-weight:600;
+  }
+  .hero-delivery .dot{width:8px;height:8px;border-radius:50%;background:var(--whatsapp);}
+
+  .hero-visual{
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    min-height:280px;
+  }
+  .glow-orb{
+    position:absolute;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle, rgba(217,166,83,0.5), rgba(108,75,175,0.25) 55%, transparent 75%);
+    filter:blur(6px);
+  }
+  .phone-mock{
+    position:relative;
+    width:168px;height:340px;
+    border-radius:34px;
+    background:linear-gradient(160deg,#241a38,#120b1f);
+    border:2px solid rgba(217,166,83,0.4);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.7), inset 0 0 0 6px rgba(0,0,0,0.35);
+    transform:rotate(-6deg);
+  }
+  .phone-mock::before{
+    content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);
+    width:46px;height:6px;border-radius:6px;background:rgba(255,255,255,0.15);
+  }
+  .phone-mock::after{
+    content:"SIMU\A TOP";
+    white-space:pre;
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:800;font-size:22px;color:var(--gold-bright);
+    letter-spacing:0.02em;
+  }
+  .phone-mock-2{
+    position:absolute;
+    width:130px;height:264px;border-radius:28px;
+    background:linear-gradient(160deg,#2d1f16,#150e08);
+    border:2px solid rgba(108,75,175,0.5);
+    box-shadow:0 20px 50px -20px rgba(0,0,0,0.7);
+    transform:rotate(10deg) translate(64px,44px);
+  }
+
+  /* ---------- SECTION HEADS ---------- */
+  .section-head{
+    display:flex;flex-direction:column;gap:10px;
+    margin-bottom:36px;
+  }
+  .section-head h2{font-size:clamp(26px,5vw,38px);}
+  .section-head p{color:var(--text-muted);max-width:56ch;font-size:15.5px;}
+
+  /* ---------- PHONES ---------- */
+  .phones-section{background:var(--bg-void);}
+  .filter-row{
+    display:flex;gap:10px;overflow-x:auto;
+    padding-bottom:6px;margin-bottom:30px;
+    -ms-overflow-style:none;scrollbar-width:none;
+  }
+  .filter-row::-webkit-scrollbar{display:none;}
+  .filter-pill{
+    flex:0 0 auto;
+    padding:10px 20px;border-radius:var(--radius-pill);
+    border:1px solid var(--line);
+    background:var(--bg-panel);
+    color:var(--text-muted);
+    font-weight:700;font-size:14px;
+    cursor:pointer;
+  }
+  .filter-pill.active{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#241505;border-color:transparent;
+  }
+  .phone-grid{
+    display:grid;gap:20px;
+    grid-template-columns:1fr;
+  }
+  @media(min-width:640px){
+    .phone-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(min-width:1000px){
+    .phone-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  .phone-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .phone-media{
+    position:relative;
+    aspect-ratio:4/3;
+    background:linear-gradient(150deg,var(--purple-deep),#0f0a1a 70%);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .phone-media img{width:100%;height:100%;object-fit:cover;}
+  .phone-media-fallback{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    color:var(--purple-soft);font-weight:700;font-size:13px;
+  }
+  .phone-media-fallback .icon{font-size:34px;}
+  .condition-badge{
+    position:absolute;top:12px;left:12px;
+    background:rgba(10,8,18,0.75);
+    border:1px solid var(--line);
+    color:var(--gold-bright);
+    font-size:11.5px;font-weight:700;
+    padding:5px 11px;border-radius:var(--radius-pill);
+  }
+  .phone-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:12px;flex:1;}
+  .phone-title{font-size:19px;font-weight:700;color:var(--text-primary);}
+  .phone-title small{
+    display:block;font-family:'Manrope',sans-serif;font-weight:600;
+    color:var(--text-muted);font-size:13px;margin-top:2px;
+  }
+  .phone-specs{display:flex;flex-direction:column;gap:5px;}
+  .phone-specs li{
+    font-size:13.5px;color:var(--text-muted);
+    padding-left:16px;position:relative;
+  }
+  .phone-specs li::before{
+    content:"";position:absolute;left:0;top:8px;
+    width:6px;height:6px;border-radius:50%;background:var(--purple-soft);
+  }
+  .phone-plan{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    background:rgba(217,166,83,0.06);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 10px;
+    margin-top:4px;
+  }
+  .phone-plan div{display:flex;flex-direction:column;gap:2px;text-align:center;}
+  .phone-plan span{font-size:11px;color:var(--text-muted);font-weight:600;}
+  .phone-plan strong{font-size:14px;color:var(--gold-bright);font-weight:800;}
+  .phone-body .btn{width:100%;margin-top:auto;padding:13px 18px;font-size:14.5px;}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .how-section{
+    background:linear-gradient(180deg,var(--bg-void),var(--bg-panel) 60%,var(--bg-void));
+  }
+  .steps{
+    display:grid;gap:16px;
+    counter-reset:step;
+  }
+  @media(min-width:760px){
+    .steps{grid-template-columns:repeat(5,1fr);}
+  }
+  .step{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px 18px;
+    position:relative;
+  }
+  .step-num{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:800;font-size:30px;
+    color:transparent;
+    -webkit-text-stroke:1.4px var(--gold);
+    margin-bottom:10px;
+  }
+  .step h3{font-size:16px;margin-bottom:6px;color:var(--text-primary);}
+  .step p{font-size:13.5px;color:var(--text-muted);margin:0;}
+
+  /* ---------- OFFERS ---------- */
+  .offers-grid{
+    display:grid;gap:18px;
+  }
+  @media(min-width:760px){
+    .offers-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  .offer-card{
+    border-radius:18px;
+    padding:26px 22px;
+    background:linear-gradient(150deg,var(--purple-deep),var(--bg-panel-2));
+    border:1px solid rgba(217,166,83,0.25);
+    display:flex;flex-direction:column;gap:10px;
+    min-height:190px;
+  }
+  .offer-card h3{font-size:19px;color:var(--gold-bright);}
+  .offer-card p{font-size:14px;color:var(--text-muted);margin:0;flex:1;}
+  .offer-card .tag{
+    align-self:flex-start;
+    font-size:11.5px;font-weight:800;
+    color:#241505;
+    background:var(--gold-bright);
+    padding:4px 10px;border-radius:var(--radius-pill);
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-section{
+    background:var(--bg-void);
+  }
+  .about-grid{
+    display:grid;gap:32px;
+    align-items:center;
+  }
+  @media(min-width:860px){
+    .about-grid{grid-template-columns:1.1fr 0.9fr;}
+  }
+  .about-copy p{color:var(--text-muted);font-size:15.5px;margin:0 0 14px;}
+  .about-stats{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:14px;margin-top:22px;
+  }
+  .about-stats div{
+    background:var(--bg-panel);border:1px solid var(--line);
+    border-radius:14px;padding:16px 10px;text-align:center;
+  }
+  .about-stats strong{display:block;font-size:24px;color:var(--gold-bright);font-family:'Bricolage Grotesque',sans-serif;}
+  .about-stats span{font-size:11.5px;color:var(--text-muted);font-weight:600;}
+  .about-panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:26px;
+  }
+  .about-panel h3{font-size:18px;margin-bottom:14px;color:var(--gold-bright);}
+  .about-panel ul{display:flex;flex-direction:column;gap:12px;}
+  .about-panel li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:14px;color:var(--text-muted);
+  }
+  .check{
+    flex:0 0 auto;width:20px;height:20px;border-radius:50%;
+    background:rgba(47,195,91,0.15);color:var(--whatsapp);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-section{
+    background:radial-gradient(circle at 80% 20%, rgba(108,75,175,0.28), transparent 50%), var(--bg-panel);
+  }
+  .contact-grid{
+    display:grid;gap:24px;
+  }
+  @media(min-width:860px){
+    .contact-grid{grid-template-columns:1fr 1fr;}
+  }
+  .contact-card{
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    border-radius:20px;padding:28px;
+  }
+  .contact-row{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .contact-row:last-child{border-bottom:none;}
+  .contact-icon{
+    width:40px;height:40px;border-radius:12px;flex:0 0 auto;
+    background:rgba(217,166,83,0.12);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+  .contact-row strong{display:block;font-size:14.5px;}
+  .contact-row span{font-size:13px;color:var(--text-muted);}
+  .social-row{display:flex;gap:12px;margin-top:22px;}
+  .social-row a{
+    width:44px;height:44px;border-radius:12px;
+    background:var(--bg-panel);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+  .map-placeholder{
+    border-radius:20px;overflow:hidden;
+    min-height:260px;
+    background:
+      linear-gradient(150deg, rgba(108,75,175,0.35), rgba(217,166,83,0.12)),
+      var(--bg-void);
+    border:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:8px;padding:30px;
+  }
+  .map-placeholder .icon{font-size:32px;}
+  .map-placeholder strong{font-size:16px;}
+  .map-placeholder span{font-size:13px;color:var(--text-muted);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--bg-void);
+    border-top:1px solid var(--line);
+    padding:34px 0;
+  }
+  .footer-row{
+    display:flex;flex-direction:column;gap:14px;
+    align-items:flex-start;
+    font-size:13px;color:var(--text-muted);
+  }
+  @media(min-width:640px){
+    .footer-row{flex-direction:row;justify-content:space-between;align-items:center;}
+  }
+  .footer-row .logo{font-size:16px;}
+
+  /* ---------- STICKY WHATSAPP (mobile) ---------- */
+  .sticky-wa{
+    position:fixed;bottom:16px;right:16px;z-index:60;
+    width:56px;height:56px;border-radius:50%;
+    background:var(--whatsapp);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 14px 30px -8px rgba(47,195,91,0.65);
+    font-size:26px;
+  }
+  @media(min-width:860px){
+    .sticky-wa{display:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">DRG <em>Phones Palace</em></div>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#phones">Phones</a>
+      <a href="#how">How It Works</a>
+      <a href="#offers">Offers</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="nav-cta" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20phones." target="_blank" rel="noopener">
+      WhatsApp Us
+    </a>
+    <button class="burger" id="burgerBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#phones">Phones</a>
+    <a href="#how">How It Works</a>
+    <a href="#offers">Offers</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a class="btn btn-whatsapp nav-cta" href="https://wa.me/254797951374" target="_blank" rel="noopener">WhatsApp Us</a>
+  </div>
+</header>
+
+<!-- ---------- HERO ---------- -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="hero-tag">📦 Nairobi & environs delivery</span>
+      <h1>SIMU TOP, <span>BEI POA!</span></h1>
+      <p class="lead">Genuine iPhones, Samsungs, Motorolas and more — small deposit today, easy weekly payments, phone in your hand this week.</p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#phones">Shop Now</a>
+        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20see%20your%20available%20phones." target="_blank" rel="noopener">WhatsApp Us</a>
+      </div>
+      <div class="hero-delivery"><span class="dot"></span> We deliver across Nairobi & its environs</div>
+    </div>
+    <div class="hero-visual">
+      <div class="glow-orb"></div>
+      <div class="phone-mock-2"></div>
+      <div class="phone-mock"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- PHONES ---------- -->
+<section class="phones-section" id="phones">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Choose your phone</h2>
+      <p>Every phone comes with its condition, key specs and a weekly plan spelled out upfront — no hidden costs.</p>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <button class="filter-pill active" data-cat="all">All Phones</button>
+      <button class="filter-pill" data-cat="iphone">iPhone</button>
+      <button class="filter-pill" data-cat="samsung">Samsung</button>
+      <button class="filter-pill" data-cat="motorola">Motorola</button>
+      <button class="filter-pill" data-cat="other">Other Phones</button>
+    </div>
+    <div class="phone-grid" id="phoneGrid"></div>
+  </div>
+</section>
+
+<!-- ---------- HOW IT WORKS ---------- -->
+<section class="how-section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How it works</h2>
+      <p>Five simple steps from choosing your phone to owning it outright.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Choose your phone</h3><p>Browse the catalogue and pick the model, storage and condition that fits your budget.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Select your plan</h3><p>Every phone shows its deposit and weekly amount — pick what works for your pocket.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Make your deposit</h3><p>Pay the deposit via M-Pesa to lock in your phone the same day.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Get your phone</h3><p>Collect in Nairobi or get it delivered to you and its environs.</p></div>
+      <div class="step"><div class="step-num">5</div><h3>Pay weekly</h3><p>Clear the balance in easy weekly instalments until the phone is fully yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- OFFERS ---------- -->
+<section id="offers">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>This week's offers</h2>
+      <p>Fresh deals, dropped often — check back or follow us so you never miss a discount.</p>
+    </div>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <span class="tag">Referral</span>
+        <h3>Bring a Friend</h3>
+        <p>Refer a friend who buys a phone and get KES 500 off your next deposit.</p>
+      </div>
+      <div class="offer-card">
+        <span class="tag">Friday Only</span>
+        <h3>Free Extras Friday</h3>
+        <p>Buy any phone on a Friday and walk away with a free case or earphones.</p>
+      </div>
+      <div class="offer-card">
+        <span class="tag">Clearance</span>
+        <h3>Clearance Corner</h3>
+        <p>Selected UK-used phones with reduced deposits — while stock lasts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- ABOUT ---------- -->
+<section class="about-section" id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <h2 class="eyebrow-free-heading">About DRG Phones Palace</h2>
+      <p>DRG Phones Palace is a Nairobi-based phone retailer helping everyday Kenyans own quality smartphones without the upfront strain. We source genuine, carefully inspected iPhones, Samsungs, Motorolas and other leading brands, then make them accessible through a simple deposit-plus-weekly-payment plan.</p>
+      <p>Every phone listed is tested and graded honestly, every price is upfront, and every customer across Nairobi and its environs gets the same straightforward service from deposit to delivery.</p>
+      <div class="about-stats">
+        <div><strong>1000+</strong><span>Phones sold</span></div>
+        <div><strong>100%</strong><span>Genuine devices</span></div>
+        <div><strong>Weekly</strong><span>Flexible plans</span></div>
+      </div>
+    </div>
+    <div class="about-panel">
+      <h3>Why buy from us</h3>
+      <ul>
+        <li><span class="check">✓</span> Every phone tested & graded before it's listed</li>
+        <li><span class="check">✓</span> Small deposit, no huge upfront cost</li>
+        <li><span class="check">✓</span> Clear weekly payment — you always know your balance</li>
+        <li><span class="check">✓</span> Delivery across Nairobi & its environs</li>
+        <li><span class="check">✓</span> Real humans on WhatsApp, not a call centre</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- CONTACT ---------- -->
+<section class="contact-section" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Talk to us</h2>
+      <p>Have a question about a phone or your payment plan? Reach us on WhatsApp — fastest way to get a reply.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-row">
+          <div class="contact-icon">💬</div>
+          <div><strong>WhatsApp</strong><span>0797 951 374</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div><strong>Coverage area</strong><span>Nairobi & its environs</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🕒</div>
+          <div><strong>We reply</strong><span>Every day, morning till evening</span></div>
+        </div>
+        <div class="social-row">
+          <a href="#" aria-label="Facebook" title="Add your Facebook link">📘</a>
+          <a href="#" aria-label="Instagram" title="Add your Instagram link">📷</a>
+          <a href="#" aria-label="TikTok" title="Add your TikTok link">🎵</a>
+        </div>
+      </div>
+      <div class="map-placeholder">
+        <div class="icon">🗺️</div>
+        <strong>Nairobi & environs</strong>
+        <span>Swap this panel for an embedded Google Map of your shop location.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo">DRG <em>Phones Palace</em></div>
+    <div>© <span id="year"></span> DRG Phones Palace. All prices in KES. Terms apply to weekly payment plans.</div>
+  </div>
+</footer>
+
+<a class="sticky-wa" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+
+<script>
+  // ---- Mobile menu toggle ----
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burgerBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---- Phone catalogue data ----
+  // Edit this array to add, remove or update phones. Replace each "image"
+  // path with a real photo once you upload one (e.g. "images/iphone-11.jpg").
+  const WHATSAPP_NUMBER = "254797951374";
+
+  const phones = [
+    {
+      category: "iphone", categoryLabel: "iPhone",
+      model: "iPhone 11", storage: "64GB",
+      condition: "UK Used · Grade A",
+      image: "images/iphone-11.jpg",
+      specs: ["6.1\" Liquid Retina display", "12MP dual camera, Face ID", "89% battery health"],
+      deposit: 4000, weekly: 1500, weeks: 8
+    },
+    {
+      category: "iphone", categoryLabel: "iPhone",
+      model: "iPhone XR", storage: "128GB",
+      condition: "UK Used · Grade A",
+      image: "images/iphone-xr.jpg",
+      specs: ["6.1\" Liquid Retina display", "12MP camera, Face ID", "Clean IMEI, tested"],
+      deposit: 3500, weekly: 1300, weeks: 8
+    },
+    {
+      category: "iphone", categoryLabel: "iPhone",
+      model: "iPhone 12", storage: "128GB",
+      condition: "UK Used · Grade A",
+      image: "images/iphone-12.jpg",
+      specs: ["5G ready", "12MP dual camera, Night mode", "Face ID, Ceramic Shield"],
+      deposit: 5000, weekly: 1800, weeks: 10
+    },
+    {
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy A14", storage: "128GB",
+      condition: "Brand New",
+      image: "images/galaxy-a14.jpg",
+      specs: ["6.6\" 90Hz display", "50MP triple camera", "5,000mAh battery"],
+      deposit: 2500, weekly: 900, weeks: 8
+    },
+    {
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21", storage: "128GB",
+      condition: "UK Used · Grade A",
+      image: "images/galaxy-s21.jpg",
+      specs: ["Dynamic AMOLED 120Hz", "Triple camera, 8K video", "5G ready"],
+      deposit: 4500, weekly: 1600, weeks: 9
+    },
+    {
+      category: "motorola", categoryLabel: "Motorola",
+      model: "Moto G54", storage: "256GB",
+      condition: "Brand New",
+      image: "images/moto-g54.jpg",
+      specs: ["5G, 6.5\" display", "50MP OIS camera", "6,000mAh battery"],
+      deposit: 2800, weekly: 950, weeks: 8
+    },
+    {
+      category: "motorola", categoryLabel: "Motorola",
+      model: "Moto Edge 40", storage: "256GB",
+      condition: "Brand New",
+      image: "images/moto-edge-40.jpg",
+      specs: ["Curved pOLED display", "50MP camera, OIS", "68W fast charging"],
+      deposit: 3800, weekly: 1350, weeks: 9
+    },
+    {
+      category: "other", categoryLabel: "Other Phones",
+      model: "Infinix Note 30", storage: "128GB",
+      condition: "Brand New",
+      image: "images/infinix-note-30.jpg",
+      specs: ["6.78\" AMOLED, 120Hz", "108MP camera", "5,000mAh, 45W charge"],
+      deposit: 2000, weekly: 750, weeks: 8
+    },
+    {
+      category: "other", categoryLabel: "Other Phones",
+      model: "Tecno Camon 20", storage: "128GB",
+      condition: "Brand New",
+      image: "images/tecno-camon-20.jpg",
+      specs: ["6.67\" AMOLED display", "64MP RGBW camera", "5,000mAh battery"],
+      deposit: 2200, weekly: 800, weeks: 8
+    }
+  ];
+
+  function money(n){
+    return "KES " + n.toLocaleString("en-KE");
+  }
+
+  function waLink(phone){
+    const total = phone.deposit + phone.weekly * phone.weeks;
+    const msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} (${phone.condition}). Total: ${money(total)}, Deposit: ${money(phone.deposit)}. Is it available?`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  function renderPhones(filter){
+    const grid = document.getElementById('phoneGrid');
+    grid.innerHTML = "";
+    const list = filter === "all" ? phones : phones.filter(p => p.category === filter);
+
+    list.forEach(phone => {
+      const total = phone.deposit + phone.weekly * phone.weeks;
+      const card = document.createElement('article');
+      card.className = 'phone-card';
+      card.innerHTML = `
+        <div class="phone-media">
+          <img src="${phone.image}" alt="${phone.model} ${phone.storage}"
+               loading="lazy"
+               onerror="this.remove()">
+          <div class="phone-media-fallback">
+            <span class="icon">📱</span>
+            <span>Photo coming soon</span>
+          </div>
+          <span class="condition-badge">${phone.condition}</span>
+        </div>
+        <div class="phone-body">
+          <div class="phone-title">${phone.model}<small>${phone.storage} · ${phone.categoryLabel}</small></div>
+          <ul class="phone-specs">
+            ${phone.specs.map(s => `<li>${s}</li>`).join("")}
+          </ul>
+          <div class="phone-plan">
+            <div><span>Deposit</span><strong>${money(phone.deposit)}</strong></div>
+            <div><span>Weekly ×${phone.weeks}</span><strong>${money(phone.weekly)}</strong></div>
+            <div><span>Total</span><strong>${money(total)}</strong></div>
+          </div>
+          <a class="btn btn-whatsapp" href="${waLink(phone)}" target="_blank" rel="noopener">Get This Phone</a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById('filterRow').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-pill');
+    if(!btn) return;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    renderPhones(btn.dataset.cat);
+  });
+
+  renderPhones('all');
+</script>
+
+</body>
+</html>

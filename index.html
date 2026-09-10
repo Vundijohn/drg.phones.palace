@@ -298,19 +298,106 @@
     content:"";position:absolute;left:0;top:8px;
     width:6px;height:6px;border-radius:50%;background:var(--purple-soft);
   }
+  /* Plan switcher & details */
+  .plans-bar-wrap{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:24px;
+    font-size:13px;
+    color:var(--text-muted);
+  }
+  .plans-bar-label{font-weight:700;color:var(--text-primary);}
+  .global-plan-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .plan-pill{
+    padding:7px 14px;
+    border-radius:var(--radius-pill);
+    border:1px solid var(--line);
+    background:var(--bg-panel);
+    color:var(--text-muted);
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    transition:all .2s;
+  }
+  .plan-pill:hover{color:var(--text-primary);border-color:var(--gold);}
+  .plan-pill.active{
+    background:var(--purple-deep);
+    border-color:var(--gold-bright);
+    color:var(--gold-bright);
+  }
+
+  .card-plan-box{
+    margin-top:4px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .card-plan-tabs{
+    display:flex;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--line);
+    border-radius:var(--radius-pill);
+    padding:3px;
+    gap:3px;
+  }
+  .card-plan-tab{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--text-muted);
+    font-family:inherit;
+    font-size:11px;
+    font-weight:700;
+    padding:6px 2px;
+    border-radius:var(--radius-pill);
+    cursor:pointer;
+    transition:all .15s ease;
+    text-align:center;
+  }
+  .card-plan-tab:hover{color:var(--text-primary);}
+  .card-plan-tab.active{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#241505;
+    box-shadow:0 2px 8px rgba(217,166,83,0.3);
+  }
+
   .phone-plan{
-    display:grid;grid-template-columns:repeat(3,1fr);
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
     gap:8px;
     background:rgba(217,166,83,0.06);
     border:1px solid var(--line);
     border-radius:12px;
     padding:12px 10px;
-    margin-top:4px;
+    min-height:56px;
+    align-items:center;
+  }
+  .phone-plan.cash-layout{
+    grid-template-columns:1.2fr 1fr;
   }
   .phone-plan div{display:flex;flex-direction:column;gap:2px;text-align:center;}
   .phone-plan span{font-size:11px;color:var(--text-muted);font-weight:600;}
-  .phone-plan strong{font-size:14px;color:var(--gold-bright);font-weight:800;}
+  .phone-plan strong{font-size:13px;color:var(--gold-bright);font-weight:800;white-space:nowrap;}
+  .plan-hint{
+    font-size:11px;
+    color:var(--purple-soft);
+    font-weight:600;
+    text-align:center;
+    min-height:16px;
+  }
+
   .phone-body .btn{width:100%;margin-top:auto;padding:13px 18px;font-size:14.5px;}
+
+  /* Offers WhatsApp Buttons */
+  .offer-card .btn-whatsapp{
+    margin-top:auto;
+    padding:11px 16px;
+    font-size:13.5px;
+    width:100%;
+    box-shadow:none;
+  }
 
   /* ---------- HOW IT WORKS ---------- */
   .how-section{
@@ -551,10 +638,19 @@
     </div>
     <div class="filter-row" id="filterRow">
       <button class="filter-pill active" data-cat="all">All Phones</button>
+      <button class="filter-pill" data-cat="samsung">Samsung Flagships</button>
       <button class="filter-pill" data-cat="iphone">iPhone</button>
-      <button class="filter-pill" data-cat="samsung">Samsung</button>
       <button class="filter-pill" data-cat="motorola">Motorola</button>
       <button class="filter-pill" data-cat="other">Other Phones</button>
+    </div>
+    <div class="plans-bar-wrap">
+      <span class="plans-bar-label">Plan View:</span>
+      <div class="global-plan-row" id="globalPlanRow">
+        <button class="plan-pill active" data-plan="default">Default Plans</button>
+        <button class="plan-pill" data-plan="cash">Cash Price</button>
+        <button class="plan-pill" data-plan="mosaver">MoSaver (6 Months)</button>
+        <button class="plan-pill" data-plan="mostandard">MoStandard (12 Months)</button>
+      </div>
     </div>
     <div class="phone-grid" id="phoneGrid"></div>
   </div>
@@ -589,16 +685,19 @@
         <span class="tag">Referral</span>
         <h3>Bring a Friend</h3>
         <p>Refer a friend who buys a phone and get KES 500 off your next deposit.</p>
+        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%20referred%20a%20friend%20and%20would%20like%20to%20claim%20my%20KES%20500%20deposit%20discount." target="_blank" rel="noopener">Claim KES 500 Off</a>
       </div>
       <div class="offer-card">
         <span class="tag">Friday Only</span>
         <h3>Free Extras Friday</h3>
         <p>Buy any phone on a Friday and walk away with a free case or earphones.</p>
+        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20order%20a%20phone%20today%20and%20claim%20the%20Free%20Extras%20Friday%20gift." target="_blank" rel="noopener">Claim Friday Gift</a>
       </div>
       <div class="offer-card">
         <span class="tag">Clearance</span>
         <h3>Clearance Corner</h3>
         <p>Selected UK-used phones with reduced deposits — while stock lasts.</p>
+        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20which%20UK-used%20phones%20are%20currently%20on%20clearance%20with%20reduced%20deposits%3F" target="_blank" rel="noopener">Inquire Clearance Deals</a>
       </div>
     </div>
   </div>
@@ -689,104 +788,421 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
   // ---- Phone catalogue data ----
-  // Edit this array to add, remove or update phones. Replace each "image"
-  // path with a real photo once you upload one (e.g. "images/iphone-11.jpg").
   const WHATSAPP_NUMBER = "254797951374";
 
   const phones = [
+    // --- NEW SAMSUNG FLAGSHIPS & PREMIUM DEVICES ---
     {
+      id: "s25-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S25 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s25-ultra.jpg",
+      specs: ["Snapdragon 8 Elite, 5G ready", "200MP Quad Camera, 100x Space Zoom", "Built-in S-Pen, Titanium Armor Frame"],
+      cashPrice: 115999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 115999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 52199, weekly: 4410, weeks: 26, total: 166859, hint: "⚡ 6 Months · Save KES 45,340 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 40599, weekly: 3300, weeks: 52, total: 212199, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s24-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S24 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s24-ultra.jpg",
+      specs: ["Galaxy AI built-in, 5G flagship", "200MP Quad Pro-visual camera", "Flat 120Hz display, S-Pen included"],
+      cashPrice: 94999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 94999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 42699, weekly: 3610, weeks: 26, total: 136559, hint: "⚡ 6 Months · Save KES 37,040 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 33199, weekly: 2700, weeks: 52, total: 173599, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s23-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S23 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s23-ultra.jpg",
+      specs: ["200MP camera, 100x Space Zoom", "6.8\" Dynamic AMOLED 2X 120Hz", "Built-in S-Pen, 5,000mAh battery"],
+      cashPrice: 76999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 76999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 34599, weekly: 2930, weeks: 26, total: 110779, hint: "⚡ 6 Months · Save KES 30,000 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 26899, weekly: 2190, weeks: 52, total: 140779, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s22-ultra-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S22 Ultra", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s22-ultra.jpg",
+      specs: ["108MP Quad camera, 100x zoom", "Dynamic AMOLED 120Hz display", "Integrated S-Pen, 45W fast charge"],
+      cashPrice: 66999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 66999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 30099, weekly: 2550, weeks: 26, total: 96399, hint: "⚡ 6 Months · Save KES 25,800 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 23399, weekly: 1900, weeks: 52, total: 122199, hint: "Low deposit (35%) · 52 easy weekly payments" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s21-ultra-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21 Ultra 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s21-ultra.jpg",
+      specs: ["108MP Pro Grade Camera, 8K video", "6.8\" Quad HD+ 120Hz display", "S-Pen support, 5,000mAh battery"],
+      cashPrice: 45999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 45999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 20699, weekly: 1750, weeks: 26, total: 66199, hint: "⚡ 6 Months · Save KES 22,780 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 11499, weekly: 1490, weeks: 52, total: 88979, hint: "Entry deposit (25%) · KES 1,490/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s21-plus-256",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21+ 5G", storage: "256GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s21-plus.jpg",
+      specs: ["256GB storage, 6.7\" AMOLED 120Hz", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
+      cashPrice: 43999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 43999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 19799, weekly: 1670, weeks: 26, total: 63219, hint: "⚡ 6 Months · Save KES 21,620 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 10999, weekly: 1420, weeks: 52, total: 84839, hint: "Entry deposit (25%) · KES 1,420/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s22-plus-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S22+", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s22-plus.jpg",
+      specs: ["Bright 6.6\" AMOLED 120Hz display", "50MP Nightography triple camera", "Armor Aluminum frame, 5G ready"],
+      cashPrice: 37999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 37999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 17099, weekly: 1440, weeks: 26, total: 54539, hint: "⚡ 6 Months · Save KES 18,920 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 9499, weekly: 1230, weeks: 52, total: 73459, hint: "Entry deposit (25%) · KES 1,230/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s20-ultra-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S20 Ultra 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s20-ultra.jpg",
+      specs: ["108MP camera, 100x Space Zoom", "Massive 6.9\" Dynamic AMOLED 120Hz", "5,000mAh battery, 5G ready"],
+      cashPrice: 37999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 37999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 17099, weekly: 1440, weeks: 26, total: 54539, hint: "⚡ 6 Months · Save KES 18,920 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 9499, weekly: 1230, weeks: 52, total: 73459, hint: "Entry deposit (25%) · KES 1,230/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "note-20-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy Note 20 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-note-20.jpg",
+      specs: ["Signature S-Pen stylus with air gestures", "6.7\" Super AMOLED Plus display", "64MP triple camera, 5G ready"],
+      cashPrice: 35999,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 35999, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 16199, weekly: 1370, weeks: 26, total: 51819, hint: "⚡ 6 Months · Save KES 17,500 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 8999, weekly: 1160, weeks: 52, total: 69319, hint: "Entry deposit (25%) · KES 1,160/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+    {
+      id: "s21-plus-128",
+      category: "samsung", categoryLabel: "Samsung",
+      model: "Galaxy S21+ 5G", storage: "128GB",
+      condition: "Excellent · Grade A+",
+      image: "images/galaxy-s21-plus.jpg",
+      specs: ["6.7\" Dynamic AMOLED 120Hz display", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
+      cashPrice: 34199,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 34199, hint: "One-time payment · 0% financing fee" },
+        mosaver: { label: "MoSaver (6M)", deposit: 15399, weekly: 1300, weeks: 26, total: 49199, hint: "⚡ 6 Months · Save KES 17,020 vs 12M" },
+        mostandard: { label: "MoStandard (12M)", deposit: 8499, weekly: 1110, weeks: 52, total: 66219, hint: "Lowest deposit (KES 8,499) · KES 1,110/week" }
+      },
+      defaultPlan: "mostandard"
+    },
+
+    // --- OTHER POPULAR PHONES (IPHONE, MOTOROLA, BUDGET) ---
+    {
+      id: "iphone-11",
       category: "iphone", categoryLabel: "iPhone",
       model: "iPhone 11", storage: "64GB",
       condition: "UK Used · Grade A",
       image: "images/iphone-11.jpg",
       specs: ["6.1\" Liquid Retina display", "12MP dual camera, Face ID", "89% battery health"],
-      deposit: 4000, weekly: 1500, weeks: 8
+      cashPrice: 16000,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 16000, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 4000, weekly: 1500, weeks: 8, total: 16000, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     },
     {
+      id: "iphone-xr",
       category: "iphone", categoryLabel: "iPhone",
       model: "iPhone XR", storage: "128GB",
       condition: "UK Used · Grade A",
       image: "images/iphone-xr.jpg",
       specs: ["6.1\" Liquid Retina display", "12MP camera, Face ID", "Clean IMEI, tested"],
-      deposit: 3500, weekly: 1300, weeks: 8
+      cashPrice: 13900,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 13900, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 3500, weekly: 1300, weeks: 8, total: 13900, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     },
     {
+      id: "iphone-12",
       category: "iphone", categoryLabel: "iPhone",
       model: "iPhone 12", storage: "128GB",
       condition: "UK Used · Grade A",
       image: "images/iphone-12.jpg",
-      specs: ["5G ready", "12MP dual camera, Night mode", "Face ID, Ceramic Shield"],
-      deposit: 5000, weekly: 1800, weeks: 10
+      specs: ["5G ready flagship", "12MP dual camera, Night mode", "Face ID, Ceramic Shield"],
+      cashPrice: 23000,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 23000, hint: "One-time cash payment" },
+        standard: { label: "Weekly (10 Wks)", deposit: 5000, weekly: 1800, weeks: 10, total: 23000, hint: "10 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     },
     {
+      id: "galaxy-a14",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy A14", storage: "128GB",
       condition: "Brand New",
       image: "images/galaxy-a14.jpg",
       specs: ["6.6\" 90Hz display", "50MP triple camera", "5,000mAh battery"],
-      deposit: 2500, weekly: 900, weeks: 8
+      cashPrice: 9700,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 9700, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2500, weekly: 900, weeks: 8, total: 9700, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     },
     {
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S21", storage: "128GB",
-      condition: "UK Used · Grade A",
-      image: "images/galaxy-s21.jpg",
-      specs: ["Dynamic AMOLED 120Hz", "Triple camera, 8K video", "5G ready"],
-      deposit: 4500, weekly: 1600, weeks: 9
-    },
-    {
+      id: "moto-g54",
       category: "motorola", categoryLabel: "Motorola",
       model: "Moto G54", storage: "256GB",
       condition: "Brand New",
       image: "images/moto-g54.jpg",
-      specs: ["5G, 6.5\" display", "50MP OIS camera", "6,000mAh battery"],
-      deposit: 2800, weekly: 950, weeks: 8
+      specs: ["5G, 6.5\" 120Hz display", "50MP OIS camera", "6,000mAh massive battery"],
+      cashPrice: 10400,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 10400, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2800, weekly: 950, weeks: 8, total: 10400, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     },
     {
+      id: "moto-edge-40",
       category: "motorola", categoryLabel: "Motorola",
       model: "Moto Edge 40", storage: "256GB",
       condition: "Brand New",
       image: "images/moto-edge-40.jpg",
-      specs: ["Curved pOLED display", "50MP camera, OIS", "68W fast charging"],
-      deposit: 3800, weekly: 1350, weeks: 9
+      specs: ["Curved pOLED 144Hz display", "50MP camera, OIS", "68W fast charging"],
+      cashPrice: 15950,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 15950, hint: "One-time cash payment" },
+        standard: { label: "Weekly (9 Wks)", deposit: 3800, weekly: 1350, weeks: 9, total: 15950, hint: "9 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     },
     {
+      id: "infinix-note-30",
       category: "other", categoryLabel: "Other Phones",
       model: "Infinix Note 30", storage: "128GB",
       condition: "Brand New",
       image: "images/infinix-note-30.jpg",
       specs: ["6.78\" AMOLED, 120Hz", "108MP camera", "5,000mAh, 45W charge"],
-      deposit: 2000, weekly: 750, weeks: 8
+      cashPrice: 8000,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8000, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2000, weekly: 750, weeks: 8, total: 8000, hint: "Lowest weekly instalment (KES 750/wk)" }
+      },
+      defaultPlan: "standard"
     },
     {
+      id: "tecno-camon-20",
       category: "other", categoryLabel: "Other Phones",
       model: "Tecno Camon 20", storage: "128GB",
       condition: "Brand New",
       image: "images/tecno-camon-20.jpg",
       specs: ["6.67\" AMOLED display", "64MP RGBW camera", "5,000mAh battery"],
-      deposit: 2200, weekly: 800, weeks: 8
+      cashPrice: 8600,
+      plans: {
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8600, hint: "One-time cash payment" },
+        standard: { label: "Weekly (8 Wks)", deposit: 2200, weekly: 800, weeks: 8, total: 8600, hint: "8 Weeks Lipa Mdogo Mdogo" }
+      },
+      defaultPlan: "standard"
     }
   ];
 
   function money(n){
-    return "KES " + n.toLocaleString("en-KE");
+    return "KES " + Number(n).toLocaleString("en-KE");
   }
 
-  function waLink(phone){
-    const total = phone.deposit + phone.weekly * phone.weeks;
-    const msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} (${phone.condition}). Total: ${money(total)}, Deposit: ${money(phone.deposit)}. Is it available?`;
+  // Active state
+  let currentCategory = "all";
+  let globalPlanMode = "default";
+  const activePlanByPhone = {};
+
+  phones.forEach(p => {
+    activePlanByPhone[p.id] = p.defaultPlan;
+  });
+
+  function getEffectivePlan(phone){
+    if(globalPlanMode === "default"){
+      return activePlanByPhone[phone.id] || phone.defaultPlan;
+    }
+    // Check if the phone supports the global plan
+    if(phone.plans[globalPlanMode]){
+      return globalPlanMode;
+    }
+    // Fallback: if user picked mosaver/mostandard on a phone with standard plan
+    if(globalPlanMode === "mosaver" || globalPlanMode === "mostandard"){
+      return phone.plans.standard ? "standard" : "cash";
+    }
+    return phone.defaultPlan;
+  }
+
+  function getWaLink(phone, planKey){
+    const plan = phone.plans[planKey];
+    let msg = "";
+    if(planKey === "cash"){
+      msg = `Hi DRG Phones Palace, I'd like to buy the ${phone.model} ${phone.storage} (${phone.condition}) in Cash for ${money(plan.total)}. Is it available?`;
+    } else if(planKey === "mosaver"){
+      msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} on MoSaver (6 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
+    } else if(planKey === "mostandard"){
+      msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} on MoStandard (12 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
+    } else {
+      msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} (${phone.condition}) on the ${plan.label} plan. Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)} x ${plan.weeks} wks (Total: ${money(plan.total)}). Is it available?`;
+    }
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   }
 
-  function renderPhones(filter){
+  function renderPlanBox(phone, activeKey){
+    const plan = phone.plans[activeKey];
+    const isCash = activeKey === "cash";
+
+    let detailsHtml = "";
+    if(isCash){
+      detailsHtml = `
+        <div class="phone-plan cash-layout" id="plan-details-${phone.id}">
+          <div><span>Cash Price (Full)</span><strong>${money(plan.total)}</strong></div>
+          <div><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
+        </div>
+      `;
+    } else {
+      detailsHtml = `
+        <div class="phone-plan" id="plan-details-${phone.id}">
+          <div><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
+          <div><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
+          <div><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
+        </div>
+      `;
+    }
+
+    const planKeys = Object.keys(phone.plans);
+    const tabsHtml = `
+      <div class="card-plan-tabs" role="tablist">
+        ${planKeys.map(k => `
+          <button class="card-plan-tab ${k === activeKey ? 'active' : ''}"
+                  data-phone="${phone.id}"
+                  data-plan="${k}">
+            ${phone.plans[k].label}
+          </button>
+        `).join("")}
+      </div>
+    `;
+
+    return `
+      <div class="card-plan-box" id="plan-box-${phone.id}">
+        ${tabsHtml}
+        ${detailsHtml}
+        <div class="plan-hint" id="plan-hint-${phone.id}">${plan.hint || ""}</div>
+      </div>
+    `;
+  }
+
+  function updateCardPlanView(phoneId, newPlanKey){
+    const phone = phones.find(p => p.id === phoneId);
+    if(!phone || !phone.plans[newPlanKey]) return;
+
+    activePlanByPhone[phoneId] = newPlanKey;
+
+    const card = document.getElementById(`phone-card-${phoneId}`);
+    if(!card) return;
+
+    // Update tabs
+    card.querySelectorAll('.card-plan-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.plan === newPlanKey);
+    });
+
+    // Update plan details
+    const plan = phone.plans[newPlanKey];
+    const detailsContainer = card.querySelector(`#plan-details-${phoneId}`);
+    if(detailsContainer){
+      if(newPlanKey === "cash"){
+        detailsContainer.className = "phone-plan cash-layout";
+        detailsContainer.innerHTML = `
+          <div><span>Cash Price (Full)</span><strong>${money(plan.total)}</strong></div>
+          <div><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
+        `;
+      } else {
+        detailsContainer.className = "phone-plan";
+        detailsContainer.innerHTML = `
+          <div><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
+          <div><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
+          <div><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
+        `;
+      }
+    }
+
+    // Update hint
+    const hintEl = card.querySelector(`#plan-hint-${phoneId}`);
+    if(hintEl) hintEl.textContent = plan.hint || "";
+
+    // Update WhatsApp CTA button
+    const ctaBtn = card.querySelector('.btn-whatsapp');
+    if(ctaBtn){
+      ctaBtn.href = getWaLink(phone, newPlanKey);
+    }
+  }
+
+  function renderPhones(){
     const grid = document.getElementById('phoneGrid');
     grid.innerHTML = "";
-    const list = filter === "all" ? phones : phones.filter(p => p.category === filter);
+
+    const list = currentCategory === "all" 
+      ? phones 
+      : phones.filter(p => p.category === currentCategory);
 
     list.forEach(phone => {
-      const total = phone.deposit + phone.weekly * phone.weeks;
+      const activeKey = getEffectivePlan(phone);
       const card = document.createElement('article');
       card.className = 'phone-card';
+      card.id = `phone-card-${phone.id}`;
       card.innerHTML = `
         <div class="phone-media">
           <img src="${phone.image}" alt="${phone.model} ${phone.storage}"
@@ -803,27 +1219,44 @@
           <ul class="phone-specs">
             ${phone.specs.map(s => `<li>${s}</li>`).join("")}
           </ul>
-          <div class="phone-plan">
-            <div><span>Deposit</span><strong>${money(phone.deposit)}</strong></div>
-            <div><span>Weekly ×${phone.weeks}</span><strong>${money(phone.weekly)}</strong></div>
-            <div><span>Total</span><strong>${money(total)}</strong></div>
-          </div>
-          <a class="btn btn-whatsapp" href="${waLink(phone)}" target="_blank" rel="noopener">Get This Phone</a>
+          ${renderPlanBox(phone, activeKey)}
+          <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" target="_blank" rel="noopener">Get This Phone</a>
         </div>
       `;
       grid.appendChild(card);
     });
   }
 
+  // Category filter
   document.getElementById('filterRow').addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-pill');
     if(!btn) return;
     document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    renderPhones(btn.dataset.cat);
+    currentCategory = btn.dataset.cat;
+    renderPhones();
   });
 
-  renderPhones('all');
+  // Global plan mode filter
+  document.getElementById('globalPlanRow').addEventListener('click', (e) => {
+    const btn = e.target.closest('.plan-pill');
+    if(!btn) return;
+    document.querySelectorAll('.plan-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    globalPlanMode = btn.dataset.plan;
+    renderPhones();
+  });
+
+  // In-card plan tab click delegation
+  document.getElementById('phoneGrid').addEventListener('click', (e) => {
+    const tab = e.target.closest('.card-plan-tab');
+    if(!tab) return;
+    const phoneId = tab.dataset.phone;
+    const planKey = tab.dataset.plan;
+    updateCardPlanView(phoneId, planKey);
+  });
+
+  renderPhones();
 </script>
 
 </body>

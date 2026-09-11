@@ -1341,15 +1341,16 @@
 
               <!-- Upload Actions & URL Input -->
               <div class="photo-actions-col">
-                <input type="file" id="phoneFileInput" accept="image/jpeg,image/png,image/webp,image/jpg" style="display:none;">
+                <input type="file" id="phoneFileInput" accept="image/jpeg,image/png,image/webp,image/jpg" multiple style="display:none;">
                 <button type="button" class="btn-upload-file" id="uploadPhotoBtn">
                   <span>📁</span> Select Photo from Computer / Phone
                 </button>
                 <div id="uploadProgressHint" class="upload-hint">Upload device photo (JPG, PNG, WEBP)</div>
                 
                 <div class="photo-url-field">
-                  <input type="text" id="newPhoneImage" placeholder="Or paste manual image URL / file path">
+                  <input type="text" id="newPhoneImage" placeholder="Paste image URLs / paths separated by commas">
                 </div>
+                <div id="phoneGalleryPreview" class="gallery-grid" aria-label="Selected phone images"></div>
               </div>
             </div>
           </div>
@@ -1497,18 +1498,54 @@
   const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
   const uploadProgressHint = document.getElementById('uploadProgressHint');
   const newPhoneImage = document.getElementById('newPhoneImage');
+  const phoneGalleryPreview = document.getElementById('phoneGalleryPreview');
+  let selectedPhoneImages = [];
+
+  function renderPhoneGalleryPreview(){
+    if(!phoneGalleryPreview) return;
+    phoneGalleryPreview.innerHTML = selectedPhoneImages.map((url, index) => `
+      <div class="gallery-thumb-item active" data-image-index="${index}">
+        <img src="${url}" alt="Phone image ${index + 1}">
+        <button type="button" class="clear-photo-btn" data-remove-image="${index}" title="Remove image">✕</button>
+      </div>
+    `).join('');
+    const firstImage = selectedPhoneImages[0] || '';
+    if(firstImage){
+      photoPreviewImg.src = firstImage;
+      photoPreviewImg.style.display = 'block';
+      photoPreviewPlaceholder.style.display = 'none';
+      clearPhotoBtn.style.display = 'flex';
+      photoPreviewBox.classList.add('has-photo');
+    } else {
+      photoPreviewImg.src = '';
+      photoPreviewImg.style.display = 'none';
+      photoPreviewPlaceholder.style.display = 'flex';
+      clearPhotoBtn.style.display = 'none';
+      photoPreviewBox.classList.remove('has-photo');
+    }
+  }
+
+  function setPhonePhotos(urls){
+    selectedPhoneImages = [...new Set((Array.isArray(urls) ? urls : [urls]).filter(Boolean))];
+    newPhoneImage.value = selectedPhoneImages.join(', ');
+    renderPhoneGalleryPreview();
+  }
+
+  function readFileAsDataUrl(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
   function setPhonePhoto(url){
     if(!url){
       clearPhonePhoto();
       return;
     }
-    newPhoneImage.value = url;
-    photoPreviewImg.src = url;
-    photoPreviewImg.style.display = 'block';
-    photoPreviewPlaceholder.style.display = 'none';
-    clearPhotoBtn.style.display = 'flex';
-    photoPreviewBox.classList.add('has-photo');
+    setPhonePhotos([url]);
 
     
     if(uploadProgressHint){
@@ -1518,6 +1555,7 @@
   }
 
   function clearPhonePhoto(){
+    selectedPhoneImages = [];
     newPhoneImage.value = "";
     phoneFileInput.value = "";
     photoPreviewImg.src = "";
@@ -1525,6 +1563,7 @@
     photoPreviewPlaceholder.style.display = 'flex';
     clearPhotoBtn.style.display = 'none';
     photoPreviewBox.classList.remove('has-photo');
+    if(phoneGalleryPreview) phoneGalleryPreview.innerHTML = '';
     
     if(uploadProgressHint){
       uploadProgressHint.className = 'upload-hint';
@@ -1538,58 +1577,47 @@
   // Direct file selection and upload
   if(phoneFileInput){
     phoneFileInput.addEventListener('change', async () => {
-      const file = phoneFileInput.files[0];
-      if(!file) return;
+      const files = Array.from(phoneFileInput.files || []);
+      if(!files.length) return;
 
       // Show immediate local preview
-      const localPreviewUrl = URL.createObjectURL(file);
-      setPhonePhoto(localPreviewUrl);
+      const localPreviewUrls = files.map(file => URL.createObjectURL(file));
+      setPhonePhotos([...selectedPhoneImages, ...localPreviewUrls]);
 
       if(uploadProgressHint){
         uploadProgressHint.className = 'upload-hint';
-        uploadProgressHint.textContent = '⏳ Uploading ' + file.name + '...';
+        uploadProgressHint.textContent = `⏳ Uploading ${files.length} image${files.length === 1 ? '' : 's'}...`;
       }
 
-      try {
-        const formData = new FormData();
-        formData.append('image', file);
+      for(let fileIndex = 0; fileIndex < files.length; fileIndex++){
+        const file = files[fileIndex];
+        try {
+          const formData = new FormData();
+          formData.append('image', file);
 
-        const token = sessionStorage.getItem('drg_admin_token');
-        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+          const token = sessionStorage.getItem('drg_admin_token');
+          const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          headers: headers,
-          body: formData
-        });
-
-        const data = await res.json();
-        if(data.success && data.url){
-          setPhonePhoto(data.url);
-          showToast('✅ Photo uploaded: ' + data.filename);
-        } else {
-          // If upload endpoint is not authorized, save as base64 data url
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            setPhonePhoto(e.target.result);
-            if(uploadProgressHint){
-              uploadProgressHint.className = 'upload-hint success';
-              uploadProgressHint.textContent = '✓ Photo attached locally (' + file.name + ')';
-            }
-          };
-          reader.readAsDataURL(file);
-          showToast('Photo attached to device');
-        }
-      } catch(err){
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setPhonePhoto(e.target.result);
-          if(uploadProgressHint){
-            uploadProgressHint.className = 'upload-hint success';
-            uploadProgressHint.textContent = '✓ Photo attached (' + file.name + ')';
+          const res = await fetch('/api/upload', { method: 'POST', headers: headers, body: formData });
+          const data = await res.json();
+          if(data.success && data.url){
+            selectedPhoneImages[selectedPhoneImages.length - files.length + fileIndex] = data.url;
+            setPhonePhotos(selectedPhoneImages);
+          } else {
+            selectedPhoneImages[selectedPhoneImages.length - files.length + fileIndex] = await readFileAsDataUrl(file);
+            setPhonePhotos(selectedPhoneImages);
+            showToast('Photo attached locally: ' + file.name);
           }
-        };
-        reader.readAsDataURL(file);
+        } catch(err){
+          selectedPhoneImages[selectedPhoneImages.length - files.length + fileIndex] = await readFileAsDataUrl(file);
+          setPhonePhotos(selectedPhoneImages);
+          showToast('Photo attached locally: ' + file.name);
+        }
+      }
+
+      if(uploadProgressHint){
+        uploadProgressHint.className = 'upload-hint success';
+        uploadProgressHint.textContent = `✓ ${selectedPhoneImages.length} phone image${selectedPhoneImages.length === 1 ? '' : 's'} ready`;
       }
     });
   }
@@ -1597,18 +1625,16 @@
   // URL input change live preview
   if(newPhoneImage){
     newPhoneImage.addEventListener('input', () => {
-      const val = newPhoneImage.value.trim();
-      if(val){
-        photoPreviewImg.src = val;
-        photoPreviewImg.style.display = 'block';
-        photoPreviewPlaceholder.style.display = 'none';
-        clearPhotoBtn.style.display = 'flex';
-        photoPreviewBox.classList.add('has-photo');
-      } else {
-        clearPhonePhoto();
-      }
+      const urls = newPhoneImage.value.split(',').map(value => value.trim()).filter(Boolean);
+      setPhonePhotos(urls);
     });
   }
+  if(phoneGalleryPreview) phoneGalleryPreview.addEventListener('click', event => {
+    const removeButton = event.target.closest('[data-remove-image]');
+    if(!removeButton) return;
+    selectedPhoneImages.splice(Number(removeButton.dataset.removeImage), 1);
+    setPhonePhotos(selectedPhoneImages);
+  });
 
   
 
@@ -1633,7 +1659,9 @@
     document.getElementById('newPhoneCashPrice').value = phone.cashPrice || "";
 
     // Set photo
-    if(phone.image){
+    if(phone.images && phone.images.length){
+      setPhonePhotos(phone.images);
+    } else if(phone.image){
       setPhonePhoto(phone.image);
     } else {
       clearPhonePhoto();
@@ -2580,7 +2608,10 @@
     const category = document.getElementById('newPhoneCategory').value;
     const condition = document.getElementById('newPhoneCondition').value;
     const specsRaw = document.getElementById('newPhoneSpecs').value.trim();
-    const image = document.getElementById('newPhoneImage').value.trim();
+    const images = selectedPhoneImages.length
+      ? selectedPhoneImages
+      : document.getElementById('newPhoneImage').value.split(',').map(value => value.trim()).filter(Boolean);
+    const image = images[0] || '';
     const cashPrice = Number(document.getElementById('newPhoneCashPrice').value);
 
     const specs = specsRaw.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
@@ -2651,6 +2682,7 @@
         storage: storage,
         condition: condition,
         image: image,
+        images: images,
         specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
         cashPrice: cashPrice,
         plans: plans,
@@ -2687,6 +2719,7 @@
         storage: storage,
         condition: condition,
         image: image,
+        images: images,
         specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
         cashPrice: cashPrice,
         plans: plans,

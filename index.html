@@ -7,1848 +7,1647 @@
 <meta name="description" content="Quality certified renewed iPhones, Samsung Galaxy, Motorola & more in Nairobi. Deposit today, weekly payments, renewed phone in hand this week. WhatsApp us now.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Epilogue:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root, [data-theme="dark"] {
-    --bg-void:#0a0812;
-    --bg-panel:#150f22;
-    --bg-panel-2:#1d1530;
-    --purple-deep:#3a2266;
-    --purple:#6c4baf;
-    --purple-soft:#8f76c4;
-    --gold:#d9a653;
-    --gold-bright:#f2c878;
-    --text-primary:#f6f0e6;
-    --text-muted:#b7adc7;
-    --line:rgba(217,166,83,0.18);
-    --whatsapp:#2fc35b;
-    --danger:#ff4d4d;
-    --danger-bg:rgba(255,77,77,0.12);
-    --header-bg:rgba(10,8,18,0.88);
-    --radius-card:18px;
-    --radius-pill:999px;
-    --maxw:1180px;
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-  [data-theme="light"] {
-    --bg-void:#f7f5fa;
-    --bg-panel:#ffffff;
-    --bg-panel-2:#ede7f6;
-    --purple-deep:#53388c;
-    --purple:#6c4baf;
-    --purple-soft:#685296;
-    --gold:#b8802a;
-    --gold-bright:#8c5d10;
-    --text-primary:#1a1429;
-    --text-muted:#675e7a;
-    --line:rgba(184,128,42,0.22);
-    --whatsapp:#1ea94a;
-    --danger:#d32f2f;
-    --danger-bg:rgba(211,47,47,0.1);
-    --header-bg:rgba(247,245,250,0.92);
-  }
+:root{
+  --ink:#0e0e0e;--ink-muted:#4a4540;--ink-faint:#9a9590;
+  --surface:#0b0b14;--surface-card:rgba(20,20,35,0.78);
+  --surface-card-hover:rgba(26,26,46,0.92);
+  --accent:#e8e0d0;--accent2:#c8a96e;--accent2-glow:rgba(200,169,110,0.35);
+  --accent3:#6e9ec8;--border:rgba(200,169,110,0.18);
+  --border-hover:rgba(200,169,110,0.45);
+  --mono:'DM Mono',monospace;--serif:'DM Serif Display',serif;--sans:'Epilogue',sans-serif;
+  --nav-bg:rgba(11,11,20,0.88);
+  --edu-bg:rgba(14,14,24,0.9);--contact-bg:rgba(14,14,24,0.9);
+  --glow:#c8a96e;--whatsapp:#25d366;--danger:#ff4d4d;
+  --radius-card:10px;--radius-pill:999px;
+  --maxw:1140px;
+}
 
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--bg-void);
-    color:var(--text-primary);
-    font-family:'Manrope',sans-serif;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    transition:background-color .25s ease, color .25s ease;
-  }
-  h1,h2,h3,.display{
-    font-family:'Bricolage Grotesque',sans-serif;
-    line-height:1.05;
-    margin:0;
-    letter-spacing:-0.01em;
-  }
-  a{color:inherit;text-decoration:none;}
-  ul{margin:0;padding:0;list-style:none;}
-  img{max-width:100%;display:block;}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px;}
-  section{padding:72px 0;}
-  .eyebrow-free-heading{font-size:clamp(28px,5vw,42px);}
+html.light{
+  --ink:#0e0e0e;--ink-muted:#4a4540;--ink-faint:#9a9590;
+  --surface:#f4f0eb;--surface-card:rgba(255,255,255,0.72);
+  --surface-card-hover:rgba(255,255,255,0.95);
+  --accent:#1a1a2e;--accent2:#b8891e;--accent2-glow:rgba(184,137,30,0.25);
+  --accent3:#1e5e98;--border:rgba(0,0,0,0.10);
+  --border-hover:rgba(184,137,30,0.45);
+  --nav-bg:rgba(244,240,235,0.92);
+  --edu-bg:rgba(237,232,224,0.55);--contact-bg:rgba(237,232,224,0.55);
+  --glow:#b8891e;--whatsapp:#1ea94a;
+}
 
-  /* ---------- NAV ---------- */
-  header{
-    position:sticky;top:0;z-index:50;
-    background:var(--header-bg);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-    transition:background-color .25s ease, border-color .25s ease;
-  }
-  .nav{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 20px;max-width:var(--maxw);margin:0 auto;
-  }
-  .logo{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:800;font-size:20px;
-    display:flex;align-items:center;gap:8px;
-  }
-  .logo em{
-    font-style:normal;color:var(--gold);
-  }
-  .nav-links{
-    display:none;
-    gap:28px;
-    font-weight:600;font-size:15px;
-  }
-  .nav-links a{color:var(--text-muted);transition:color .2s;}
-  .nav-links a:hover{color:var(--gold-bright);}
-  .nav-right-cluster{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .theme-toggle-btn{
-    background:var(--bg-panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius-pill);
-    padding:7px 12px;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    color:var(--text-primary);
-    font-size:12.5px;
-    font-weight:700;
-    cursor:pointer;
-    transition:all .2s ease;
-  }
-  .theme-toggle-btn:hover{
-    border-color:var(--gold);
-    transform:translateY(-1px);
-  }
-  .theme-toggle-btn .key-hint{
-    background:rgba(217,166,83,0.14);
-    font-size:10px;
-    padding:1px 5px;
-    border-radius:4px;
-    color:var(--gold-bright);
-    border:1px solid var(--line);
-    font-family:monospace;
-  }
-  .nav-cta{
-    display:none;
-    align-items:center;gap:8px;
-    background:var(--whatsapp);
-    color:#08170c;
-    font-weight:700;font-size:14px;
-    padding:10px 18px;border-radius:var(--radius-pill);
-  }
-  .burger{
-    background:none;border:1px solid var(--line);
-    border-radius:10px;width:42px;height:42px;
-    display:flex;align-items:center;justify-content:center;
-    color:var(--text-primary);
-  }
-  .burger svg{width:20px;height:20px;}
-  .mobile-menu{
-    display:none;flex-direction:column;gap:2px;
-    background:var(--bg-panel);
-    border-top:1px solid var(--line);
-    padding:8px 20px 18px;
-  }
-  .mobile-menu.open{display:flex;}
-  .mobile-menu a{
-    padding:12px 4px;font-weight:600;
-    border-bottom:1px solid rgba(255,255,255,0.05);
-    color:var(--text-muted);
-  }
-  .mobile-menu .nav-cta{display:flex;margin-top:12px;justify-content:center;}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);background:var(--surface);color:var(--accent);
+  font-size:16px;line-height:1.7;font-weight:300;overflow-x:hidden;
+  transition:background 0.4s,color 0.4s;
+  -webkit-font-smoothing:antialiased;
+}
 
-  @media(min-width:860px){
-    .nav-links{display:flex;}
-    .nav-cta{display:flex;}
-    .burger{display:none;}
-  }
+/* THREE.JS CANVAS BACKGROUND */
+#three-canvas{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+}
 
-  /* ---------- HERO ---------- */
-  .hero{
-    position:relative;
-    overflow:hidden;
-    padding:68px 0 60px;
-    background:
-      radial-gradient(circle at 20% 15%, rgba(108,75,175,0.32), transparent 55%),
-      radial-gradient(circle at 85% 25%, rgba(217,166,83,0.22), transparent 50%),
-      transparent;
-  }
-  .hero-grid{
-    display:grid;gap:40px;align-items:center;
-  }
-  .hero-tag{
-    display:inline-flex;align-items:center;gap:8px;
-    background:rgba(217,166,83,0.14);
-    border:1px solid var(--line);
-    color:var(--gold-bright);
-    font-weight:700;font-size:13px;
-    padding:7px 16px;border-radius:var(--radius-pill);
-    margin-bottom:18px;
-    backdrop-filter:blur(8px);
-  }
-  .hero h1{
-    font-size:clamp(38px,9vw,66px);
-    font-weight:800;
-    color:var(--text-primary);
-    text-shadow:0 4px 24px rgba(0,0,0,0.6);
-  }
-  .hero h1 span{
-    color:var(--gold);
-    background:linear-gradient(135deg, var(--gold-bright), var(--gold));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .hero p.lead{
-    margin-top:18px;
-    font-size:17.5px;
-    color:var(--text-muted);
-    max-width:46ch;
-    text-shadow:0 2px 10px rgba(0,0,0,0.5);
-  }
-  .hero-actions{
-    display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;
-  }
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    padding:15px 26px;border-radius:var(--radius-pill);
-    font-weight:700;font-size:15px;
-    border:1px solid transparent;
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .btn:active{transform:scale(0.97);}
-  .btn-gold{
-    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
-    color:#241505;
-    box-shadow:0 10px 30px -10px rgba(217,166,83,0.55);
-  }
-  .btn-whatsapp{
-    background:var(--whatsapp);
-    color:#07220f;
-    box-shadow:0 10px 30px -10px rgba(47,195,91,0.5);
-  }
-  .btn-outline{
-    background:transparent;border-color:var(--line);color:var(--text-primary);
-  }
-  .hero-delivery{
-    margin-top:22px;display:flex;align-items:center;gap:10px;
-    color:var(--text-muted);font-size:14px;font-weight:600;
-  }
-  .hero-delivery .dot{width:8px;height:8px;border-radius:50%;background:var(--whatsapp);box-shadow:0 0 10px var(--whatsapp);}
+/* CONTENT POSITIONING */
+nav,section,footer{position:relative;z-index:1}
+.section-inner{max-width:var(--maxw);margin:0 auto;padding:0 2rem}
 
-  /* Lively Phone Wallpaper Background & Kinetic Aura */
-  .ambient-phones-bg{
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    overflow:hidden;
-  }
-  .ambient-wallpaper-canvas{
-    position:absolute;
-    inset:-4%;
-    width:108%;
-    height:108%;
-    background-image:
-      radial-gradient(ellipse at 80% 20%, rgba(217,166,83,0.24), transparent 45%),
-      radial-gradient(ellipse at 20% 70%, rgba(108,75,175,0.32), transparent 50%),
-      radial-gradient(circle at 50% 45%, rgba(47,195,91,0.14), transparent 55%),
-      linear-gradient(180deg, rgba(10,8,18,0.5) 0%, rgba(10,8,18,0.68) 40%, rgba(10,8,18,0.86) 100%),
-      url('images/phones-ambient-lively.jpg');
-    background-size:100% 100%, 100% 100%, 100% 100%, 100% 100%, cover;
-    background-position:center top;
-    background-repeat:no-repeat;
-    animation:liveWallpaperDrift 24s ease-in-out infinite alternate;
-    transition:opacity .3s ease;
-  }
-  [data-theme="light"] .ambient-wallpaper-canvas{
-    background-image:
-      radial-gradient(ellipse at 80% 20%, rgba(184,128,42,0.18), transparent 45%),
-      radial-gradient(ellipse at 20% 70%, rgba(108,75,175,0.16), transparent 50%),
-      linear-gradient(180deg, rgba(247,245,250,0.62) 0%, rgba(247,245,250,0.76) 45%, rgba(247,245,250,0.92) 100%),
-      url('images/phones-ambient-lively.jpg');
-    opacity:0.75;
-  }
-  @keyframes liveWallpaperDrift{
-    0%{transform:scale(1) translate(0, 0);}
-    50%{transform:scale(1.04) translate(-1.2%, 0.8%);}
-    100%{transform:scale(1.02) translate(0.8%, -1%);}
-  }
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.1rem 3.5rem;
+  background:var(--nav-bg);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--border);
+  transition:background 0.4s, border-color 0.4s;
+}
+.nav-logo{
+  font-family:var(--mono);font-size:13px;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);
+  text-decoration:none;display:flex;align-items:center;gap:8px;
+}
+.nav-logo em{font-style:normal;color:var(--accent);opacity:0.9}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{
+  font-size:12px;font-weight:400;color:var(--accent);opacity:0.65;
+  text-decoration:none;letter-spacing:0.08em;transition:opacity 0.2s,color 0.2s;
+  font-family:var(--mono);text-transform:uppercase;
+}
+.nav-links a:hover{opacity:1;color:var(--accent2)}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(37,211,102,0.12);
+  border:0.5px solid rgba(37,211,102,0.35);
+  color:var(--whatsapp);
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  text-transform:uppercase;padding:7px 14px;border-radius:2px;
+  text-decoration:none;transition:all 0.2s;
+}
+.nav-cta:hover{background:var(--whatsapp);color:#071a0e;transform:translateY(-1px)}
+.theme-btn{
+  background:none;border:0.5px solid var(--border);border-radius:2px;
+  padding:6px 14px;cursor:pointer;font-family:var(--mono);font-size:11px;
+  letter-spacing:0.1em;color:var(--accent);opacity:0.75;
+  transition:all 0.2s;
+}
+.theme-btn:hover{opacity:1;border-color:var(--accent2);color:var(--accent2)}
+.burger{
+  display:none;background:none;border:0.5px solid var(--border);
+  border-radius:4px;padding:6px 10px;color:var(--accent);cursor:pointer;
+}
+.burger svg{width:20px;height:20px;display:block}
+.mobile-menu{
+  display:none;position:fixed;top:64px;left:0;right:0;
+  background:var(--nav-bg);backdrop-filter:blur(24px);
+  border-bottom:0.5px solid var(--border);
+  padding:1.5rem 2rem;flex-direction:column;gap:1rem;z-index:99;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{
+  font-family:var(--mono);font-size:13px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent);text-decoration:none;
+  padding:8px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);
+}
 
-  /* Lively Wallpaper Light Shimmer Sweep */
-  .wallpaper-shimmer{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(115deg, transparent 20%, rgba(217,166,83,0.08) 45%, rgba(108,75,175,0.12) 55%, transparent 80%);
-    background-size:200% 200%;
-    animation:wallpaperShimmer 16s ease-in-out infinite;
-    mix-blend-mode:screen;
-    pointer-events:none;
-  }
-  @keyframes wallpaperShimmer{
-    0%{background-position:0% 0%;}
-    50%{background-position:100% 100%;}
-    100%{background-position:0% 0%;}
-  }
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:0.85rem 2.2rem;
+  font-family:var(--mono);font-size:12px;letter-spacing:0.1em;
+  text-transform:uppercase;text-decoration:none;border-radius:2px;
+  transition:all 0.25s ease;cursor:pointer;border:none;
+}
+.btn-gold{
+  background:var(--accent2);color:#0b0b14;font-weight:500;
+  box-shadow:0 0 30px var(--accent2-glow);
+}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(200,169,110,0.5)}
+.btn-outline{
+  background:transparent;color:var(--accent);
+  border:0.5px solid var(--border);backdrop-filter:blur(8px);
+}
+html.light .btn-outline{border-color:rgba(0,0,0,0.2)}
+.btn-outline:hover{border-color:var(--accent2);color:var(--accent2);transform:translateY(-3px)}
 
-  /* Animated Ambient Glow Spheres */
-  .ambient-orb{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(80px);
-    pointer-events:none;
-    opacity:0.48;
-    animation:floatOrb 16s ease-in-out infinite alternate;
-  }
-  .orb-1{
-    width:520px;
-    height:520px;
-    background:radial-gradient(circle, rgba(108,75,175,0.7) 0%, rgba(108,75,175,0) 70%);
-    top:-120px;
-    left:5%;
-    animation-duration:14s;
-  }
-  .orb-2{
-    width:460px;
-    height:460px;
-    background:radial-gradient(circle, rgba(217,166,83,0.55) 0%, rgba(217,166,83,0) 70%);
-    top:25%;
-    right:5%;
-    animation-duration:19s;
-    animation-delay:-5s;
-  }
-  .orb-3{
-    width:500px;
-    height:500px;
-    background:radial-gradient(circle, rgba(0,210,255,0.25) 0%, rgba(108,75,175,0) 70%);
-    bottom:15%;
-    left:18%;
-    animation-duration:22s;
-    animation-delay:-9s;
-  }
-  @keyframes floatOrb{
-    0%{transform:translate(0, 0) scale(1);}
-    50%{transform:translate(45px, 55px) scale(1.08);}
-    100%{transform:translate(-35px, 25px) scale(0.96);}
-  }
-  .ambient-grid-overlay{
-    position:absolute;
-    inset:0;
-    background-image:linear-gradient(rgba(217,166,83,0.035) 1px, transparent 1px),
-                     linear-gradient(90deg, rgba(217,166,83,0.035) 1px, transparent 1px);
-    background-size:55px 55px;
-    mask-image:radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 90%);
-    -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 90%);
-    pointer-events:none;
-  }
+/* ---------- HERO ---------- */
+.hero{
+  min-height:96vh;display:grid;grid-template-columns:1.05fr 0.95fr;
+  padding-top:80px;background:transparent;align-items:center;
+}
+.hero-left{
+  padding:5rem 3.5rem 4rem;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--accent2);margin-bottom:1.5rem;
+  opacity:0;animation:fadeUp 0.7s ease forwards 0.2s;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{
+  content:'';display:inline-block;width:24px;height:1px;background:var(--accent2);opacity:0.6;
+}
+.hero-name{
+  font-family:var(--serif);font-size:clamp(3.2rem,5.5vw,5.6rem);
+  line-height:1.05;letter-spacing:-0.02em;color:var(--accent);
+  margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.7s ease forwards 0.4s;
+  text-shadow:0 0 60px rgba(200,169,110,0.18);
+}
+html.light .hero-name{color:#0e0e1a;text-shadow:none}
+.hero-name em{font-style:italic;color:var(--accent2)}
+.hero-desc{
+  font-size:17px;font-weight:300;color:var(--accent);opacity:0;
+  max-width:500px;margin-bottom:2.2rem;
+  animation:fadeUp 0.7s ease forwards 0.6s;
+  filter:opacity(0.72);line-height:1.75;
+}
+html.light .hero-desc{color:#2a2a3e;filter:opacity(1)}
+.hero-cta{
+  display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;
+  opacity:0;animation:fadeUp 0.7s ease forwards 0.8s;
+}
+.hero-delivery-tag{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:0.08em;
+  color:var(--accent);opacity:0;display:flex;align-items:center;gap:8px;
+  animation:fadeUp 0.7s ease forwards 1s;filter:opacity(0.65);
+}
+.pulse-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--whatsapp);
+  box-shadow:0 0 10px var(--whatsapp);
+}
 
-  .hero-visual{
-    position:relative;
-    display:flex;align-items:center;justify-content:center;
-    min-height:340px;
-  }
-  .glow-orb{
-    position:absolute;width:400px;height:400px;border-radius:50%;
-    background:radial-gradient(circle, rgba(217,166,83,0.45), rgba(108,75,175,0.35) 55%, transparent 75%);
-    filter:blur(16px);
-    animation:pulseGlow 6s ease-in-out infinite alternate;
-  }
-  @keyframes pulseGlow{
-    0%{transform:scale(0.95);opacity:0.65;}
-    100%{transform:scale(1.06);opacity:0.95;}
-  }
+/* ---------- 3D TILT PHONE CARD ---------- */
+.hero-right{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  perspective:1000px;padding:3rem 2rem;
+}
+.tilt-scene{
+  width:430px;transform-style:preserve-3d;
+  transition:transform 0.1s ease;
+  opacity:0;animation:fadeUp 0.9s ease forwards 1s;
+}
+.hero-terminal{
+  background:rgba(10,10,20,0.85);
+  border:0.5px solid rgba(200,169,110,0.28);
+  border-radius:24px;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.65),
+    0 0 0 0.5px rgba(200,169,110,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  transform-style:preserve-3d;
+  overflow:hidden;
+}
+html.light .hero-terminal{
+  background:rgba(22,22,40,0.92);
+  border-color:rgba(200,169,110,0.35);
+  box-shadow:0 40px 80px rgba(0,0,0,0.25),0 0 0 0.5px rgba(200,169,110,0.2);
+}
+.terminal-bar{
+  background:rgba(20,20,36,0.95);padding:14px 18px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:0.5px solid rgba(255,255,255,0.06);
+}
+html.light .terminal-bar{background:rgba(14,14,28,0.98);border-bottom-color:rgba(255,255,255,0.08)}
+.t-dot{width:11px;height:11px;border-radius:50%}
+.t-dot.red{background:#ff5f57}.t-dot.yellow{background:#febc2e}.t-dot.green{background:#28c840}
+.terminal-title{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.4);margin-left:auto;letter-spacing:0.1em}
+.hero-phone-body{padding:1.6rem}
+.phone-hero-banner{
+  width:100%;height:210px;object-fit:cover;border-radius:12px;
+  border:0.5px solid rgba(200,169,110,0.2);margin-bottom:1.2rem;
+  display:block;box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+.phone-spotlight-details{display:flex;flex-direction:column;gap:6px}
+.spotlight-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent2)}
+.spotlight-title{font-family:var(--serif);font-size:1.4rem;color:#fff;line-height:1.2}
+.spotlight-tags{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
+.spotlight-tag{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:3px 8px;
+  background:rgba(200,169,110,0.12);border:0.5px solid rgba(200,169,110,0.25);
+  border-radius:3px;color:var(--accent2);
+}
+.spotlight-pricing{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.08);
+}
+.spotlight-rate{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.5)}
+.spotlight-rate strong{color:#fff;font-size:13px;display:block}
+.spotlight-cta{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+  padding:6px 14px;background:var(--accent2);color:#0b0b14;border-radius:2px;
+  text-decoration:none;font-weight:500;transition:all 0.2s;
+}
+.spotlight-cta:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(200,169,110,0.4)}
 
-  .hero-phones-card{
-    position:relative;
-    width:100%;
-    max-width:530px;
-    border-radius:26px;
-    overflow:hidden;
-    border:1.5px solid rgba(217,166,83,0.45);
-    background:rgba(21,15,34,0.68);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    box-shadow:
-      0 30px 90px -15px rgba(0,0,0,0.92),
-      0 0 50px rgba(108,75,175,0.35),
-      0 0 35px rgba(217,166,83,0.28);
-    transform:perspective(1000px) rotateY(-4deg) rotateX(2deg);
-    transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .4s ease, border-color .3s ease;
-    z-index:2;
-  }
-  .hero-phones-card:hover{
-    transform:perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-6px);
-    box-shadow:
-      0 40px 100px -10px rgba(0,0,0,0.95),
-      0 0 65px rgba(108,75,175,0.45),
-      0 0 45px rgba(217,166,83,0.35);
-    border-color:var(--gold-bright);
-  }
-  .hero-card-glow{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:radial-gradient(circle at 50% 115%, rgba(217,166,83,0.3), transparent 60%);
-    mix-blend-mode:screen;
-    z-index:3;
-  }
-  .hero-phones-banner{
-    width:100%;
-    height:auto;
-    display:block;
-    object-fit:cover;
-    transition:transform .5s ease;
-  }
-  .hero-phones-card:hover .hero-phones-banner{
-    transform:scale(1.04);
-  }
-  .hero-phones-badge{
-    position:absolute;
-    bottom:14px;
-    left:50%;
-    transform:translateX(-50%);
-    background:rgba(10,8,18,0.85);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    border:1px solid rgba(217,166,83,0.4);
-    color:var(--text-primary);
-    font-size:12px;
-    font-weight:700;
-    padding:7px 18px;
-    border-radius:var(--radius-pill);
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    white-space:nowrap;
-    box-shadow:0 8px 25px rgba(0,0,0,0.5), 0 0 15px rgba(217,166,83,0.2);
-    z-index:4;
-  }
-  [data-theme="light"] .hero-phones-badge{
-    background:rgba(255,255,255,0.92);
-    color:#1a1429;
-    border-color:rgba(184,128,42,0.35);
-  }
-  .badge-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:var(--whatsapp);
-    box-shadow:0 0 10px var(--whatsapp);
-    animation:dotPulse 2s infinite;
-  }
-  @keyframes dotPulse{
-    0%, 100%{transform:scale(1);opacity:1;}
-    50%{transform:scale(1.3);opacity:0.8;}
-  }
+/* FLOATING 3D BADGES */
+.float-badge{
+  position:absolute;
+  background:rgba(10,10,20,0.92);
+  border:0.5px solid rgba(200,169,110,0.35);
+  border-radius:8px;backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding:10px 16px;font-family:var(--mono);font-size:11px;
+  color:var(--accent2);letter-spacing:0.1em;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  transform:translateZ(24px);
+  animation:float 4s ease-in-out infinite;
+}
+html.light .float-badge{background:rgba(14,14,28,0.95);border-color:rgba(200,169,110,0.4);color:#c8a96e;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+.badge-1{top:-16px;right:-18px;animation-delay:0s}
+.badge-2{bottom:-14px;left:-16px;animation-delay:-2s}
+.badge-3{top:35%;left:-24px;animation-delay:-1s;font-size:10px}
 
-  /* Floating Customer Incentive Chips around Flagships */
-  .floating-chip{
-    position:absolute;
-    background:rgba(21,15,34,0.88);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border:1px solid rgba(217,166,83,0.4);
-    border-radius:14px;
-    padding:8px 14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    box-shadow:0 14px 35px rgba(0,0,0,0.65), 0 0 18px rgba(217,166,83,0.18);
-    z-index:4;
-    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-  }
-  .floating-chip:hover{
-    transform:translateY(-5px) scale(1.05);
-    border-color:var(--gold-bright);
-    box-shadow:0 18px 40px rgba(0,0,0,0.75), 0 0 25px rgba(217,166,83,0.3);
-  }
-  [data-theme="light"] .floating-chip{
-    background:rgba(255,255,255,0.92);
-    border-color:rgba(184,128,42,0.35);
-    box-shadow:0 12px 28px rgba(0,0,0,0.12);
-  }
-  .floating-chip strong{
-    font-size:12px;
-    color:var(--text-primary);
-    display:block;
-    line-height:1.2;
-    font-weight:700;
-  }
-  .floating-chip small{
-    font-size:10px;
-    color:var(--gold-bright);
-    font-weight:600;
-  }
-  .chip-icon{
-    font-size:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .chip-top-right{
-    top:6px;
-    right:-18px;
-    animation:chipBob 6s ease-in-out infinite alternate;
-  }
-  .chip-bottom-left{
-    bottom:8px;
-    left:-20px;
-    animation:chipBob 7s ease-in-out infinite alternate-reverse 1s;
-  }
-  .chip-top-left{
-    top:26px;
-    left:-24px;
-    animation:chipBob 6.5s ease-in-out infinite alternate .5s;
-  }
-  @keyframes chipBob{
-    0%{transform:translateY(0);}
-    100%{transform:translateY(-9px);}
-  }
-  @media(max-width:860px){
-    .chip-top-left{display:none;}
-    .chip-top-right{right:4px;top:-10px;}
-    .chip-bottom-left{left:4px;bottom:-12px;}
-  }
+/* ---------- SECTION COMMON ---------- */
+section{padding:6rem 2rem}
+.section-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--accent2);margin-bottom:1rem;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';display:block;height:1px;width:40px;background:var(--accent2);opacity:0.4}
+.section-title{
+  font-family:var(--serif);font-size:clamp(2.2rem,3.8vw,3.2rem);
+  line-height:1.12;color:var(--accent);margin-bottom:1.5rem;
+}
+.section-title em{font-style:italic;color:var(--accent2)}
+.section-desc{
+  font-size:16px;color:var(--accent);opacity:0.7;max-width:580px;
+  margin-bottom:3rem;line-height:1.7;
+}
 
-  /* ---------- SECTION HEADS ---------- */
-  .section-head{
-    display:flex;flex-direction:column;gap:10px;
-    margin-bottom:36px;
-  }
-  .section-head h2{font-size:clamp(26px,5vw,38px);}
-  .section-head p{color:var(--text-muted);max-width:56ch;font-size:15.5px;}
+/* ---------- CATALOGUE SECTION ---------- */
+.catalogue-section{
+  background:rgba(12,12,22,0.65);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-top:0.5px solid var(--border);
+  border-bottom:0.5px solid var(--border);
+}
+html.light .catalogue-section{background:rgba(244,240,235,0.65)}
 
-  /* ---------- PHONES ---------- */
-  .phones-section{
-    background:rgba(10,8,18,0.78);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-    position:relative;
-  }
-  [data-theme="light"] .phones-section{
-    background:rgba(247,245,250,0.84);
-  }
-  .filter-row{
-    display:flex;gap:10px;overflow-x:auto;
-    padding-bottom:6px;margin-bottom:30px;
-    -ms-overflow-style:none;scrollbar-width:none;
-  }
-  .filter-row::-webkit-scrollbar{display:none;}
-  .filter-pill{
-    flex:0 0 auto;
-    padding:10px 20px;border-radius:var(--radius-pill);
-    border:1px solid var(--line);
-    background:rgba(21,15,34,0.8);
-    backdrop-filter:blur(8px);
-    color:var(--text-muted);
-    font-weight:700;font-size:14px;
-    cursor:pointer;
-    transition:all .2s ease;
-  }
-  [data-theme="light"] .filter-pill{
-    background:rgba(255,255,255,0.85);
-  }
-  .filter-pill:hover{
-    border-color:var(--gold);
-    color:var(--text-primary);
-    transform:translateY(-1px);
-  }
-  .filter-pill.active{
-    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
-    color:#241505;border-color:transparent;
-    box-shadow:0 4px 15px rgba(217,166,83,0.35);
-  }
-  .phone-grid{
-    display:grid;gap:22px;
-    grid-template-columns:1fr;
-  }
-  @media(min-width:640px){
-    .phone-grid{grid-template-columns:repeat(2,1fr);}
-  }
-  @media(min-width:1000px){
-    .phone-grid{grid-template-columns:repeat(3,1fr);}
-  }
-  .phone-card{
-    background:rgba(21,15,34,0.82);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--line);
-    border-radius:var(--radius-card);
-    overflow:hidden;
-    display:flex;flex-direction:column;
-    box-shadow:0 12px 35px -8px rgba(0,0,0,0.55);
-    transition:transform .25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .25s ease, border-color .25s ease;
-  }
-  .phone-card:hover{
-    transform:translateY(-6px);
-    border-color:var(--gold);
-    box-shadow:0 22px 50px -10px rgba(0,0,0,0.75), 0 0 25px rgba(217,166,83,0.25);
-  }
-  [data-theme="light"] .phone-card{
-    background:rgba(255,255,255,0.9);
-    box-shadow:0 10px 30px -8px rgba(0,0,0,0.08);
-  }
-  [data-theme="light"] .phone-card:hover{
-    box-shadow:0 20px 45px -8px rgba(108,75,175,0.18), 0 0 20px rgba(184,128,42,0.2);
-  }
-  .phone-media{
-    position:relative;
-    aspect-ratio:4/3;
-    background:linear-gradient(150deg,var(--purple-deep),#0f0a1a 70%);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .phone-media img{width:100%;height:100%;object-fit:cover;}
-  .phone-media-fallback{
-    display:flex;flex-direction:column;align-items:center;gap:6px;
-    color:var(--purple-soft);font-weight:700;font-size:13px;
-  }
-  .phone-media-fallback .icon{font-size:34px;}
-  .condition-badge{
-    position:absolute;top:12px;left:12px;
-    background:rgba(10,8,18,0.75);
-    border:1px solid var(--line);
-    color:var(--gold-bright);
-    font-size:11.5px;font-weight:700;
-    padding:5px 11px;border-radius:var(--radius-pill);
-  }
-  .phone-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:12px;flex:1;}
-  .phone-title{font-size:19px;font-weight:700;color:var(--text-primary);}
-  .phone-title small{
-    display:block;font-family:'Manrope',sans-serif;font-weight:600;
-    color:var(--text-muted);font-size:13px;margin-top:2px;
-  }
-  .phone-specs{display:flex;flex-direction:column;gap:5px;}
-  .phone-specs li{
-    font-size:13.5px;color:var(--text-muted);
-    padding-left:16px;position:relative;
-  }
-  .phone-specs li::before{
-    content:"";position:absolute;left:0;top:8px;
-    width:6px;height:6px;border-radius:50%;background:var(--purple-soft);
-  }
-  /* Plan switcher & details */
-  .plans-bar-wrap{
-    display:flex;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:24px;
-    font-size:13px;
-    color:var(--text-muted);
-  }
-  .plans-bar-label{font-weight:700;color:var(--text-primary);}
-  .global-plan-row{display:flex;gap:8px;flex-wrap:wrap;}
-  .plan-pill{
-    padding:7px 14px;
-    border-radius:var(--radius-pill);
-    border:1px solid var(--line);
-    background:var(--bg-panel);
-    color:var(--text-muted);
-    font-weight:700;
-    font-size:13px;
-    cursor:pointer;
-    transition:all .2s;
-  }
-  .plan-pill:hover{color:var(--text-primary);border-color:var(--gold);}
-  .plan-pill.active{
-    background:var(--purple-deep);
-    border-color:var(--gold-bright);
-    color:var(--gold-bright);
-  }
+/* Category & Plan Filter Bars */
 
-  .card-plan-box{
-    margin-top:4px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-  }
-  .card-plan-tabs{
-    display:flex;
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--line);
-    border-radius:var(--radius-pill);
-    padding:3px;
-    gap:3px;
-  }
-  .card-plan-tab{
-    flex:1;
-    background:transparent;
-    border:none;
-    color:var(--text-muted);
-    font-family:inherit;
-    font-size:11px;
-    font-weight:700;
-    padding:6px 2px;
-    border-radius:var(--radius-pill);
-    cursor:pointer;
-    transition:all .15s ease;
-    text-align:center;
-  }
-  .card-plan-tab:hover{color:var(--text-primary);}
-  .card-plan-tab.active{
-    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
-    color:#241505;
-    box-shadow:0 2px 8px rgba(217,166,83,0.3);
-  }
+/* Customer Search Bar */
+.search-bar-wrap{
+  display:flex;gap:10px;align-items:center;width:100%;margin-bottom:14px;
+}
+.search-input-box{
+  position:relative;flex:1;display:flex;align-items:center;
+}
+.search-icon{
+  position:absolute;left:14px;font-size:14px;opacity:0.5;pointer-events:none;
+}
+.customer-search-input{
+  width:100%;padding:11px 40px 11px 42px;
+  background:var(--surface-card);border:0.5px solid var(--border);
+  border-radius:2px;color:var(--accent);
+  font-family:var(--mono);font-size:12px;letter-spacing:0.04em;
+  transition:all 0.2s ease;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.customer-search-input:focus{
+  outline:none;border-color:var(--accent2);
+  box-shadow:0 0 20px rgba(200,169,110,0.25);
+  background:var(--surface-card-hover);
+}
+.clear-search-btn{
+  position:absolute;right:12px;background:none;border:none;color:var(--accent);
+  opacity:0.5;cursor:pointer;font-size:14px;padding:4px;line-height:1;
+  transition:all 0.15s;
+}
+.clear-search-btn:hover{opacity:1;color:var(--accent2)}
+.search-submit-btn{
+  flex:0 0 auto;padding:0.75rem 1.6rem;white-space:nowrap;cursor:pointer;
+}
+.search-status-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:11px;color:var(--accent);opacity:0.85;
+  padding:2px 4px 6px;width:100%;
+}
+.search-status-text{color:var(--accent2)}
+.search-reset-link{
+  background:none;border:none;color:var(--accent2);text-decoration:underline;
+  cursor:pointer;font-family:inherit;font-size:inherit;
+}
 
-  .phone-plan{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    background:rgba(217,166,83,0.06);
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:12px 10px;
-    min-height:56px;
-    align-items:center;
-  }
-  .phone-plan.cash-layout{
-    grid-template-columns:1.2fr 1fr;
-  }
-  .phone-plan div{display:flex;flex-direction:column;gap:2px;text-align:center;}
-  .phone-plan span{font-size:11px;color:var(--text-muted);font-weight:600;}
-  .phone-plan strong{font-size:13px;color:var(--gold-bright);font-weight:800;white-space:nowrap;}
-  .plan-hint{
-    font-size:11px;
-    color:var(--purple-soft);
-    font-weight:600;
-    text-align:center;
-    min-height:16px;
-  }
+.controls-container{
+  display:flex;flex-direction:column;gap:16px;margin-bottom:2.5rem;
+}
+.filter-row{
+  display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-pill{
+  flex:0 0 auto;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent);opacity:0.7;
+  padding:8px 18px;border-radius:2px;
+  background:var(--surface-card);border:0.5px solid var(--border);
+  cursor:pointer;transition:all 0.2s ease;
+}
+.filter-pill:hover{opacity:1;border-color:var(--accent2);color:var(--accent2)}
+.filter-pill.active{
+  background:var(--accent2);color:#0b0b14;opacity:1;font-weight:500;
+  border-color:var(--accent2);box-shadow:0 0 20px rgba(200,169,110,0.3);
+}
 
-  .phone-card .btn-whatsapp{
-    margin-top:auto;
-    padding:12px 14px;
-    font-size:14px;
-  }
+.plan-filter-row{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;color:var(--accent);opacity:0.8;
+}
+.plan-filter-label{text-transform:uppercase;letter-spacing:0.12em;color:var(--accent2)}
+.plan-pill{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:0.08em;
+  text-transform:uppercase;padding:5px 12px;border-radius:2px;
+  background:transparent;border:0.5px solid var(--border);
+  color:var(--accent);opacity:0.65;cursor:pointer;transition:all 0.2s;
+}
+.plan-pill:hover{opacity:1;border-color:var(--accent2);color:var(--accent2)}
+.plan-pill.active{
+  background:rgba(200,169,110,0.18);border-color:var(--accent2);
+  color:var(--accent2);opacity:1;
+}
 
-  /* Footer Staff Portal Link */
-  .admin-trigger-link{
-    background:none;
-    border:1px solid var(--line);
-    color:var(--text-muted);
-    font-size:12px;
-    font-family:inherit;
-    font-weight:600;
-    cursor:pointer;
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:5px 12px;
-    border-radius:var(--radius-pill);
-    transition:all .2s;
-    text-decoration:none;
-  }
-  .admin-trigger-link:hover{
-    color:var(--gold-bright);
-    border-color:var(--gold);
-    transform:translateY(-1px);
-  }
+/* Phone Grid */
+.phone-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  gap:2rem;
+}
+.phone-card{
+  background:var(--surface-card);
+  border:0.5px solid var(--border);
+  border-radius:var(--radius-card);
+  overflow:hidden;display:flex;flex-direction:column;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  transition:transform 0.3s ease,box-shadow 0.3s ease,border-color 0.3s ease;
+  transform-style:preserve-3d;
+  box-shadow:0 6px 30px rgba(0,0,0,0.25);
+}
+.phone-card:hover{
+  transform:translateY(-6px) rotateX(2deg) rotateY(-1deg);
+  border-color:var(--border-hover);
+  box-shadow:0 20px 50px rgba(200,169,110,0.16),0 0 0 0.5px rgba(200,169,110,0.25);
+}
+html.light .phone-card{box-shadow:0 6px 24px rgba(0,0,0,0.06)}
+html.light .phone-card:hover{box-shadow:0 20px 50px rgba(184,137,30,0.12)}
 
-  /* Toast notification */
-  .toast-notification{
-    position:fixed;
-    bottom:28px;
-    left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:var(--bg-panel);
-    border:1px solid var(--gold);
-    color:var(--text-primary);
-    padding:12px 22px;
-    border-radius:var(--radius-pill);
-    box-shadow:0 12px 40px rgba(0,0,0,0.5);
-    font-size:13.5px;
-    font-weight:700;
-    z-index:9999;
-    transition:transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity .3s ease;
-    opacity:0;
-    pointer-events:none;
-  }
-  .toast-notification.show{
-    transform:translateX(-50%) translateY(0);
-    opacity:1;
-  }
+.phone-media{
+  position:relative;aspect-ratio:16/10;
+  background:linear-gradient(145deg,#121224,#080812);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border-bottom:0.5px solid var(--border);
+}
+html.light .phone-media{background:linear-gradient(145deg,#e8e4dc,#d8d2c4)}
+.phone-media img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.5s ease;
+}
+.phone-card:hover .phone-media img{transform:scale(1.05)}
+.phone-media.phone-media-placeholder{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, rgba(18,14,30,0.95), rgba(30,22,50,0.92));
+  border-bottom:0.5px solid var(--border);
+  position:relative;
+}
+html.light .phone-media.phone-media-placeholder{
+  background:linear-gradient(135deg, rgba(240,235,225,0.95), rgba(228,220,208,0.92));
+}
+.placeholder-content{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px 16px;gap:6px;width:100%;
+}
+.placeholder-icon{
+  font-size:42px;filter:drop-shadow(0 4px 14px rgba(200,169,110,0.35));
+}
+.placeholder-title{
+  font-family:var(--serif);font-size:1.2rem;color:var(--accent);line-height:1.2;
+}
+.placeholder-subtitle{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent2);opacity:0.85;
+}
+.phone-condition-badge{
+  position:absolute;top:12px;left:12px;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent2);
+  background:rgba(10,10,20,0.85);border:0.5px solid rgba(200,169,110,0.3);
+  padding:4px 10px;border-radius:2px;backdrop-filter:blur(8px);
+}
 
+.phone-card-body{
+  padding:1.6rem;display:flex;flex-direction:column;gap:1rem;flex:1;
+}
+.phone-card-header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+}
+.phone-card-title{
+  font-family:var(--serif);font-size:1.45rem;color:var(--accent);line-height:1.15;
+}
+.phone-card-storage{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  color:var(--accent2);background:rgba(200,169,110,0.1);
+  padding:2px 8px;border-radius:2px;border:0.5px solid var(--border);
+  white-space:nowrap;
+}
+.phone-specs-list{
+  display:flex;flex-direction:column;gap:4px;
+}
+.phone-spec-item{
+  font-family:var(--mono);font-size:11.5px;color:var(--accent);opacity:0.75;
+  line-height:1.8;
+}
+.phone-spec-item::before{
+  content:'— ';color:var(--accent2);opacity:0.6;
+}
 
-  /* ---------- HOW IT WORKS ---------- */
-  .how-section{
-    background:linear-gradient(180deg, rgba(10,8,18,0.82), rgba(21,15,34,0.74) 60%, rgba(10,8,18,0.82));
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    position:relative;
-  }
-  [data-theme="light"] .how-section{
-    background:linear-gradient(180deg, rgba(247,245,250,0.84), rgba(237,231,246,0.76) 60%, rgba(247,245,250,0.84));
-  }
-  .steps{
-    display:grid;gap:16px;
-    counter-reset:step;
-  }
-  @media(min-width:760px){
-    .steps{grid-template-columns:repeat(5,1fr);}
-  }
-  .step{
-    background:rgba(21,15,34,0.82);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:22px 18px;
-    position:relative;
-    transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-  }
-  .step:hover{
-    transform:translateY(-4px);
-    border-color:var(--gold);
-    box-shadow:0 12px 30px rgba(0,0,0,0.4);
-  }
-  [data-theme="light"] .step{
-    background:rgba(255,255,255,0.9);
-  }
-  .step-num{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:800;font-size:30px;
-    color:transparent;
-    -webkit-text-stroke:1.4px var(--gold);
-    margin-bottom:10px;
-  }
-  .step h3{font-size:16px;margin-bottom:6px;color:var(--text-primary);}
-  .step p{font-size:13.5px;color:var(--text-muted);margin:0;}
+/* Card Plan Box */
+.card-plan-box{
+  margin-top:auto;padding-top:12px;
+  border-top:0.5px solid var(--border);
+  display:flex;flex-direction:column;gap:10px;
+}
+.card-plan-tabs{
+  display:flex;background:rgba(0,0,0,0.25);border:0.5px solid var(--border);
+  border-radius:2px;padding:2px;gap:2px;
+}
+html.light .card-plan-tabs{background:rgba(0,0,0,0.05)}
+.card-plan-tab{
+  flex:1;background:transparent;border:none;color:var(--accent);opacity:0.6;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.06em;
+  padding:6px 2px;cursor:pointer;transition:all 0.15s;text-align:center;
+}
+.card-plan-tab:hover{opacity:1;color:var(--accent2)}
+.card-plan-tab.active{
+  background:var(--accent2);color:#0b0b14;opacity:1;font-weight:500;
+  border-radius:2px;
+}
+.phone-plan-breakdown{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  background:rgba(200,169,110,0.06);border:0.5px solid var(--border);
+  border-radius:4px;padding:10px;
+}
+.phone-plan-breakdown.cash-layout{grid-template-columns:repeat(2,1fr)}
+.plan-col{display:flex;flex-direction:column;gap:2px}
+.plan-col span{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--accent);opacity:0.5;
+}
+.plan-col strong{
+  font-family:var(--mono);font-size:12.5px;color:var(--accent2);font-weight:500;
+}
+.plan-hint-text{
+  font-family:var(--mono);font-size:10.5px;color:var(--accent);opacity:0.55;
+  min-height:16px;
+}
+.card-action-btn{
+  width:100%;margin-top:4px;
+}
 
+/* Empty State */
+.catalogue-empty{
+  grid-column:1/-1;text-align:center;padding:4rem 2rem;
+  background:var(--surface-card);border:0.5px dashed var(--border);
+  border-radius:8px;
+}
+.catalogue-empty h3{font-family:var(--serif);font-size:1.8rem;margin-bottom:0.5rem}
+.catalogue-empty p{color:var(--accent);opacity:0.6;font-size:14px;margin-bottom:1.5rem}
 
-  /* ---------- ABOUT ---------- */
-  .about-section{
-    background:rgba(10,8,18,0.8);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    position:relative;
-  }
-  [data-theme="light"] .about-section{
-    background:rgba(247,245,250,0.84);
-  }
-  .about-grid{
-    display:grid;gap:32px;
-    align-items:center;
-  }
-  @media(min-width:860px){
-    .about-grid{grid-template-columns:1.1fr 0.9fr;}
-  }
-  .about-copy p{color:var(--text-muted);font-size:15.5px;margin:0 0 14px;}
-  .about-stats{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:14px;margin-top:22px;
-  }
-  .about-stats div{
-    background:rgba(21,15,34,0.82);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    border:1px solid var(--line);
-    border-radius:14px;padding:16px 10px;text-align:center;
-  }
-  [data-theme="light"] .about-stats div{
-    background:rgba(255,255,255,0.9);
-  }
-  .about-stats strong{display:block;font-size:24px;color:var(--gold-bright);font-family:'Bricolage Grotesque',sans-serif;}
-  .about-stats span{font-size:11.5px;color:var(--text-muted);font-weight:600;}
-  .about-panel{
-    background:rgba(21,15,34,0.82);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:26px;
-  }
-  [data-theme="light"] .about-panel{
-    background:rgba(255,255,255,0.9);
-  }
-  .about-panel h3{font-size:18px;margin-bottom:14px;color:var(--gold-bright);}
-  .about-panel ul{display:flex;flex-direction:column;gap:12px;}
-  .about-panel li{
-    display:flex;gap:10px;align-items:flex-start;
-    font-size:14px;color:var(--text-muted);
-  }
-  .check{
-    flex:0 0 auto;width:20px;height:20px;border-radius:50%;
-    background:rgba(47,195,91,0.15);color:var(--whatsapp);
-    display:flex;align-items:center;justify-content:center;
-    font-size:12px;font-weight:800;
-  }
+/* ---------- ABOUT SECTION ---------- */
+.about-section{
+  background:rgba(8,8,16,0.7);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+html.light .about-section{background:rgba(244,240,235,0.5)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.about-text p{color:var(--accent);opacity:0.75;margin-bottom:1.4rem;font-size:16.5px;line-height:1.8}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
 
-  /* ---------- CONTACT ---------- */
-  .contact-section{
-    background:radial-gradient(circle at 80% 20%, rgba(108,75,175,0.32), transparent 50%), rgba(21,15,34,0.84);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    position:relative;
-  }
-  [data-theme="light"] .contact-section{
-    background:radial-gradient(circle at 80% 20%, rgba(108,75,175,0.16), transparent 50%), rgba(247,245,250,0.88);
-  }
-  .contact-grid{
-    display:grid;gap:24px;
-  }
-  @media(min-width:860px){
-    .contact-grid{grid-template-columns:1fr 1fr;}
-  }
-  .contact-card{
-    background:rgba(10,8,18,0.78);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--line);
-    border-radius:20px;padding:28px;
-  }
-  [data-theme="light"] .contact-card{
-    background:rgba(255,255,255,0.92);
-  }
-  .contact-row{
-    display:flex;align-items:center;gap:14px;
-    padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);
-  }
-  .contact-row:last-child{border-bottom:none;}
-  .contact-icon{
-    width:40px;height:40px;border-radius:12px;flex:0 0 auto;
-    background:rgba(217,166,83,0.12);
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;
-  }
-  .contact-row strong{display:block;font-size:14.5px;}
-  .contact-row span{font-size:13px;color:var(--text-muted);}
-  .social-row{display:flex;gap:12px;margin-top:22px;}
-  .social-row a{
-    width:44px;height:44px;border-radius:12px;
-    background:var(--bg-panel);border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;
-  }
-  .map-placeholder{
-    border-radius:20px;overflow:hidden;
-    min-height:260px;
-    background:
-      linear-gradient(150deg, rgba(108,75,175,0.35), rgba(217,166,83,0.12)),
-      var(--bg-void);
-    border:1px solid var(--line);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;gap:8px;padding:30px;
-  }
-  .map-placeholder .icon{font-size:32px;}
-  .map-placeholder strong{font-size:16px;}
-  .map-placeholder span{font-size:13px;color:var(--text-muted);}
+/* 3D Stat Cards */
+.stat-card{
+  background:var(--surface-card);
+  border:0.5px solid var(--border);
+  border-radius:8px;padding:1.6rem;
+  backdrop-filter:blur(16px);
+  transition:transform 0.3s ease,box-shadow 0.3s ease;
+  transform-style:preserve-3d;cursor:default;
+  box-shadow:0 4px 24px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.04);
+}
+html.light .stat-card{box-shadow:0 4px 24px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.8)}
+.stat-card:hover{
+  transform:translateY(-6px) rotateX(4deg) rotateY(-2deg);
+  box-shadow:0 20px 50px rgba(200,169,110,0.15),0 0 0 0.5px rgba(200,169,110,0.2);
+}
+.stat-number{
+  font-family:var(--serif);font-size:2.6rem;color:var(--accent2);
+  line-height:1;margin-bottom:0.4rem;
+}
+.stat-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent);opacity:0.5;
+}
 
-  /* ---------- FOOTER ---------- */
-  footer{
-    background:var(--bg-void);
-    border-top:1px solid var(--line);
-    padding:34px 0;
-  }
-  .footer-row{
-    display:flex;flex-direction:column;gap:14px;
-    align-items:flex-start;
-    font-size:13px;color:var(--text-muted);
-  }
-  @media(min-width:640px){
-    .footer-row{flex-direction:row;justify-content:space-between;align-items:center;}
-  }
-  .footer-row .logo{font-size:16px;}
+/* ---------- HOW IT WORKS (EDUCATION STYLE) ---------- */
+.how-section{
+  background:var(--edu-bg);backdrop-filter:blur(12px);
+  border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);
+}
+.steps-grid{display:flex;flex-direction:column;gap:1.2rem}
+.step-card{
+  background:var(--surface-card);
+  border:0.5px solid var(--border);
+  border-left:2px solid var(--accent2);
+  border-radius:8px;padding:1.8rem 2.2rem;
+  display:flex;justify-content:space-between;align-items:center;gap:2rem;
+  backdrop-filter:blur(16px);
+  transition:transform 0.3s,box-shadow 0.3s;
+  box-shadow:0 4px 30px rgba(0,0,0,0.15);
+}
+.step-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 50px rgba(200,169,110,0.12);
+}
+.step-heading{
+  font-family:var(--serif);font-size:1.5rem;color:var(--accent);margin-bottom:0.3rem;
+}
+.step-sub{font-size:14.5px;color:var(--accent);opacity:0.65;max-width:620px}
+.step-num-badge{
+  font-family:var(--mono);font-size:16px;color:var(--accent2);letter-spacing:0.08em;
+  text-align:right;white-space:nowrap;
+}
 
-  /* ---------- STICKY WHATSAPP (mobile) ---------- */
-  .sticky-wa{
-    position:fixed;bottom:16px;right:16px;z-index:60;
-    width:56px;height:56px;border-radius:50%;
-    background:var(--whatsapp);
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 14px 30px -8px rgba(47,195,91,0.65);
-    font-size:26px;
-  }
-  @media(min-width:860px){
-    .sticky-wa{display:none;}
-  }
+/* ---------- CONTACT SECTION ---------- */
+.contact-section{
+  background:var(--contact-bg);backdrop-filter:blur(12px);
+}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.contact-heading{
+  font-family:var(--serif);font-size:clamp(2.5rem,4vw,3.8rem);line-height:1.1;color:var(--accent);
+}
+.contact-heading em{font-style:italic;color:var(--accent2)}
+.contact-sub{color:var(--accent);opacity:0.65;margin-top:1.5rem;max-width:420px;font-size:16px}
+.contact-links{display:flex;flex-direction:column;gap:1rem}
+.contact-item{
+  display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.6rem;
+  background:var(--surface-card);border:0.5px solid var(--border);border-radius:8px;
+  text-decoration:none;color:var(--accent);backdrop-filter:blur(12px);
+  transition:all 0.25s;box-shadow:0 2px 16px rgba(0,0,0,0.1);
+}
+.contact-item:hover{
+  border-color:var(--accent2);transform:translateX(6px);
+  box-shadow:0 8px 30px rgba(200,169,110,0.15);
+}
+.contact-icon{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  color:var(--accent2);min-width:70px;text-transform:uppercase;
+}
+.contact-val{font-size:14.5px;color:var(--accent);opacity:0.75}
 
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *{transition:none !important;}
-  }
+/* ---------- FOOTER ---------- */
+footer{
+  padding:2.2rem 3.5rem;border-top:0.5px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(8,8,16,0.85);backdrop-filter:blur(12px);
+  position:relative;z-index:1;
+}
+html.light footer{background:rgba(244,240,235,0.85)}
+.footer-copy{font-family:var(--mono);font-size:12px;color:var(--accent);opacity:0.4;letter-spacing:0.06em}
+.footer-links{display:flex;align-items:center;gap:1rem}
+.lang-badge{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  padding:4px 10px;background:var(--surface-card);
+  border:0.5px solid var(--border);border-radius:2px;
+  color:var(--accent);opacity:0.65;text-decoration:none;
+}
+.admin-link{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  padding:4px 10px;background:rgba(200,169,110,0.12);
+  border:0.5px solid rgba(200,169,110,0.3);border-radius:2px;
+  color:var(--accent2);text-decoration:none;transition:all 0.2s;
+}
+.admin-link:hover{background:var(--accent2);color:#0b0b14}
+
+/* Sticky WhatsApp Pill */
+.sticky-wa{
+  position:fixed;bottom:24px;right:24px;z-index:90;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--whatsapp);color:#072010;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;text-decoration:none;
+  box-shadow:0 8px 30px rgba(37,211,102,0.4);
+  transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+.sticky-wa:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(37,211,102,0.6)}
+
+/* ANIMATIONS & SCROLL REVEAL */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0) translateZ(24px)}50%{transform:translateY(-10px) translateZ(24px)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .burger{display:block}
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:70px}
+  .hero-left{padding:4rem 1.5rem 2rem}
+  .hero-right{display:none}
+  section{padding:4rem 1.5rem}
+  .section-inner{padding:0 1rem}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem}
+  .step-card{flex-direction:column;align-items:flex-start;gap:0.8rem}
+  .step-num-badge{text-align:left}
+  footer{padding:1.5rem;flex-direction:column;gap:1.2rem;text-align:center}
+}
 </style>
 </head>
 <body>
 
-<!-- Lively Phone Wallpaper Background & Dynamic Aura -->
-<div class="ambient-phones-bg" aria-hidden="true">
-  <div class="ambient-wallpaper-canvas"></div>
-  <div class="wallpaper-shimmer"></div>
-  <div class="ambient-orb orb-1"></div>
-  <div class="ambient-orb orb-2"></div>
-  <div class="ambient-orb orb-3"></div>
-  <div class="ambient-grid-overlay"></div>
+<!-- THREE.JS 3D CANVAS (PARTICLES & WIREFRAME PHONE GEOMETRY) -->
+<canvas id="three-canvas"></canvas>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#home" class="nav-logo">DRG <em>Phones Palace</em></a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#phones">Renewed Phones</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle light or dark theme">☀ Light</button>
+    <a class="nav-cta" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20renewed%20phones." target="_blank" rel="noopener">WhatsApp</a>
+    <button class="burger" id="burgerBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home">Home</a>
+  <a href="#phones">Renewed Phones</a>
+  <a href="#how">How It Works</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
 </div>
 
-<header>
-  <div class="nav">
-    <div class="logo">DRG <em>Phones Palace</em></div>
-    <nav class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#phones">Renewed Phones</a>
-      <a href="#how">How It Works</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="nav-right-cluster">
-      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light or dark theme" title="Toggle Light/Dark Mode (Shortcut: T)">
-        <span class="theme-icon" id="themeIcon">🌙</span>
-        <span class="theme-label" id="themeLabel">Dark</span>
-        <span class="key-hint">T</span>
-      </button>
-      <a class="nav-cta" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20renewed%20phones." target="_blank" rel="noopener">
-        WhatsApp Us
-      </a>
-      <button class="burger" id="burgerBtn" aria-label="Open menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#home">Home</a>
-    <a href="#phones">Renewed Phones</a>
-    <a href="#how">How It Works</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-    <button class="theme-toggle-btn" id="mobileThemeToggleBtn" style="margin-top:10px;justify-content:center;">
-      <span class="theme-icon" id="mobileThemeIcon">🌙</span>
-      <span class="theme-label" id="mobileThemeLabel">Dark Mode</span>
-    </button>
-    <a class="btn btn-whatsapp nav-cta" href="https://wa.me/254797951374" target="_blank" rel="noopener">WhatsApp Us</a>
-  </div>
-</header>
-
-<!-- ---------- HERO ---------- -->
+<!-- ---------- HERO SECTION ---------- -->
 <section class="hero" id="home">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="hero-tag">📦 Nairobi & environs delivery • Certified Renewed Phones</span>
-      <h1>SIMU TOP, <span>BEI POA!</span></h1>
-      <p class="lead">Genuine certified renewed iPhones, Samsungs, Motorolas and more — small deposit today, easy weekly payments, renewed phone in your hand this week.</p>
-      <div class="hero-actions">
-        <a class="btn btn-gold" href="#phones">Shop Renewed Phones</a>
-        <a class="btn btn-whatsapp" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20see%20your%20available%20renewed%20phones." target="_blank" rel="noopener">WhatsApp Us</a>
-      </div>
-      <div class="hero-delivery"><span class="dot"></span> We deliver across Nairobi & its environs</div>
+  <div class="hero-left">
+    <p class="hero-eyebrow">CERTIFIED RENEWED FLAGSHIPS · NAIROBI, KENYA</p>
+    <h1 class="hero-name">SIMU TOP,<br><em>Bei Poa.</em></h1>
+    <p class="hero-desc">Quality certified renewed iPhones, Samsung Galaxies, Motorolas & more. Rigorously tested hardware, small deposit today, easy weekly Lipa Mdogo Mdogo instalments, phone in your hand this week.</p>
+    <div class="hero-cta">
+      <a href="#phones" class="btn btn-gold">Explore Catalogue</a>
+      <a href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20see%20your%20available%20renewed%20phones." target="_blank" rel="noopener" class="btn btn-outline">Inquire on WhatsApp</a>
     </div>
-    <div class="hero-visual">
-      <div class="glow-orb"></div>
-      <div class="hero-phones-card">
-        <div class="hero-card-glow"></div>
-        <img src="images/phones-hero-lively.jpg" alt="Apple iPhone, Samsung Galaxy & Foldable Flagships at DRG Phones Palace" class="hero-phones-banner">
-        <div class="hero-phones-badge">
-          <span class="badge-dot"></span>
-          <span>Certified Renewed Flagships • iPhone 16 Pro • Galaxy Ultra</span>
+    <div class="hero-delivery-tag">
+      <span class="pulse-dot"></span> Same-day delivery across Nairobi & environs
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="tilt-scene" id="tilt-card">
+      <div class="float-badge badge-1">⬡ Certified Renewed · Grade A+</div>
+      <div class="float-badge badge-3">⬡ 100% Inspected & Genuine</div>
+      <div class="hero-terminal">
+        <div class="terminal-bar">
+          <div class="t-dot red"></div>
+          <div class="t-dot yellow"></div>
+          <div class="t-dot green"></div>
+          <span class="terminal-title">FLAGSHIP SHOWCASE · 5G</span>
+        </div>
+        <div class="hero-phone-body">
+          <img src="images/phones-hero-lively.jpg" alt="Galaxy S25 Ultra, iPhone 16 Pro, Foldable Flagships at DRG Phones Palace" class="phone-hero-banner">
+          <div class="phone-spotlight-details">
+            <span class="spotlight-eyebrow">FEATURED SPOTLIGHT</span>
+            <h3 class="spotlight-title">Galaxy S25 Ultra 256GB</h3>
+            <div class="spotlight-tags">
+              <span class="spotlight-tag">Snapdragon 8 Elite</span>
+              <span class="spotlight-tag">200MP Quad Zoom</span>
+              <span class="spotlight-tag">Titanium Frame</span>
+            </div>
+            <div class="spotlight-pricing">
+              <div class="spotlight-rate">
+                <span>MoStandard (12M):</span>
+                <strong>KES 3,300 / week</strong>
+              </div>
+              <a href="#phones" class="spotlight-cta">View Plans</a>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- Floating Customer Incentive Chips -->
-      <div class="floating-chip chip-top-right">
-        <span class="chip-icon">⚡</span>
-        <div>
-          <strong>5G Ready</strong>
-          <small>Next-Gen Speed</small>
-        </div>
-      </div>
-      <div class="floating-chip chip-bottom-left">
-        <span class="chip-icon">🔥</span>
-        <div>
-          <strong>Lipa Mdogo Mdogo</strong>
-          <small>Deposit & Carry Home</small>
-        </div>
-      </div>
-      <div class="floating-chip chip-top-left">
-        <span class="chip-icon">💎</span>
-        <div>
-          <strong>100% Genuine</strong>
-          <small>Certified Renewed & Tested</small>
-        </div>
-      </div>
+      <div class="float-badge badge-2">⬡ Lipa Mdogo Mdogo · From KES 750/wk</div>
     </div>
   </div>
 </section>
 
-<!-- ---------- PHONES ---------- -->
-<section class="phones-section" id="phones">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Choose your renewed phone</h2>
-      <p>Every renewed phone comes with its tested condition, key specs and a weekly plan spelled out upfront — no hidden costs.</p>
-    </div>
-    <div class="filter-row" id="filterRow">
-      <button class="filter-pill active" data-cat="all">All Renewed Phones</button>
-      <button class="filter-pill" data-cat="samsung">Samsung Renewed</button>
-      <button class="filter-pill" data-cat="iphone">iPhone Renewed</button>
-      <button class="filter-pill" data-cat="motorola">Motorola Renewed</button>
-      <button class="filter-pill" data-cat="other">Other Renewed Phones</button>
-    </div>
-    <div class="plans-bar-wrap">
-      <span class="plans-bar-label">Plan View:</span>
-      <div class="global-plan-row" id="globalPlanRow">
+<!-- ---------- CATALOGUE SECTION ---------- -->
+<section id="phones" class="catalogue-section">
+  <div class="section-inner">
+    <p class="section-label reveal">RENEWED INVENTORY</p>
+    <h2 class="section-title reveal">Curated Flagships,<br><em>accessible to everyone.</em></h2>
+    <p class="section-desc reveal">Every renewed device is backed by our multi-point hardware verification, tested battery health, and flexible financing with low upfront deposits.</p>
+
+    <!-- Controls Bar with Search -->
+    <div class="controls-container reveal">
+      <div class="search-bar-wrap">
+        <div class="search-input-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="customerSearchInput" class="customer-search-input" placeholder="Search renewed phones by model, specs, storage, or price (e.g. S24 Ultra, iPhone 12, 256GB)..." autocomplete="off">
+          <button type="button" id="clearSearchBtn" class="clear-search-btn" style="display:none;" aria-label="Clear search" title="Clear search">✕</button>
+        </div>
+        <button type="button" id="searchSubmitBtn" class="btn btn-gold search-submit-btn">
+          <span>Search</span>
+        </button>
+      </div>
+
+      <div class="search-status-bar" id="searchStatusBar" style="display:none;">
+        <span class="search-status-text" id="searchStatusText"></span>
+        <button type="button" class="search-reset-link" id="resetSearchFilterBtn">Clear Search</button>
+      </div>
+
+      <div class="filter-row" id="filterRow">
+        <button class="filter-pill active" data-cat="all">All Renewed</button>
+        <button class="filter-pill" data-cat="samsung">Samsung</button>
+        <button class="filter-pill" data-cat="iphone">iPhone</button>
+        <button class="filter-pill" data-cat="motorola">Motorola</button>
+        <button class="filter-pill" data-cat="other">Other Brands</button>
+      </div>
+
+      <div class="plan-filter-row">
+        <span class="plan-filter-label">Plan View:</span>
         <button class="plan-pill active" data-plan="default">Default Plans</button>
         <button class="plan-pill" data-plan="cash">Cash Price</button>
-        <button class="plan-pill" data-plan="mosaver">MoSaver (6 Months)</button>
-        <button class="plan-pill" data-plan="mostandard">MoStandard (12 Months)</button>
+        <button class="plan-pill" data-plan="mosaver">MoSaver (6M)</button>
+        <button class="plan-pill" data-plan="mostandard">MoStandard (12M)</button>
       </div>
     </div>
+
+    <!-- Phone Grid Container -->
     <div class="phone-grid" id="phoneGrid"></div>
   </div>
 </section>
 
-<!-- ---------- HOW IT WORKS ---------- -->
-<section class="how-section" id="how">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>How it works</h2>
-      <p>Five simple steps from choosing your renewed phone to owning it outright.</p>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="step-num">1</div><h3>Choose your renewed phone</h3><p>Browse the catalogue and pick the renewed model, storage and condition that fits your budget.</p></div>
-      <div class="step"><div class="step-num">2</div><h3>Select your plan</h3><p>Every renewed phone shows its deposit and weekly amount — pick what works for your pocket.</p></div>
-      <div class="step"><div class="step-num">3</div><h3>Make your deposit</h3><p>Pay the deposit via M-Pesa to lock in your phone the same day.</p></div>
-      <div class="step"><div class="step-num">4</div><h3>Get your renewed phone</h3><p>Collect in Nairobi or get your renewed phone delivered to you and its environs.</p></div>
-      <div class="step"><div class="step-num">5</div><h3>Pay weekly</h3><p>Clear the balance in easy weekly instalments until your renewed phone is fully yours.</p></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ---------- ABOUT ---------- -->
-<section class="about-section" id="about">
-  <div class="wrap about-grid">
-    <div class="about-copy">
-      <h2 class="eyebrow-free-heading">About DRG Phones Palace</h2>
-      <p>DRG Phones Palace is a Nairobi-based phone retailer helping everyday Kenyans own quality renewed smartphones without the upfront strain. We source genuine, carefully inspected and certified renewed iPhones, Samsungs, Motorolas and other leading brands, then make them accessible through a simple deposit-plus-weekly-payment plan.</p>
-      <p>Every renewed phone listed is tested and graded honestly, every price is upfront, and every customer across Nairobi and its environs gets the same straightforward service from deposit to delivery.</p>
-      <div class="about-stats">
-        <div><strong>1000+</strong><span>Renewed phones sold</span></div>
-        <div><strong>100%</strong><span>Certified renewed devices</span></div>
-        <div><strong>Weekly</strong><span>Flexible plans</span></div>
+<!-- ---------- ABOUT SECTION ---------- -->
+<section id="about" class="about-section">
+  <div class="section-inner">
+    <p class="section-label reveal">ABOUT DRG PALACE</p>
+    <h2 class="section-title reveal">Rigorous standards,<br><em>affordable ownership.</em></h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>DRG Phones Palace was founded in Nairobi to eliminate the barrier between everyday Kenyans and premium smartphones. Sourcing genuine, carefully certified renewed flagships from Apple, Samsung, Motorola, and other leading manufacturers, we make modern mobile technology accessible through honest financing.</p>
+        <p>Every single device in our live inventory undergoes rigorous functional grading, screen and battery diagnostics, and transparent cosmetic inspection. No hidden terms, no unverified clones — just authentic flagship devices with deposit-plus-weekly simplicity.</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">Renewed Devices Sold</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Tested & Genuine</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">KES 750</div>
+          <div class="stat-label">Starting Weekly Plan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">24H</div>
+          <div class="stat-label">Nairobi Express Delivery</div>
+        </div>
       </div>
     </div>
-    <div class="about-panel">
-      <h3>Why buy from us</h3>
-      <ul>
-        <li><span class="check">✓</span> Every renewed phone tested & graded before it's listed</li>
-        <li><span class="check">✓</span> Small deposit, no huge upfront cost</li>
-        <li><span class="check">✓</span> Clear weekly payment — you always know your balance</li>
-        <li><span class="check">✓</span> Delivery across Nairobi & its environs</li>
-        <li><span class="check">✓</span> Real humans on WhatsApp, not a call centre</li>
-      </ul>
+  </div>
+</section>
+
+<!-- ---------- HOW IT WORKS SECTION ---------- -->
+<section id="how" class="how-section">
+  <div class="section-inner">
+    <p class="section-label reveal">HOW IT WORKS</p>
+    <h2 class="section-title reveal">Five simple steps to<br><em>owning your device.</em></h2>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div>
+          <div class="step-heading">1. Choose your renewed phone</div>
+          <div class="step-sub">Browse our verified catalogue and select the exact flagship model, storage capacity, and cosmetic grade that matches your lifestyle.</div>
+        </div>
+        <div class="step-num-badge">STEP 01</div>
+      </div>
+      <div class="step-card">
+        <div>
+          <div class="step-heading">2. Select your payment plan</div>
+          <div class="step-sub">Choose upfront Cash or flexible weekly Lipa Mdogo Mdogo instalments (MoSaver 6-Month or MoStandard 12-Month tiers).</div>
+        </div>
+        <div class="step-num-badge">STEP 02</div>
+      </div>
+      <div class="step-card">
+        <div>
+          <div class="step-heading">3. Make your deposit via M-Pesa</div>
+          <div class="step-sub">Lock in your reserved smartphone instantly with a transparent deposit. No hidden setup fees or surprise charges.</div>
+        </div>
+        <div class="step-num-badge">STEP 03</div>
+      </div>
+      <div class="step-card">
+        <div>
+          <div class="step-heading">4. Collect or get express delivery</div>
+          <div class="step-sub">Pick up your device at our Nairobi shop or have our courier deliver it directly to your doorstep across Nairobi and its environs.</div>
+        </div>
+        <div class="step-num-badge">STEP 04</div>
+      </div>
+      <div class="step-card">
+        <div>
+          <div class="step-heading">5. Pay weekly until fully owned</div>
+          <div class="step-sub">Pay straightforward weekly instalments via M-Pesa. Once completed, your renewed smartphone is 100% yours outright.</div>
+        </div>
+        <div class="step-num-badge">STEP 05</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ---------- CONTACT ---------- -->
-<section class="contact-section" id="contact">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Talk to us</h2>
-      <p>Have a question about a renewed phone or your payment plan? Reach us on WhatsApp — fastest way to get a reply.</p>
-    </div>
+<!-- ---------- CONTACT SECTION ---------- -->
+<section id="contact" class="contact-section">
+  <div class="section-inner">
     <div class="contact-grid">
-      <div class="contact-card">
-        <div class="contact-row">
-          <div class="contact-icon">💬</div>
-          <div><strong>WhatsApp</strong><span>0797 951 374</span></div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-icon">📍</div>
-          <div><strong>Coverage area</strong><span>Nairobi & its environs</span></div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-icon">🕒</div>
-          <div><strong>We reply</strong><span>Every day, morning till evening</span></div>
-        </div>
-        <div class="social-row">
-          <a href="#" aria-label="Facebook" title="Add your Facebook link">📘</a>
-          <a href="#" aria-label="Instagram" title="Add your Instagram link">📷</a>
-          <a href="#" aria-label="TikTok" title="Add your TikTok link">🎵</a>
-        </div>
+      <div class="reveal">
+        <p class="section-label">GET IN TOUCH</p>
+        <h2 class="contact-heading">Let's find your<br>next <em>device.</em></h2>
+        <p class="contact-sub">Have a question about a renewed phone model, financing terms, or trade-in eligibility? Connect directly with our team.</p>
       </div>
-      <div class="map-placeholder">
-        <div class="icon">🗺️</div>
-        <strong>Nairobi & environs</strong>
-        <span>Swap this panel for an embedded Google Map of your shop location.</span>
+      <div class="contact-links reveal">
+        <a href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20renewed%20phones." target="_blank" rel="noopener" class="contact-item">
+          <span class="contact-icon">WhatsApp</span>
+          <span class="contact-val">0797 951 374 · Instant Chat</span>
+        </a>
+        <div class="contact-item">
+          <span class="contact-icon">Location</span>
+          <span class="contact-val">Nairobi CBD & Greater Environs, Kenya</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">Hours</span>
+          <span class="contact-val">Monday – Saturday: 8:00 AM – 8:00 PM</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ---------- FOOTER ---------- -->
 <footer>
-  <div class="wrap footer-row">
-    <div class="logo">DRG <em>Phones Palace</em></div>
-    <div>© <span id="year"></span> DRG Phones Palace. All prices in KES. Terms apply to weekly payment plans.</div>
-    <a href="admin.html" class="admin-trigger-link" title="Staff Portal">🔒 Staff Portal</a>
+  <p class="footer-copy">© <span id="year"></span> DRG Phones Palace · Nairobi, Kenya · Quality Certified Renewed Devices</p>
+  <div class="footer-links">
+    <span class="lang-badge">English</span>
+    <span class="lang-badge">Kiswahili</span>
   </div>
 </footer>
 
-<a class="sticky-wa" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+<!-- STICKY WHATSAPP -->
+<a class="sticky-wa" href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20know%20more%20about%20your%20renewed%20phones." target="_blank" rel="noopener" aria-label="Chat with DRG Phones Palace on WhatsApp">💬</a>
 
-<!-- ---------- TOAST NOTIFICATION ---------- -->
-<div class="toast-notification" id="toastNotification"></div>
-
+<!-- THREE.JS & SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  // ---- Mobile menu toggle ----
-  const burgerBtn = document.getElementById('burgerBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  burgerBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
+// ── THEME TOGGLE ──────────────────────────────────────────
+const themeBtn = document.getElementById('theme-toggle');
+const htmlEl = document.documentElement;
+
+function setTheme(light) {
+  if (light) {
+    htmlEl.classList.add('light');
+    themeBtn.textContent = '☾ Dark';
+    localStorage.setItem('theme', 'light');
+  } else {
+    htmlEl.classList.remove('light');
+    themeBtn.textContent = '☀ Light';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+const savedTheme = localStorage.getItem('theme');
+const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+setTheme(savedTheme === 'light' || (!savedTheme && prefersLight));
+themeBtn.addEventListener('click', () => setTheme(!htmlEl.classList.contains('light')));
+
+// ── THREE.JS 3D SCENE (PHONE-THEMED WIREFRAME GEOMETRY) ───
+const canvas = document.getElementById('three-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 0);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(0, 0, 50);
+
+// Particle field (Starfield)
+const PARTICLES = 1800;
+const pGeo = new THREE.BufferGeometry();
+const pPos = new Float32Array(PARTICLES * 3);
+const pSizes = new Float32Array(PARTICLES);
+for (let i = 0; i < PARTICLES; i++) {
+  pPos[i*3]   = (Math.random() - 0.5) * 160;
+  pPos[i*3+1] = (Math.random() - 0.5) * 100;
+  pPos[i*3+2] = (Math.random() - 0.5) * 80;
+  pSizes[i]   = Math.random() * 1.5 + 0.3;
+}
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+pGeo.setAttribute('size', new THREE.BufferAttribute(pSizes, 1));
+const pMat = new THREE.PointsMaterial({
+  color: 0xc8a96e, size: 0.35, transparent: true, opacity: 0.55,
+  sizeAttenuation: true, depthWrite: false
+});
+const particles = new THREE.Points(pGeo, pMat);
+scene.add(particles);
+
+// 3D Wireframe Smartphone Frame Silhouette
+const phoneGroup = new THREE.Group();
+
+// Phone outer body
+const phoneBodyGeo = new THREE.BoxGeometry(9, 18, 0.8, 2, 4, 1);
+const phoneBodyMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.15 });
+const phoneBody = new THREE.Mesh(phoneBodyGeo, phoneBodyMat);
+phoneGroup.add(phoneBody);
+
+// Phone screen outline
+const screenGeo = new THREE.PlaneGeometry(8, 16.5);
+const screenMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.08 });
+const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+screenMesh.position.z = 0.41;
+phoneGroup.add(screenMesh);
+
+// Camera Island
+const camBumpGeo = new THREE.BoxGeometry(3.6, 4.8, 0.35);
+const camBumpMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.2 });
+const camBump = new THREE.Mesh(camBumpGeo, camBumpMat);
+camBump.position.set(-2, 5.8, -0.5);
+phoneGroup.add(camBump);
+
+// Camera Rings
+for(let c = 0; c < 3; c++){
+  const ringGeo = new THREE.TorusGeometry(0.55, 0.1, 8, 20);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.25 });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.position.set(-2, 7 - c * 1.2, -0.7);
+  phoneGroup.add(ring);
+}
+
+phoneGroup.position.set(24, -4, -18);
+scene.add(phoneGroup);
+
+// Floating wireframe torus ring
+const torusGeo = new THREE.TorusGeometry(12, 3.5, 18, 55);
+const torusMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.08 });
+const torus = new THREE.Mesh(torusGeo, torusMat);
+torus.position.set(-26, 12, -22);
+scene.add(torus);
+
+// Floating icosahedron (Chip / Prism)
+const icoGeo = new THREE.IcosahedronGeometry(7, 1);
+const icoMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.10 });
+const ico = new THREE.Mesh(icoGeo, icoMat);
+ico.position.set(-20, -18, -15);
+scene.add(ico);
+
+// Floating octahedron
+const octGeo = new THREE.OctahedronGeometry(5, 0);
+const octMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.12 });
+const oct = new THREE.Mesh(octGeo, octMat);
+oct.position.set(8, -22, -12);
+scene.add(oct);
+
+// Mouse parallax
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', e => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+const clock = new THREE.Clock();
+function animateScene() {
+  requestAnimationFrame(animateScene);
+  const t = clock.getElapsedTime();
+
+  particles.rotation.y = t * 0.015;
+  particles.rotation.x = t * 0.007;
+
+  // Phone silhouette motion
+  phoneGroup.rotation.y = t * 0.22;
+  phoneGroup.rotation.x = Math.sin(t * 0.3) * 0.15;
+  phoneGroup.position.y = -4 + Math.sin(t * 0.4) * 2;
+
+  torus.rotation.x = t * 0.2;
+  torus.rotation.y = t * 0.15;
+  torus.position.y = 12 + Math.cos(t * 0.5) * 2.5;
+
+  ico.rotation.y = t * 0.25;
+  ico.rotation.x = t * 0.18;
+
+  oct.rotation.x = t * 0.35;
+  oct.rotation.z = t * 0.25;
+
+  // Parallax camera
+  camera.position.x += (mouseX * 4.5 - camera.position.x) * 0.04;
+  camera.position.y += (-mouseY * 3.5 - camera.position.y) * 0.04;
+  camera.lookAt(scene.position);
+
+  // Dynamic light/dark material colors
+  const isLight = htmlEl.classList.contains('light');
+  pMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+  pMat.opacity = isLight ? 0.65 : 0.55;
+  phoneBodyMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+  torusMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+  icoMat.color.setHex(isLight ? 0x1a4a80 : 0x6e9ec8);
+  octMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+
+  renderer.render(scene, camera);
+}
+animateScene();
+
+// ── 3D TILT PHONE CARD INTERACTION ────────────────────────
+const tiltCard = document.getElementById('tilt-card');
+if(tiltCard){
+  const heroRightContainer = tiltCard.parentElement;
+  heroRightContainer.addEventListener('mousemove', e => {
+    const rect = heroRightContainer.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width  - 0.5;
+    const y = (e.clientY - rect.top)  / rect.height - 0.5;
+    tiltCard.style.transform = `rotateY(${x * 20}deg) rotateX(${-y * 16}deg) scale(1.02)`;
   });
-  mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  heroRightContainer.addEventListener('mouseleave', () => {
+    tiltCard.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+    tiltCard.style.transition = 'transform 0.6s ease';
   });
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // ---- Default phone catalogue data ----
-  const WHATSAPP_NUMBER = "254797951374";
-
-  const DEFAULT_PHONES = [
-    // --- NEW SAMSUNG FLAGSHIPS & PREMIUM DEVICES ---
-    {
-      id: "s25-ultra-256",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S25 Ultra", storage: "256GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s25-ultra.jpg",
-      specs: ["Snapdragon 8 Elite, 5G ready", "200MP Quad Camera, 100x Space Zoom", "Built-in S-Pen, Titanium Armor Frame"],
-      cashPrice: 115999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 115999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 52199, weekly: 4410, weeks: 26, total: 166859, hint: "⚡ 6 Months · Save KES 45,340 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 40599, weekly: 3300, weeks: 52, total: 212199, hint: "Low deposit (35%) · 52 easy weekly payments" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s24-ultra-256",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S24 Ultra", storage: "256GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s24-ultra.jpg",
-      specs: ["Galaxy AI built-in, 5G flagship", "200MP Quad Pro-visual camera", "Flat 120Hz display, S-Pen included"],
-      cashPrice: 94999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 94999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 42699, weekly: 3610, weeks: 26, total: 136559, hint: "⚡ 6 Months · Save KES 37,040 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 33199, weekly: 2700, weeks: 52, total: 173599, hint: "Low deposit (35%) · 52 easy weekly payments" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s23-ultra-256",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S23 Ultra", storage: "256GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s23-ultra.jpg",
-      specs: ["200MP camera, 100x Space Zoom", "6.8\" Dynamic AMOLED 2X 120Hz", "Built-in S-Pen, 5,000mAh battery"],
-      cashPrice: 76999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 76999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 34599, weekly: 2930, weeks: 26, total: 110779, hint: "⚡ 6 Months · Save KES 30,000 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 26899, weekly: 2190, weeks: 52, total: 140779, hint: "Low deposit (35%) · 52 easy weekly payments" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s22-ultra-256",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S22 Ultra", storage: "256GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s22-ultra.jpg",
-      specs: ["108MP Quad camera, 100x zoom", "Dynamic AMOLED 120Hz display", "Integrated S-Pen, 45W fast charge"],
-      cashPrice: 66999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 66999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 30099, weekly: 2550, weeks: 26, total: 96399, hint: "⚡ 6 Months · Save KES 25,800 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 23399, weekly: 1900, weeks: 52, total: 122199, hint: "Low deposit (35%) · 52 easy weekly payments" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s21-ultra-128",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S21 Ultra 5G", storage: "128GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s21-ultra.jpg",
-      specs: ["108MP Pro Grade Camera, 8K video", "6.8\" Quad HD+ 120Hz display", "S-Pen support, 5,000mAh battery"],
-      cashPrice: 45999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 45999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 20699, weekly: 1750, weeks: 26, total: 66199, hint: "⚡ 6 Months · Save KES 22,780 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 11499, weekly: 1490, weeks: 52, total: 88979, hint: "Entry deposit (25%) · KES 1,490/week" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s21-plus-256",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S21+ 5G", storage: "256GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s21-plus.jpg",
-      specs: ["256GB storage, 6.7\" AMOLED 120Hz", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
-      cashPrice: 43999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 43999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 19799, weekly: 1670, weeks: 26, total: 63219, hint: "⚡ 6 Months · Save KES 21,620 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 10999, weekly: 1420, weeks: 52, total: 84839, hint: "Entry deposit (25%) · KES 1,420/week" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s22-plus-128",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S22+", storage: "128GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s22-plus.jpg",
-      specs: ["Bright 6.6\" AMOLED 120Hz display", "50MP Nightography triple camera", "Armor Aluminum frame, 5G ready"],
-      cashPrice: 37999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 37999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 17099, weekly: 1440, weeks: 26, total: 54539, hint: "⚡ 6 Months · Save KES 18,920 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 9499, weekly: 1230, weeks: 52, total: 73459, hint: "Entry deposit (25%) · KES 1,230/week" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s20-ultra-128",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S20 Ultra 5G", storage: "128GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s20-ultra.jpg",
-      specs: ["108MP camera, 100x Space Zoom", "Massive 6.9\" Dynamic AMOLED 120Hz", "5,000mAh battery, 5G ready"],
-      cashPrice: 37999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 37999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 17099, weekly: 1440, weeks: 26, total: 54539, hint: "⚡ 6 Months · Save KES 18,920 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 9499, weekly: 1230, weeks: 52, total: 73459, hint: "Entry deposit (25%) · KES 1,230/week" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "note-20-128",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy Note 20 5G", storage: "128GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-note-20.jpg",
-      specs: ["Signature S-Pen stylus with air gestures", "6.7\" Super AMOLED Plus display", "64MP triple camera, 5G ready"],
-      cashPrice: 35999,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 35999, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 16199, weekly: 1370, weeks: 26, total: 51819, hint: "⚡ 6 Months · Save KES 17,500 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 8999, weekly: 1160, weeks: 52, total: 69319, hint: "Entry deposit (25%) · KES 1,160/week" }
-      },
-      defaultPlan: "mostandard"
-    },
-    {
-      id: "s21-plus-128",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy S21+ 5G", storage: "128GB",
-      condition: "Renewed · Grade A+",
-      image: "images/galaxy-s21-plus.jpg",
-      specs: ["6.7\" Dynamic AMOLED 120Hz display", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
-      cashPrice: 34199,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 34199, hint: "One-time payment · 0% financing fee" },
-        mosaver: { label: "MoSaver (6M)", deposit: 15399, weekly: 1300, weeks: 26, total: 49199, hint: "⚡ 6 Months · Save KES 17,020 vs 12M" },
-        mostandard: { label: "MoStandard (12M)", deposit: 8499, weekly: 1110, weeks: 52, total: 66219, hint: "Lowest deposit (KES 8,499) · KES 1,110/week" }
-      },
-      defaultPlan: "mostandard"
-    },
-
-    // --- OTHER POPULAR PHONES (IPHONE, MOTOROLA, BUDGET) ---
-    {
-      id: "iphone-11",
-      category: "iphone", categoryLabel: "iPhone",
-      model: "iPhone 11", storage: "64GB",
-      condition: "Renewed · Grade A",
-      image: "images/iphone-11.jpg",
-      specs: ["6.1\" Liquid Retina display", "12MP dual camera, Face ID", "89% battery health"],
-      cashPrice: 16000,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 16000, hint: "One-time cash payment" },
-        standard: { label: "Weekly (8 Wks)", deposit: 4000, weekly: 1500, weeks: 8, total: 16000, hint: "8 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "iphone-xr",
-      category: "iphone", categoryLabel: "iPhone",
-      model: "iPhone XR", storage: "128GB",
-      condition: "Renewed · Grade A",
-      image: "images/iphone-xr.jpg",
-      specs: ["6.1\" Liquid Retina display", "12MP camera, Face ID", "Clean IMEI, tested"],
-      cashPrice: 13900,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 13900, hint: "One-time cash payment" },
-        standard: { label: "Weekly (8 Wks)", deposit: 3500, weekly: 1300, weeks: 8, total: 13900, hint: "8 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "iphone-12",
-      category: "iphone", categoryLabel: "iPhone",
-      model: "iPhone 12", storage: "128GB",
-      condition: "Renewed · Grade A",
-      image: "images/iphone-12.jpg",
-      specs: ["5G ready flagship", "12MP dual camera, Night mode", "Face ID, Ceramic Shield"],
-      cashPrice: 23000,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 23000, hint: "One-time cash payment" },
-        standard: { label: "Weekly (10 Wks)", deposit: 5000, weekly: 1800, weeks: 10, total: 23000, hint: "10 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "galaxy-a14",
-      category: "samsung", categoryLabel: "Samsung",
-      model: "Galaxy A14", storage: "128GB",
-      condition: "Renewed · Like New",
-      image: "images/galaxy-a14.jpg",
-      specs: ["6.6\" 90Hz display", "50MP triple camera", "5,000mAh battery"],
-      cashPrice: 9700,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 9700, hint: "One-time cash payment" },
-        standard: { label: "Weekly (8 Wks)", deposit: 2500, weekly: 900, weeks: 8, total: 9700, hint: "8 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "moto-g54",
-      category: "motorola", categoryLabel: "Motorola",
-      model: "Moto G54", storage: "256GB",
-      condition: "Renewed · Like New",
-      image: "images/moto-g54.jpg",
-      specs: ["5G, 6.5\" 120Hz display", "50MP OIS camera", "6,000mAh massive battery"],
-      cashPrice: 10400,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 10400, hint: "One-time cash payment" },
-        standard: { label: "Weekly (8 Wks)", deposit: 2800, weekly: 950, weeks: 8, total: 10400, hint: "8 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "moto-edge-40",
-      category: "motorola", categoryLabel: "Motorola",
-      model: "Moto Edge 40", storage: "256GB",
-      condition: "Renewed · Like New",
-      image: "images/moto-edge-40.jpg",
-      specs: ["Curved pOLED 144Hz display", "50MP camera, OIS", "68W fast charging"],
-      cashPrice: 15950,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 15950, hint: "One-time cash payment" },
-        standard: { label: "Weekly (9 Wks)", deposit: 3800, weekly: 1350, weeks: 9, total: 15950, hint: "9 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "infinix-note-30",
-      category: "other", categoryLabel: "Other Renewed Phones",
-      model: "Infinix Note 30", storage: "128GB",
-      condition: "Renewed · Like New",
-      image: "images/infinix-note-30.jpg",
-      specs: ["6.78\" AMOLED, 120Hz", "108MP camera", "5,000mAh, 45W charge"],
-      cashPrice: 8000,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8000, hint: "One-time cash payment" },
-        standard: { label: "Weekly (8 Wks)", deposit: 2000, weekly: 750, weeks: 8, total: 8000, hint: "Lowest weekly instalment (KES 750/wk)" }
-      },
-      defaultPlan: "standard"
-    },
-    {
-      id: "tecno-camon-20",
-      category: "other", categoryLabel: "Other Renewed Phones",
-      model: "Tecno Camon 20", storage: "128GB",
-      condition: "Renewed · Like New",
-      image: "images/tecno-camon-20.jpg",
-      specs: ["6.67\" AMOLED display", "64MP RGBW camera", "5,000mAh battery"],
-      cashPrice: 8600,
-      plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8600, hint: "One-time cash payment" },
-        standard: { label: "Weekly (8 Wks)", deposit: 2200, weekly: 800, weeks: 8, total: 8600, hint: "8 Weeks Lipa Mdogo Mdogo" }
-      },
-      defaultPlan: "standard"
-    }
-  ];
-
-  function money(n){
-    return "KES " + Number(n).toLocaleString("en-KE");
-  }
-
-  // ---- Light / Dark Theme Engine ----
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const mobileThemeToggleBtn = document.getElementById('mobileThemeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const themeLabel = document.getElementById('themeLabel');
-  const mobileThemeIcon = document.getElementById('mobileThemeIcon');
-  const mobileThemeLabel = document.getElementById('mobileThemeLabel');
-
-  function getSavedTheme(){
-    const stored = localStorage.getItem('drg_theme');
-    if(stored === 'light' || stored === 'dark') return stored;
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
-  }
-
-  function applyTheme(theme, notify = false){
-    document.documentElement.setAttribute('data-theme', theme);
-    try { localStorage.setItem('drg_theme', theme); } catch(e){}
-    const isDark = theme === 'dark';
-    const icon = isDark ? '🌙' : '☀️';
-    const label = isDark ? 'Dark' : 'Light';
-
-    if(themeIcon) themeIcon.textContent = icon;
-    if(themeLabel) themeLabel.textContent = label;
-    if(mobileThemeIcon) mobileThemeIcon.textContent = icon;
-    if(mobileThemeLabel) mobileThemeLabel.textContent = `${label} Mode`;
-
-    if(notify){
-      showToast(`${icon} Switched to ${label} Mode (Press T to toggle)`);
-    }
-  }
-
-  function toggleTheme(notify = true){
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
-    applyTheme(next, notify);
-  }
-
-  if(themeToggleBtn){
-    themeToggleBtn.addEventListener('click', () => toggleTheme(true));
-  }
-  if(mobileThemeToggleBtn){
-    mobileThemeToggleBtn.addEventListener('click', () => toggleTheme(true));
-  }
-
-  // Keyboard shortcut: Press 'T' or 'D' to toggle theme (unless typing in a form input)
-  window.addEventListener('keydown', (e) => {
-    const active = document.activeElement;
-    const isInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
-    if(!isInput && (e.key === 't' || e.key === 'T' || e.key === 'd' || e.key === 'D')){
-      toggleTheme(true);
-    }
+  heroRightContainer.addEventListener('mouseenter', () => {
+    tiltCard.style.transition = 'transform 0.1s ease';
   });
+}
 
-  // Apply theme immediately
-  applyTheme(getSavedTheme(), false);
+// ── SCROLL REVEAL ─────────────────────────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.08 + 's';
+  revealObserver.observe(el);
+});
 
-  // ---- Toast Notification Engine ----
-  let toastTimer = null;
-  function showToast(msg){
-    const toast = document.getElementById('toastNotification');
-    if(!toast) return;
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2800);
+// ── MOBILE MENU ───────────────────────────────────────────
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// ── RENEWED PHONES CATALOGUE DATA & LOGIC ─────────────────
+let WHATSAPP_NUMBER = "254797951374";
+
+const DEFAULT_PHONES = [
+  {
+    id: "s25-ultra-256", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S25 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s25-ultra.jpg",
+    specs: ["Snapdragon 8 Elite, 5G ready", "200MP Quad Camera, 100x Space Zoom", "Built-in S-Pen, Titanium Armor Frame"],
+    cashPrice: 115999,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 115999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 52199, weekly: 4410, weeks: 26, total: 166859, hint: "⚡ 6 Months · Save KES 45,340 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 40599, weekly: 3300, weeks: 52, total: 212199, hint: "Low deposit (35%) · 52 easy weekly payments" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "s24-ultra-256", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S24 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s24-ultra.jpg",
+    specs: ["Galaxy AI built-in, 5G flagship", "200MP Quad Pro-visual camera", "Flat 120Hz display, S-Pen included"],
+    cashPrice: 94999,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 94999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 42699, weekly: 3610, weeks: 26, total: 136559, hint: "⚡ 6 Months · Save KES 37,040 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 33199, weekly: 2700, weeks: 52, total: 173599, hint: "Low deposit (35%) · 52 easy weekly payments" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "s23-ultra-256", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S23 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s23-ultra.jpg",
+    specs: ["200MP camera, 100x Space Zoom", "6.8\" Dynamic AMOLED 2X 120Hz", "Built-in S-Pen, 5,000mAh battery"],
+    cashPrice: 76999,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 76999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 34599, weekly: 2930, weeks: 26, total: 110779, hint: "⚡ 6 Months · Save KES 30,000 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 26899, weekly: 2190, weeks: 52, total: 140779, hint: "Low deposit (35%) · 52 easy weekly payments" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "s22-ultra-256", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S22 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s22-ultra.jpg",
+    specs: ["108MP Quad camera, 100x zoom", "Dynamic AMOLED 120Hz display", "Integrated S-Pen, 45W fast charge"],
+    cashPrice: 66999,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 66999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 30099, weekly: 2550, weeks: 26, total: 96399, hint: "⚡ 6 Months · Save KES 25,800 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 23399, weekly: 1900, weeks: 52, total: 122199, hint: "Low deposit (35%) · 52 easy weekly payments" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "s21-ultra-128", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S21 Ultra 5G", storage: "128GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s21-ultra.jpg",
+    specs: ["108MP Pro Grade Camera, 8K video", "6.8\" Quad HD+ 120Hz display", "S-Pen support, 5,000mAh battery"],
+    cashPrice: 42999,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 42999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 19399, weekly: 1640, weeks: 26, total: 62039, hint: "⚡ 6 Months · Save KES 16,580 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 10499, weekly: 1310, weeks: 52, total: 78619, hint: "Low deposit (KES 10,499) · KES 1,310/week" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "s22-plus-128", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S22+ 5G", storage: "128GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s22-plus.jpg",
+    specs: ["6.6\" Dynamic AMOLED 2X 120Hz", "50MP Triple camera, Nightography", "Armor Aluminum Frame, 45W charge"],
+    cashPrice: 44999,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 44999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 20299, weekly: 1710, weeks: 26, total: 64759, hint: "⚡ 6 Months · Save KES 17,540 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 11299, weekly: 1370, weeks: 52, total: 82539, hint: "Low deposit (KES 11,299) · KES 1,370/week" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "s21-plus-128", category: "samsung", categoryLabel: "Samsung",
+    model: "Galaxy S21+ 5G", storage: "128GB", condition: "Renewed · Grade A+",
+    image: "images/galaxy-s21-plus.jpg",
+    specs: ["6.7\" Dynamic AMOLED 120Hz display", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
+    cashPrice: 34199,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 34199, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 15399, weekly: 1300, weeks: 26, total: 49199, hint: "⚡ 6 Months · Save KES 17,020 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 8499, weekly: 1110, weeks: 52, total: 66219, hint: "Lowest deposit (KES 8,499) · KES 1,110/week" }
+    },
+    defaultPlan: "mostandard"
+  },
+  {
+    id: "iphone-12", category: "iphone", categoryLabel: "iPhone",
+    model: "iPhone 12", storage: "128GB", condition: "Renewed · Grade A",
+    image: "images/iphone-12.jpg",
+    specs: ["5G ready flagship, Super Retina XDR", "12MP dual camera, Night mode & 4K", "Face ID, Ceramic Shield, MagSafe"],
+    cashPrice: 23000,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 23000, hint: "One-time cash payment" },
+      standard: { label: "Weekly (10 Wks)", deposit: 5000, weekly: 1800, weeks: 10, total: 23000, hint: "10 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
+  },
+  {
+    id: "iphone-11", category: "iphone", categoryLabel: "iPhone",
+    model: "iPhone 11", storage: "64GB", condition: "Renewed · Grade A",
+    image: "images/iphone-11.jpg",
+    specs: ["Liquid Retina HD 6.1\" display", "12MP Ultra-Wide dual camera", "All-day battery life, A13 Bionic"],
+    cashPrice: 16500,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 16500, hint: "One-time cash payment" },
+      standard: { label: "Weekly (10 Wks)", deposit: 4000, weekly: 1250, weeks: 10, total: 16500, hint: "10 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
+  },
+  {
+    id: "moto-g54", category: "motorola", categoryLabel: "Motorola",
+    model: "Moto G54 5G", storage: "256GB", condition: "Renewed · Like New",
+    image: "images/moto-g54.jpg",
+    specs: ["5G ready, 6.5\" 120Hz display", "50MP OIS camera, Quad Pixel", "6,000mAh massive battery"],
+    cashPrice: 10400,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 10400, hint: "One-time cash payment" },
+      standard: { label: "Weekly (8 Wks)", deposit: 2800, weekly: 950, weeks: 8, total: 10400, hint: "8 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
+  },
+  {
+    id: "moto-edge-40", category: "motorola", categoryLabel: "Motorola",
+    model: "Moto Edge 40", storage: "256GB", condition: "Renewed · Like New",
+    image: "images/moto-edge-40.jpg",
+    specs: ["Curved pOLED 144Hz display", "50MP camera, OIS & f/1.4 aperture", "68W TurboPower fast charging"],
+    cashPrice: 15950,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 15950, hint: "One-time cash payment" },
+      standard: { label: "Weekly (9 Wks)", deposit: 3800, weekly: 1350, weeks: 9, total: 15950, hint: "9 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
+  },
+  {
+    id: "infinix-note-30", category: "other", categoryLabel: "Other Renewed Phones",
+    model: "Infinix Note 30", storage: "128GB", condition: "Renewed · Like New",
+    image: "images/infinix-note-30.jpg",
+    specs: ["6.78\" AMOLED, 120Hz refresh", "108MP ultra-clear camera", "5,000mAh, 45W All-Round FastCharge"],
+    cashPrice: 8000,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8000, hint: "One-time cash payment" },
+      standard: { label: "Weekly (8 Wks)", deposit: 2000, weekly: 750, weeks: 8, total: 8000, hint: "Lowest weekly instalment (KES 750/wk)" }
+    },
+    defaultPlan: "standard"
+  },
+  {
+    id: "tecno-camon-20", category: "other", categoryLabel: "Other Renewed Phones",
+    model: "Tecno Camon 20", storage: "128GB", condition: "Renewed · Like New",
+    image: "images/tecno-camon-20.jpg",
+    specs: ["6.67\" AMOLED display", "64MP RGBW ultra-sensitive camera", "5,000mAh battery, 33W charge"],
+    cashPrice: 8600,
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8600, hint: "One-time cash payment" },
+      standard: { label: "Weekly (8 Wks)", deposit: 2200, weekly: 800, weeks: 8, total: 8600, hint: "8 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
   }
+];
 
-  // ---- Phone Data Management (localStorage) ----
-  let phones = [];
+let phones = [];
+let currentCategory = "all";
+let globalPlanMode = "default";
+const activePlanByPhone = {};
 
-  function loadPhones(){
-    try {
-      const stored = localStorage.getItem('drg_renewed_phones_data_v2');
-      if(stored){
-        const parsed = JSON.parse(stored);
-        if(Array.isArray(parsed) && parsed.length > 0){
-          phones = parsed;
-          return;
-        }
+function money(n){
+  return "KES " + Number(n).toLocaleString("en-KE");
+}
+
+function loadPhones(){
+  try {
+    const stored = localStorage.getItem('drg_vundi_phones_v3');
+    if(stored){
+      const parsed = JSON.parse(stored);
+      if(Array.isArray(parsed) && parsed.length > 0){
+        phones = parsed;
+        return;
       }
-    } catch(err){}
-    phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
-  }
+    }
+  } catch(err){}
+  phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
+}
 
-  function savePhones(){
-    try {
-      localStorage.setItem('drg_renewed_phones_data_v2', JSON.stringify(phones));
-    } catch(e){}
-  }
+function savePhones(){
+  try {
+    localStorage.setItem('drg_vundi_phones_v3', JSON.stringify(phones));
+  } catch(e){}
+}
 
-  loadPhones();
+loadPhones();
 
-  // Fetch live phone catalogue and settings from Backend / Firebase
-  async function syncBackendData(){
-    try {
-      // 1. Fetch settings (WhatsApp number, store info)
-      const settingsRes = await fetch('/api/settings');
-      if(settingsRes.ok){
-        const sJson = await settingsRes.json();
-        if(sJson.success && sJson.data && sJson.data.whatsappNumber){
-          WHATSAPP_NUMBER = sJson.data.whatsappNumber;
-        }
+// Sync from live server API if available
+async function syncBackendData(){
+  try {
+    const sRes = await fetch('/api/settings');
+    if(sRes.ok){
+      const sData = await sRes.json();
+      if(sData.success && sData.data && sData.data.whatsappNumber){
+        WHATSAPP_NUMBER = sData.data.whatsappNumber;
       }
-    } catch(e){}
+    }
+  } catch(e){}
 
-    try {
-      // 2. Fetch live inventory
-      const phonesRes = await fetch('/api/phones');
-      if(phonesRes.ok){
-        const pJson = await phonesRes.json();
-        if(pJson.success && Array.isArray(pJson.data) && pJson.data.length > 0){
-          phones = pJson.data;
-          savePhones();
-          phones.forEach(p => {
-            if(!activePlanByPhone[p.id]){
-              activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
-            }
-          });
-          renderPhones();
-        }
+  try {
+    const pRes = await fetch('/api/phones');
+    if(pRes.ok){
+      const pData = await pRes.json();
+      if(pData.success && Array.isArray(pData.data) && pData.data.length > 0){
+        phones = pData.data;
+        savePhones();
+        renderPhones();
       }
-    } catch(e){}
+    }
+  } catch(e){}
+}
+
+function getEffectivePlan(phone){
+  if(globalPlanMode === "cash") return "cash";
+  if(globalPlanMode === "mosaver"){
+    return phone.plans.mosaver ? "mosaver" : (phone.plans.standard ? "standard" : "cash");
   }
-
-  // Active state
-  let currentCategory = "all";
-  let globalPlanMode = "default";
-  const activePlanByPhone = {};
-
-  phones.forEach(p => {
-    activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
-  });
-
-  // Trigger background sync
-  syncBackendData();
-
-  function getEffectivePlan(phone){
-    if(globalPlanMode === "default"){
-      return activePlanByPhone[phone.id] || phone.defaultPlan || Object.keys(phone.plans)[0];
-    }
-    if(phone.plans[globalPlanMode]){
-      return globalPlanMode;
-    }
-    if(globalPlanMode === "mosaver" || globalPlanMode === "mostandard"){
-      return phone.plans.standard ? "standard" : "cash";
-    }
-    return phone.defaultPlan || Object.keys(phone.plans)[0];
+  if(globalPlanMode === "mostandard"){
+    return phone.plans.mostandard ? "mostandard" : (phone.plans.standard ? "standard" : "cash");
   }
+  return activePlanByPhone[phone.id] || phone.defaultPlan || Object.keys(phone.plans)[0];
+}
 
-  function getWaLink(phone, planKey){
-    const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
-    let msg = "";
-    if(planKey === "cash"){
-      msg = `Hi DRG Phones Palace, I'd like to buy the renewed ${phone.model} ${phone.storage} (${phone.condition}) in Cash for ${money(plan.total)}. Is it available?`;
-    } else if(planKey === "mosaver"){
-      msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} on MoSaver (6 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
-    } else if(planKey === "mostandard"){
-      msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} on MoStandard (12 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
-    } else {
-      msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} (${phone.condition}) on the ${plan.label} plan. Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)} x ${plan.weeks} wks (Total: ${money(plan.total)}). Is it available?`;
-    }
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+function getWaLink(phone, planKey){
+  const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
+  let msg = "";
+  if(planKey === "cash"){
+    msg = `Hi DRG Phones Palace, I'd like to buy the renewed ${phone.model} ${phone.storage} (${phone.condition}) in Cash for ${money(plan.total)}. Is it available?`;
+  } else if(planKey === "mosaver"){
+    msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} on MoSaver (6 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
+  } else if(planKey === "mostandard"){
+    msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} on MoStandard (12 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
+  } else {
+    msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} (${phone.condition}) on the ${plan.label} plan. Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)} x ${plan.weeks} wks (Total: ${money(plan.total)}). Is it available?`;
   }
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
 
-  function renderPlanBox(phone, activeKey){
-    const plan = phone.plans[activeKey] || Object.values(phone.plans)[0];
-    const isCash = activeKey === "cash";
+function renderPlanBox(phone, activeKey){
+  const plan = phone.plans[activeKey] || Object.values(phone.plans)[0];
+  const isCash = activeKey === "cash";
 
-    let detailsHtml = "";
-    if(isCash){
-      detailsHtml = `
-        <div class="phone-plan cash-layout" id="plan-details-${phone.id}">
-          <div><span>Cash Price (Full)</span><strong>${money(plan.total)}</strong></div>
-          <div><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
-        </div>
-      `;
-    } else {
-      detailsHtml = `
-        <div class="phone-plan" id="plan-details-${phone.id}">
-          <div><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
-          <div><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
-          <div><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
-        </div>
-      `;
-    }
-
-    const planKeys = Object.keys(phone.plans);
-    const tabsHtml = `
-      <div class="card-plan-tabs" role="tablist">
-        ${planKeys.map(k => `
-          <button class="card-plan-tab ${k === activeKey ? 'active' : ''}"
-                  data-phone="${phone.id}"
-                  data-plan="${k}">
-            ${phone.plans[k].label}
-          </button>
-        `).join("")}
+  let detailsHtml = "";
+  if(isCash){
+    detailsHtml = `
+      <div class="phone-plan-breakdown cash-layout" id="plan-details-${phone.id}">
+        <div class="plan-col"><span>Cash Price</span><strong>${money(plan.total)}</strong></div>
+        <div class="plan-col"><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
       </div>
     `;
-
-    return `
-      <div class="card-plan-box" id="plan-box-${phone.id}">
-        ${tabsHtml}
-        ${detailsHtml}
-        <div class="plan-hint" id="plan-hint-${phone.id}">${plan.hint || ""}</div>
+  } else {
+    detailsHtml = `
+      <div class="phone-plan-breakdown" id="plan-details-${phone.id}">
+        <div class="plan-col"><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
+        <div class="plan-col"><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
+        <div class="plan-col"><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
       </div>
     `;
   }
 
-  function updateCardPlanView(phoneId, newPlanKey){
-    const phone = phones.find(p => p.id === phoneId);
-    if(!phone || !phone.plans[newPlanKey]) return;
+  const planKeys = Object.keys(phone.plans);
+  const tabsHtml = `
+    <div class="card-plan-tabs" role="tablist">
+      ${planKeys.map(k => `
+        <button class="card-plan-tab ${k === activeKey ? 'active' : ''}"
+                data-phone="${phone.id}"
+                data-plan="${k}">
+          ${phone.plans[k].label}
+        </button>
+      `).join("")}
+    </div>
+  `;
 
-    activePlanByPhone[phoneId] = newPlanKey;
+  return `
+    <div class="card-plan-box" id="plan-box-${phone.id}">
+      ${tabsHtml}
+      ${detailsHtml}
+      <div class="plan-hint-text" id="plan-hint-${phone.id}">${plan.hint || ""}</div>
+    </div>
+  `;
+}
 
-    const card = document.getElementById(`phone-card-${phoneId}`);
-    if(!card) return;
+function updateCardPlanView(phoneId, newPlanKey){
+  const phone = phones.find(p => p.id === phoneId);
+  if(!phone || !phone.plans[newPlanKey]) return;
 
-    // Update tabs
-    card.querySelectorAll('.card-plan-tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.plan === newPlanKey);
+  activePlanByPhone[phoneId] = newPlanKey;
+  const card = document.getElementById(`phone-card-${phoneId}`);
+  if(!card) return;
+
+  card.querySelectorAll('.card-plan-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.plan === newPlanKey);
+  });
+
+  const plan = phone.plans[newPlanKey];
+  const detailsContainer = card.querySelector(`#plan-details-${phoneId}`);
+  if(detailsContainer){
+    if(newPlanKey === "cash"){
+      detailsContainer.className = "phone-plan-breakdown cash-layout";
+      detailsContainer.innerHTML = `
+        <div class="plan-col"><span>Cash Price</span><strong>${money(plan.total)}</strong></div>
+        <div class="plan-col"><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
+      `;
+    } else {
+      detailsContainer.className = "phone-plan-breakdown";
+      detailsContainer.innerHTML = `
+        <div class="plan-col"><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
+        <div class="plan-col"><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
+        <div class="plan-col"><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
+      `;
+    }
+  }
+
+  const hintEl = card.querySelector(`#plan-hint-${phoneId}`);
+  if(hintEl) hintEl.textContent = plan.hint || "";
+
+  const ctaBtn = card.querySelector('.card-action-btn');
+  if(ctaBtn){
+    ctaBtn.href = getWaLink(phone, newPlanKey);
+  }
+}
+
+let customerSearchQuery = "";
+
+function renderPhones(){
+  const grid = document.getElementById('phoneGrid');
+  grid.innerHTML = "";
+
+  let list = phones;
+  if(currentCategory !== "all"){
+    list = list.filter(p => p.category === currentCategory);
+  }
+
+  if(customerSearchQuery){
+    const q = customerSearchQuery.toLowerCase();
+    list = list.filter(p => {
+      const text = `${p.model} ${p.storage} ${p.category} ${p.categoryLabel || ''} ${p.condition || ''} ${(p.specs || []).join(' ')} ${p.cashPrice}`.toLowerCase();
+      return text.includes(q);
     });
 
-    // Update plan details
-    const plan = phone.plans[newPlanKey];
-    const detailsContainer = card.querySelector(`#plan-details-${phoneId}`);
-    if(detailsContainer){
-      if(newPlanKey === "cash"){
-        detailsContainer.className = "phone-plan cash-layout";
-        detailsContainer.innerHTML = `
-          <div><span>Cash Price (Full)</span><strong>${money(plan.total)}</strong></div>
-          <div><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
-        `;
-      } else {
-        detailsContainer.className = "phone-plan";
-        detailsContainer.innerHTML = `
-          <div><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
-          <div><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
-          <div><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
-        `;
-      }
+    const sBar = document.getElementById('searchStatusBar');
+    const sText = document.getElementById('searchStatusText');
+    if(sBar && sText){
+      sBar.style.display = 'flex';
+      sText.textContent = `Found ${list.length} renewed phone${list.length === 1 ? '' : 's'} matching "${customerSearchQuery}"`;
     }
-
-    // Update hint
-    const hintEl = card.querySelector(`#plan-hint-${phoneId}`);
-    if(hintEl) hintEl.textContent = plan.hint || "";
-
-    // Update WhatsApp CTA button
-    const ctaBtn = card.querySelector('.btn-whatsapp');
-    if(ctaBtn){
-      ctaBtn.href = getWaLink(phone, newPlanKey);
-    }
+  } else {
+    const sBar = document.getElementById('searchStatusBar');
+    if(sBar) sBar.style.display = 'none';
   }
 
-  function renderPhones(){
-    const grid = document.getElementById('phoneGrid');
-    grid.innerHTML = "";
-
-    const list = currentCategory === "all" 
-      ? phones 
-      : phones.filter(p => p.category === currentCategory);
-
-    if(list.length === 0){
+  if(list.length === 0){
+    if(customerSearchQuery){
       grid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 48px 20px; background: var(--bg-panel); border: 1px dashed var(--line); border-radius: var(--radius-card);">
-          <div style="font-size: 38px; margin-bottom: 12px;">📱</div>
-          <h3 style="font-size: 20px; margin-bottom: 6px;">No renewed phones found in this category</h3>
-          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 18px;">Check back soon for available renewed phones or chat with us on WhatsApp.</p>
-          <a class="btn btn-whatsapp" style="display:inline-flex;" href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20DRG%20Phones%20Palace%2C%20do%20you%20have%20any%20renewed%20phones%20in%20stock%3F" target="_blank" rel="noopener">Inquire on WhatsApp</a>
+        <div class="catalogue-empty">
+          <div style="font-size:32px;margin-bottom:12px;">🔍</div>
+          <h3>No renewed phones found matching "${customerSearchQuery}"</h3>
+          <p>Try searching for a different brand, model, or specification, or clear the search to see all devices.</p>
+          <button type="button" class="btn btn-gold" onclick="clearSearch()">Clear Search</button>
         </div>
       `;
-      return;
+    } else {
+      grid.innerHTML = `
+        <div class="catalogue-empty">
+          <div style="font-size:32px;margin-bottom:12px;">📱</div>
+          <h3>No renewed phones found in this category</h3>
+          <p>Check back soon for newly verified devices or chat with our team directly.</p>
+          <a class="btn btn-gold" href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20DRG%20Phones%20Palace%2C%20do%20you%20have%20any%20renewed%20phones%20in%20stock%3F" target="_blank" rel="noopener">Inquire on WhatsApp</a>
+        </div>
+      `;
     }
-
-    list.forEach(phone => {
-      const activeKey = getEffectivePlan(phone);
-      const card = document.createElement('article');
-      card.className = 'phone-card';
-      card.id = `phone-card-${phone.id}`;
-
-      card.innerHTML = `
-        <div class="phone-media">
-          <img src="${phone.image}" alt="${phone.model} ${phone.storage}"
-               loading="lazy"
-               onerror="this.remove()">
-          <div class="phone-media-fallback">
-            <span class="icon">📱</span>
-            <span>Photo coming soon</span>
-          </div>
-          <span class="condition-badge">${phone.condition}</span>
-        </div>
-        <div class="phone-body">
-          <div class="phone-title">${phone.model}<small>${phone.storage} · ${phone.categoryLabel}</small></div>
-          <ul class="phone-specs">
-            ${phone.specs.map(s => `<li>${s}</li>`).join("")}
-          </ul>
-          ${renderPlanBox(phone, activeKey)}
-          <a class="btn btn-whatsapp" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">Get This Renewed Phone</a>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
+    return;
   }
 
-  function recordInquiry(phoneId, planKey){
-    const phone = phones.find(p => p.id === phoneId);
-    if(!phone) return;
-    const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
-    try {
-      fetch('/api/inquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phoneId: phone.id,
-          model: phone.model,
-          storage: phone.storage,
-          planKey: planKey,
-          planLabel: plan ? plan.label : planKey,
-          cashPrice: phone.cashPrice
-        })
-      }).catch(()=>{});
-    } catch(e){}
-  }
+  list.forEach(phone => {
+    const activeKey = getEffectivePlan(phone);
+    const card = document.createElement('article');
+    card.className = 'phone-card';
+    card.id = `phone-card-${phone.id}`;
 
-  // Category filter
-  document.getElementById('filterRow').addEventListener('click', (e) => {
-    const btn = e.target.closest('.filter-pill');
-    if(!btn) return;
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    currentCategory = btn.dataset.cat;
-    renderPhones();
+    const hasValidImage = Boolean(phone.image && String(phone.image).trim());
+    const mediaHtml = hasValidImage ? `
+      <div class="phone-media">
+        <img src="${phone.image}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${phone.condition}</span>';">
+        <span class="phone-condition-badge">${phone.condition}</span>
+      </div>
+    ` : `
+      <div class="phone-media phone-media-placeholder">
+        <div class="placeholder-content">
+          <span class="placeholder-icon">📱</span>
+          <span class="placeholder-title">${phone.model}</span>
+          <span class="placeholder-subtitle">Verified Renewed Device</span>
+        </div>
+        <span class="phone-condition-badge">${phone.condition}</span>
+      </div>
+    `;
+
+    card.innerHTML = `
+      ${mediaHtml}
+      <div class="phone-card-body">
+        <div class="phone-card-header">
+          <h3 class="phone-card-title">${phone.model}</h3>
+          <span class="phone-card-storage">${phone.storage}</span>
+        </div>
+        <div class="phone-specs-list">
+          ${phone.specs.map(s => `<span class="phone-spec-item">${s}</span>`).join("")}
+        </div>
+        ${renderPlanBox(phone, activeKey)}
+        <a class="btn btn-gold card-action-btn" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">
+          Get This Renewed Phone
+        </a>
+      </div>
+    `;
+    grid.appendChild(card);
   });
+}
 
-  // Global plan mode filter
-  document.getElementById('globalPlanRow').addEventListener('click', (e) => {
-    const btn = e.target.closest('.plan-pill');
-    if(!btn) return;
-    document.querySelectorAll('.plan-pill').forEach(p => p.classList.remove('active'));
+function recordInquiry(phoneId, planKey){
+  const phone = phones.find(p => p.id === phoneId);
+  if(!phone) return;
+  const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
+  try {
+    fetch('/api/inquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phoneId: phone.id, model: phone.model, storage: phone.storage,
+        planKey: planKey, planLabel: plan ? plan.label : planKey, cashPrice: phone.cashPrice
+      })
+    }).catch(()=>{});
+  } catch(e){}
+}
+
+// Category filter buttons
+document.getElementById('filterRow').addEventListener('click', (e) => {
+  const btn = e.target.closest('.filter-pill');
+  if(!btn) return;
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCategory = btn.dataset.cat;
+  renderPhones();
+});
+
+// Global plan switcher
+document.querySelectorAll('.plan-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.plan-pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     globalPlanMode = btn.dataset.plan;
     renderPhones();
   });
+});
 
-  // In-card click delegation (Plan switch)
-  document.getElementById('phoneGrid').addEventListener('click', (e) => {
-    const tab = e.target.closest('.card-plan-tab');
-    if(!tab) return;
-    const phoneId = tab.dataset.phone;
-    const planKey = tab.dataset.plan;
-    updateCardPlanView(phoneId, planKey);
-  });
+// Card plan tabs click delegation
+document.getElementById('phoneGrid').addEventListener('click', (e) => {
+  const tab = e.target.closest('.card-plan-tab');
+  if(!tab) return;
+  updateCardPlanView(tab.dataset.phone, tab.dataset.plan);
+});
 
-  // Real-time synchronization when catalogue is modified in admin.html
-  window.addEventListener('storage', (e) => {
-    if(e.key === 'drg_phones_data'){
-      loadPhones();
-      phones.forEach(p => {
-        if(!activePlanByPhone[p.id]){
-          activePlanByPhone[p.id] = p.defaultPlan || Object.keys(p.plans)[0];
-        }
-      });
-      renderPhones();
+
+// Customer Search Event Listeners
+const searchInput = document.getElementById('customerSearchInput');
+const searchBtn = document.getElementById('searchSubmitBtn');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+const resetSearchFilterBtn = document.getElementById('resetSearchFilterBtn');
+
+function executeSearch(){
+  if(!searchInput) return;
+  customerSearchQuery = searchInput.value.trim();
+  if(clearSearchBtn){
+    clearSearchBtn.style.display = customerSearchQuery ? 'block' : 'none';
+  }
+  renderPhones();
+}
+
+window.clearSearch = function(){
+  if(!searchInput) return;
+  searchInput.value = "";
+  customerSearchQuery = "";
+  if(clearSearchBtn) clearSearchBtn.style.display = 'none';
+  const sBar = document.getElementById('searchStatusBar');
+  if(sBar) sBar.style.display = 'none';
+  renderPhones();
+  searchInput.focus();
+};
+
+if(searchBtn) searchBtn.addEventListener('click', executeSearch);
+if(searchInput){
+  searchInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      executeSearch();
     }
   });
+  searchInput.addEventListener('input', () => {
+    if(searchInput.value.trim() === ""){
+      customerSearchQuery = "";
+      if(clearSearchBtn) clearSearchBtn.style.display = 'none';
+      const sBar = document.getElementById('searchStatusBar');
+      if(sBar) sBar.style.display = 'none';
+      renderPhones();
+    } else {
+      if(clearSearchBtn) clearSearchBtn.style.display = 'block';
+    }
+  });
+}
+if(clearSearchBtn) clearSearchBtn.addEventListener('click', window.clearSearch);
+if(resetSearchFilterBtn) resetSearchFilterBtn.addEventListener('click', window.clearSearch);
 
-  renderPhones();
+// Initial load & backend sync
+renderPhones();
+syncBackendData();
 </script>
-
 </body>
 </html>

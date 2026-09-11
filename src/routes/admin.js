@@ -5,35 +5,118 @@ const config = require('../config');
 const db = require('../db');
 const { requireAdminAuth } = require('../middleware/auth');
 
-// Public: POST /api/admin/login
-router.post('/login', async (req, res) => {
+// Public: POST /api/admin/register (Create Admin Account)
+router.post('/register', async (req, res) => {
   try {
-    const { pin } = req.body;
-    if (!pin) {
-      return res.status(400).json({ success: false, message: 'Admin PIN is required' });
+    const { name, username, email, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username and password are required.'
+      });
     }
 
-    const isValid = await db.verifyAdminPin(pin);
-    if (!isValid) {
-      return res.status(401).json({ success: false, message: 'Invalid admin PIN' });
+    if (String(password).length < 4) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 4 characters long.'
+      });
     }
 
-    // Generate JWT
+    const newAccount = await db.createAdminAccount({ name, username, email, password });
+
     const token = jwt.sign(
-      { role: 'admin', timestamp: Date.now() },
+      {
+        role: 'admin',
+        userId: newAccount.id,
+        username: newAccount.username,
+        name: newAccount.name
+      },
       config.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: '7d' }
     );
 
-    res.json({
+    res.status(201).json({
       success: true,
-      message: 'Admin authentication successful',
+      message: `Admin account "${newAccount.username}" created successfully!`,
       token,
-      expiresIn: '24h'
+      user: newAccount
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+// Public: POST /api/admin/login (Support username+password or PIN)
+router.post('/login', async (req, res) => {
+  try {
+    const { username, password, pin } = req.body;
+
+    // 1. Check Username / Password login
+    if (username && password) {
+      const user = await db.verifyAdminAccount(username, password);
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid username or password.'
+        });
+      }
+
+      const token = jwt.sign(
+        {
+          role: 'admin',
+          userId: user.id,
+          username: user.username,
+          name: user.name
+        },
+        config.JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+
+      return res.json({
+        success: true,
+        message: `Welcome back, ${user.name || user.username}!`,
+        token,
+        user
+      });
+    }
+
+    // 2. Fallback to PIN login
+    const pinToTest = pin || password;
+    if (pinToTest) {
+      const isValid = await db.verifyAdminPin(pinToTest);
+      if (isValid) {
+        const token = jwt.sign(
+          { role: 'admin', username: 'admin', name: 'Store Administrator' },
+          config.JWT_SECRET,
+          { expiresIn: '7d' }
+        );
+
+        return res.json({
+          success: true,
+          message: 'Admin authentication successful',
+          token,
+          user: { username: 'admin', name: 'Store Administrator' }
+        });
+      }
+    }
+
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid credentials. Please check your username and password.'
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+// Protected: GET /api/admin/me
+router.get('/me', requireAdminAuth, (req, res) => {
+  res.json({
+    success: true,
+    user: req.admin
+  });
 });
 
 // Protected: GET /api/admin/verify
@@ -41,6 +124,7 @@ router.get('/verify', requireAdminAuth, (req, res) => {
   res.json({
     success: true,
     authenticated: true,
+    user: req.admin,
     message: 'Session is valid'
   });
 });

@@ -97,7 +97,70 @@
     border-radius:24px;
     padding:38px 32px;
     width:100%;
-    max-width:440px;
+    max-width:490px;
+  .auth-tabs{
+    display:flex;
+    background:rgba(0,0,0,0.32);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:4px;
+    margin-bottom:20px;
+    gap:4px;
+  }
+  .auth-tab-btn{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--text-muted);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    text-align:center;
+  }
+  .auth-tab-btn:hover{
+    color:var(--gold-bright);
+  }
+  .auth-tab-btn.active{
+    background:var(--purple-deep);
+    color:#ffffff;
+    box-shadow:0 2px 10px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .auth-tab-btn.active{
+    background:var(--purple);
+    color:#fff;
+  }
+  .auth-form-group{
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+    gap:5px;
+    margin-bottom:14px;
+  }
+  .auth-form-group label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--text-muted);
+  }
+  .auth-input{
+    width:100%;
+    background:var(--bg-void);
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:11px 14px;
+    font-size:14px;
+    color:var(--text-primary);
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+    font-family:inherit;
+  }
+  .auth-input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(217,166,83,0.2);
+  }
+
     box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 35px rgba(217,166,83,0.18);
     text-align:center;
     position:relative;
@@ -735,6 +798,201 @@
     border-color:var(--purple);
     color:#fff;
   }
+  
+  /* PHOTO UPLOAD & PREVIEW STUDIO IN MODAL */
+  .photo-upload-studio{
+    background:var(--bg-void);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:4px;
+  }
+  .photo-main-row{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .photo-preview-card{
+    position:relative;
+    width:150px;
+    height:130px;
+    border-radius:10px;
+    background:var(--bg-panel);
+    border:1px dashed var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+    transition:border-color .2s;
+  }
+  .photo-preview-card.has-photo{
+    border-style:solid;
+    border-color:var(--gold);
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  }
+  .photo-preview-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .preview-placeholder{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    text-align:center;
+    padding:8px;
+    color:var(--text-muted);
+  }
+  .preview-placeholder .preview-icon{
+    font-size:26px;
+  }
+  .preview-placeholder .preview-text{
+    font-size:11.5px;
+    font-weight:700;
+  }
+  .clear-photo-btn{
+    position:absolute;
+    top:6px;
+    right:6px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.8);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    line-height:1;
+    transition:all .2s;
+  }
+  .clear-photo-btn:hover{
+    background:var(--danger);
+    transform:scale(1.1);
+  }
+  .photo-actions-col{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+    min-width:0;
+  }
+  .btn-upload-file{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 16px;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#241505;
+    font-weight:700;
+    font-size:12.5px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    transition:all .2s;
+    width:100%;
+    box-shadow:0 4px 15px rgba(217,166,83,0.3);
+  }
+  .btn-upload-file:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 20px rgba(217,166,83,0.45);
+  }
+  .upload-hint{
+    font-size:11px;
+    color:var(--text-muted);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .upload-hint.success{
+    color:var(--whatsapp);
+    font-weight:700;
+  }
+  .upload-hint.error{
+    color:var(--danger);
+  }
+  .photo-url-field{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    width:100%;
+  }
+  .photo-url-field input{
+    width:100%;
+    font-size:12px;
+  }
+  .photo-gallery-picker{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    border-top:1px solid var(--line);
+    padding-top:12px;
+  }
+  .gallery-title{
+    font-size:11px;
+    font-weight:700;
+    color:var(--gold-bright);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(72px, 1fr));
+    gap:8px;
+    max-height:130px;
+    overflow-y:auto;
+    padding-right:4px;
+  }
+  .gallery-thumb-item{
+    position:relative;
+    aspect-ratio:1;
+    border-radius:8px;
+    overflow:hidden;
+    border:1.5px solid var(--line);
+    cursor:pointer;
+    background:var(--bg-panel);
+    transition:all .2s;
+  }
+  .gallery-thumb-item:hover{
+    border-color:var(--gold);
+    transform:scale(1.05);
+  }
+  .gallery-thumb-item.active{
+    border-color:var(--gold-bright);
+    box-shadow:0 0 0 2px var(--gold-bright);
+  }
+  .gallery-thumb-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .gallery-thumb-item .thumb-label{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    background:rgba(10,8,18,0.88);
+    font-size:8px;
+    font-weight:700;
+    color:#fff;
+    padding:2px 2px;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
   .modal-footer{
     display:flex;
     justify-content:flex-end;
@@ -821,23 +1079,78 @@
 </head>
 <body>
 
-<!-- ==================== PIN GATE SCREEN ==================== -->
+<!-- ==================== ADMIN AUTHENTICATION GATE SCREEN ==================== -->
 <div class="pin-gate-wrap" id="pinGateScreen">
   <div class="pin-card" id="pinCard">
-    <div class="pin-badge">🛡️ Staff Security Gate</div>
+    <div class="pin-badge">🛡️ Admin Security Portal</div>
     <h1>DRG Phones Palace</h1>
-    <p>Enter your 4-digit security PIN to unlock store catalogue management and pricing.</p>
-    
-    <form id="pinGateForm">
-      <div class="pin-input-wrap">
-        <input type="password" id="gatePinInput" class="pin-input" placeholder="••••" maxlength="10" autocomplete="current-password" autofocus required>
+    <p style="margin-bottom:18px;">Sign in to your administrator account or create a new store admin profile.</p>
+
+    <!-- Auth Mode Switch Tabs -->
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab-btn active" id="tabSignInBtn">🔑 Sign In</button>
+      <button type="button" class="auth-tab-btn" id="tabRegisterBtn">✨ Create Admin Account</button>
+    </div>
+
+    <!-- 1. SIGN IN FORM -->
+    <form id="adminLoginForm">
+      <div class="auth-form-group">
+        <label for="loginUsername">Username or Email *</label>
+        <input type="text" id="loginUsername" class="auth-input" placeholder="e.g. admin or your username" autocomplete="username" required autofocus>
       </div>
-      <div id="gatePinError" class="form-error" style="display:none;"></div>
-      <button type="submit" class="btn-unlock">🔓 Unlock Admin Dashboard</button>
+      <div class="auth-form-group">
+        <label for="loginPassword">Password *</label>
+        <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password" autocomplete="current-password" required>
+      </div>
+      <div id="loginError" class="form-error" style="display:none;"></div>
+      <button type="submit" class="btn-unlock" id="loginSubmitBtn">🔓 Sign In to Dashboard</button>
+
+      <!-- Quick PIN Access Collapsible -->
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);text-align:center;">
+        <button type="button" id="togglePinLoginBtn" style="background:none;border:none;color:var(--gold-bright);font-size:12.5px;cursor:pointer;text-decoration:underline;">
+          Need quick access? Use Master Security PIN
+        </button>
+        <div id="pinLoginSection" style="display:none;margin-top:14px;text-align:left;">
+          <div class="auth-form-group">
+            <label for="gatePinInput">Master Security PIN</label>
+            <input type="password" id="gatePinInput" class="auth-input" placeholder="••••" maxlength="10" autocomplete="current-password" style="text-align:center;letter-spacing:6px;font-size:18px;">
+          </div>
+          <button type="button" id="pinUnlockSubmitBtn" class="btn-unlock" style="background:linear-gradient(135deg,var(--purple),var(--purple-deep));color:#fff;">
+            Unlock with PIN
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- 2. CREATE ADMIN ACCOUNT (REGISTER) FORM -->
+    <form id="adminRegisterForm" style="display:none;">
+      <div class="auth-form-group">
+        <label for="regFullName">Full Name *</label>
+        <input type="text" id="regFullName" class="auth-input" placeholder="e.g. John Vundi" required>
+      </div>
+      <div class="auth-form-group">
+        <label for="regUsername">Choose Username *</label>
+        <input type="text" id="regUsername" class="auth-input" placeholder="e.g. john_drg" pattern="[a-zA-Z0-9_\-\.]{3,30}" title="Letters, numbers, underscores, min 3 chars" required autocomplete="username">
+      </div>
+      <div class="auth-form-group">
+        <label for="regEmail">Email Address (Optional)</label>
+        <input type="email" id="regEmail" class="auth-input" placeholder="e.g. admin@drgphones.co.ke" autocomplete="email">
+      </div>
+      <div class="auth-form-group">
+        <label for="regPassword">Password *</label>
+        <input type="password" id="regPassword" class="auth-input" placeholder="At least 4 characters" minlength="4" required autocomplete="new-password">
+      </div>
+      <div class="auth-form-group">
+        <label for="regConfirmPassword">Confirm Password *</label>
+        <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Repeat your password" minlength="4" required autocomplete="new-password">
+      </div>
+      <div id="registerError" class="form-error" style="display:none;"></div>
+      <div id="registerSuccess" style="display:none;color:var(--whatsapp);background:rgba(47,195,91,0.12);border:1px solid rgba(47,195,91,0.3);padding:10px;border-radius:8px;font-size:12.5px;font-weight:700;margin-bottom:14px;"></div>
+      <button type="submit" class="btn-unlock" id="registerSubmitBtn">✨ Create Admin Account</button>
     </form>
 
     <div class="pin-footer-links">
-      <span class="pin-hint">Default Security PIN: <strong>2540</strong> (Can be changed inside)</span>
+      <span class="pin-hint">Master PIN: <strong>2540</strong> (Legacy instant access)</span>
       <a href="index.html">← Back to Customer Storefront</a>
     </div>
   </div>
@@ -854,6 +1167,9 @@
       <div class="brand-group">
         <div class="brand-title">DRG <em>Phones Palace</em></div>
         <span class="admin-badge">Admin Console</span>
+        <span id="adminUserBadge" class="admin-badge" style="background:rgba(108,75,175,0.22); border: 1px solid var(--purple-soft); color:var(--text-primary); font-size: 11.5px; display:inline-flex; align-items:center; gap:6px;">
+          👤 <strong id="currentAdminName">Store Administrator</strong>
+        </span>
         <span id="backendStatusBadge" class="admin-badge" style="background:rgba(255,160,0,0.18); border: 1px solid #ffa000; color:#ffb300; display:none; font-size: 11px;">🔥 Firebase</span>
       </div>
       <div class="header-actions">
@@ -1008,20 +1324,36 @@
           <label for="newPhoneSpecs">Key Specs (Comma-separated) *</label>
           <input type="text" id="newPhoneSpecs" required placeholder="e.g. 50MP OIS Camera, 6.7 AMOLED 120Hz, 5000mAh battery">
         </div>
-        <div class="form-group full-width">
-          <label for="newPhoneImage">Image Path or URL (Optional)</label>
-          <input type="text" id="newPhoneImage" placeholder="images/galaxy-s24-ultra.jpg or https://...">
-          <div class="preset-row">
-            <span style="font-size:11px;color:var(--text-muted);">Presets:</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s25-ultra.jpg'">S25 Ultra</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s24-ultra.jpg'">S24 Ultra</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s23-ultra.jpg'">S23 Ultra</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s22-ultra.jpg'">S22 Ultra</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s21-ultra.jpg'">S21 Ultra</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/galaxy-s22-plus.jpg'">S22+</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/iphone-12.jpg'">iPhone 12</span>
-            <span class="preset-chip" onclick="document.getElementById('newPhoneImage').value='images/iphone-11.jpg'">iPhone 11</span>
+        <div class="form-group full-width phone-photo-field">
+          <label>Phone Photo (Manually added by Admin)</label>
+          <div class="photo-upload-studio">
+            <div class="photo-main-row">
+              <!-- Visual Live Preview Box -->
+              <div class="photo-preview-card" id="photoPreviewBox">
+                <img id="photoPreviewImg" src="" alt="Device Preview" style="display:none;">
+                <div id="photoPreviewPlaceholder" class="preview-placeholder">
+                  <span class="preview-icon">📷</span>
+                  <span class="preview-text">No Photo</span>
+                  <span style="font-size:9.5px;opacity:0.65;">Upload from device</span>
+                </div>
+                <button type="button" id="clearPhotoBtn" class="clear-photo-btn" style="display:none;" title="Remove Photo">✕</button>
+              </div>
+
+              <!-- Upload Actions & URL Input -->
+              <div class="photo-actions-col">
+                <input type="file" id="phoneFileInput" accept="image/jpeg,image/png,image/webp,image/jpg" style="display:none;">
+                <button type="button" class="btn-upload-file" id="uploadPhotoBtn">
+                  <span>📁</span> Select Photo from Computer / Phone
+                </button>
+                <div id="uploadProgressHint" class="upload-hint">Upload device photo (JPG, PNG, WEBP)</div>
+                
+                <div class="photo-url-field">
+                  <input type="text" id="newPhoneImage" placeholder="Or paste manual image URL / file path">
+                </div>
+              </div>
+            </div>
           </div>
+          <span class="form-hint" style="margin-top:4px;">If no photo is added, an elegant "Verified Renewed Device" placeholder card will be displayed on the storefront.</span>
         </div>
         <div class="form-group full-width">
           <label for="newPhoneCashPrice">Full Cash Price (KES) *</label>
@@ -1155,6 +1487,178 @@
 <div class="toast" id="adminToast"></div>
 
 <script>
+  
+  // ---- PHOTO UPLOAD, PREVIEW & GALLERY STUDIO ----
+  const photoPreviewBox = document.getElementById('photoPreviewBox');
+  const photoPreviewImg = document.getElementById('photoPreviewImg');
+  const photoPreviewPlaceholder = document.getElementById('photoPreviewPlaceholder');
+  const clearPhotoBtn = document.getElementById('clearPhotoBtn');
+  const phoneFileInput = document.getElementById('phoneFileInput');
+  const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+  const uploadProgressHint = document.getElementById('uploadProgressHint');
+  const newPhoneImage = document.getElementById('newPhoneImage');
+
+  function setPhonePhoto(url){
+    if(!url){
+      clearPhonePhoto();
+      return;
+    }
+    newPhoneImage.value = url;
+    photoPreviewImg.src = url;
+    photoPreviewImg.style.display = 'block';
+    photoPreviewPlaceholder.style.display = 'none';
+    clearPhotoBtn.style.display = 'flex';
+    photoPreviewBox.classList.add('has-photo');
+
+    
+    if(uploadProgressHint){
+      uploadProgressHint.className = 'upload-hint success';
+      uploadProgressHint.textContent = '✓ Photo selected: ' + url.split('/').pop();
+    }
+  }
+
+  function clearPhonePhoto(){
+    newPhoneImage.value = "";
+    phoneFileInput.value = "";
+    photoPreviewImg.src = "";
+    photoPreviewImg.style.display = 'none';
+    photoPreviewPlaceholder.style.display = 'flex';
+    clearPhotoBtn.style.display = 'none';
+    photoPreviewBox.classList.remove('has-photo');
+    
+    if(uploadProgressHint){
+      uploadProgressHint.className = 'upload-hint';
+      uploadProgressHint.textContent = 'Supports JPG, PNG, WEBP (Max 10MB)';
+    }
+  }
+
+  if(clearPhotoBtn) clearPhotoBtn.addEventListener('click', clearPhonePhoto);
+  if(uploadPhotoBtn) uploadPhotoBtn.addEventListener('click', () => phoneFileInput.click());
+
+  // Direct file selection and upload
+  if(phoneFileInput){
+    phoneFileInput.addEventListener('change', async () => {
+      const file = phoneFileInput.files[0];
+      if(!file) return;
+
+      // Show immediate local preview
+      const localPreviewUrl = URL.createObjectURL(file);
+      setPhonePhoto(localPreviewUrl);
+
+      if(uploadProgressHint){
+        uploadProgressHint.className = 'upload-hint';
+        uploadProgressHint.textContent = '⏳ Uploading ' + file.name + '...';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const token = sessionStorage.getItem('drg_admin_token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: headers,
+          body: formData
+        });
+
+        const data = await res.json();
+        if(data.success && data.url){
+          setPhonePhoto(data.url);
+          showToast('✅ Photo uploaded: ' + data.filename);
+        } else {
+          // If upload endpoint is not authorized, save as base64 data url
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            setPhonePhoto(e.target.result);
+            if(uploadProgressHint){
+              uploadProgressHint.className = 'upload-hint success';
+              uploadProgressHint.textContent = '✓ Photo attached locally (' + file.name + ')';
+            }
+          };
+          reader.readAsDataURL(file);
+          showToast('Photo attached to device');
+        }
+      } catch(err){
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setPhonePhoto(e.target.result);
+          if(uploadProgressHint){
+            uploadProgressHint.className = 'upload-hint success';
+            uploadProgressHint.textContent = '✓ Photo attached (' + file.name + ')';
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  // URL input change live preview
+  if(newPhoneImage){
+    newPhoneImage.addEventListener('input', () => {
+      const val = newPhoneImage.value.trim();
+      if(val){
+        photoPreviewImg.src = val;
+        photoPreviewImg.style.display = 'block';
+        photoPreviewPlaceholder.style.display = 'none';
+        clearPhotoBtn.style.display = 'flex';
+        photoPreviewBox.classList.add('has-photo');
+      } else {
+        clearPhonePhoto();
+      }
+    });
+  }
+
+  
+
+  // ---- EDIT PHONE SUPPORT ----
+  let editingPhoneId = null;
+
+  window.openEditPhoneModal = function(phoneId){
+    const phone = phones.find(p => p.id === phoneId);
+    if(!phone) return;
+
+    editingPhoneId = phone.id;
+    const modalTitle = addPhoneModal.querySelector('.modal-header h3');
+    if(modalTitle) modalTitle.textContent = '✏️ Edit Renewed Phone & Photos';
+    const submitBtn = addPhoneForm.querySelector('button[type="submit"]');
+    if(submitBtn) submitBtn.textContent = 'Save Changes';
+
+    document.getElementById('newPhoneModel').value = phone.model || "";
+    document.getElementById('newPhoneStorage').value = phone.storage || "";
+    document.getElementById('newPhoneCategory').value = phone.category || "samsung";
+    document.getElementById('newPhoneCondition').value = phone.condition || "Renewed · Grade A+";
+    document.getElementById('newPhoneSpecs').value = (phone.specs || []).join(", ");
+    document.getElementById('newPhoneCashPrice').value = phone.cashPrice || "";
+
+    // Set photo
+    if(phone.image){
+      setPhonePhoto(phone.image);
+    } else {
+      clearPhonePhoto();
+    }
+
+    // Set plans
+    if(phone.plans && phone.plans.mosaver && phone.plans.mostandard){
+      setPlanType("multi");
+      document.getElementById('newMoSaverDeposit').value = phone.plans.mosaver.deposit || "";
+      document.getElementById('newMoSaverWeekly').value = phone.plans.mosaver.weekly || "";
+      document.getElementById('newMoStandardDeposit').value = phone.plans.mostandard.deposit || "";
+      document.getElementById('newMoStandardWeekly').value = phone.plans.mostandard.weekly || "";
+    } else if(phone.plans && phone.plans.standard){
+      setPlanType("standard");
+      document.getElementById('newStandardDeposit').value = phone.plans.standard.deposit || "";
+      document.getElementById('newStandardWeekly').value = phone.plans.standard.weekly || "";
+      document.getElementById('newStandardWeeks').value = phone.plans.standard.weeks || 8;
+    } else {
+      setPlanType("multi");
+    }
+
+    addPhoneModal.classList.add('open');
+    document.getElementById('newPhoneModel').focus();
+  };
+
   // ---- WhatsApp Config & Default Catalogue Data ----
   const WHATSAPP_NUMBER = "254797951374";
 
@@ -1488,22 +1992,91 @@
 
   loadPhones();
 
-  // ---- Admin Authentication Engine ----
+  // ---- Admin Authentication & Account Engine ----
   const pinGateScreen = document.getElementById('pinGateScreen');
   const adminDashboardScreen = document.getElementById('adminDashboardScreen');
-  const pinGateForm = document.getElementById('pinGateForm');
-  const gatePinInput = document.getElementById('gatePinInput');
-  const gatePinError = document.getElementById('gatePinError');
   const pinCard = document.getElementById('pinCard');
   const logoutBtn = document.getElementById('logoutBtn');
+  const currentAdminName = document.getElementById('currentAdminName');
+
+  // Tabs
+  const tabSignInBtn = document.getElementById('tabSignInBtn');
+  const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+  const adminLoginForm = document.getElementById('adminLoginForm');
+  const adminRegisterForm = document.getElementById('adminRegisterForm');
+
+  // Login inputs
+  const loginUsername = document.getElementById('loginUsername');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginError = document.getElementById('loginError');
+  const togglePinLoginBtn = document.getElementById('togglePinLoginBtn');
+  const pinLoginSection = document.getElementById('pinLoginSection');
+  const gatePinInput = document.getElementById('gatePinInput');
+  const pinUnlockSubmitBtn = document.getElementById('pinUnlockSubmitBtn');
+
+  // Register inputs
+  const regFullName = document.getElementById('regFullName');
+  const regUsername = document.getElementById('regUsername');
+  const regEmail = document.getElementById('regEmail');
+  const regPassword = document.getElementById('regPassword');
+  const regConfirmPassword = document.getElementById('regConfirmPassword');
+  const registerError = document.getElementById('registerError');
+  const registerSuccess = document.getElementById('registerSuccess');
+
+  // Switch between Sign In and Register tabs
+  function switchAuthTab(mode){
+    if(mode === 'register'){
+      tabSignInBtn.classList.remove('active');
+      tabRegisterBtn.classList.add('active');
+      adminLoginForm.style.display = 'none';
+      adminRegisterForm.style.display = 'block';
+      if(registerError) registerError.style.display = 'none';
+      if(regFullName) regFullName.focus();
+    } else {
+      tabSignInBtn.classList.add('active');
+      tabRegisterBtn.classList.remove('active');
+      adminLoginForm.style.display = 'block';
+      adminRegisterForm.style.display = 'none';
+      if(loginError) loginError.style.display = 'none';
+      if(loginUsername) loginUsername.focus();
+    }
+  }
+
+  if(tabSignInBtn) tabSignInBtn.addEventListener('click', () => switchAuthTab('signin'));
+  if(tabRegisterBtn) tabRegisterBtn.addEventListener('click', () => switchAuthTab('register'));
+
+  if(togglePinLoginBtn){
+    togglePinLoginBtn.addEventListener('click', () => {
+      const isHidden = pinLoginSection.style.display === 'none';
+      pinLoginSection.style.display = isHidden ? 'block' : 'none';
+      togglePinLoginBtn.textContent = isHidden ? 'Hide Master PIN' : 'Need quick access? Use Master Security PIN';
+      if(isHidden && gatePinInput) gatePinInput.focus();
+    });
+  }
 
   function getStoredAdminPin(){
     return localStorage.getItem('drg_admin_pin') || "2540";
   }
 
-  function setAuthenticated(auth){
+  function setAuthenticated(auth, user = null){
     if(auth){
       try { sessionStorage.setItem('drg_admin_active', 'true'); } catch(e){}
+      if(user){
+        try { sessionStorage.setItem('drg_admin_user', JSON.stringify(user)); } catch(e){}
+      }
+      
+      let currentUser = user;
+      if(!currentUser){
+        try {
+          const raw = sessionStorage.getItem('drg_admin_user');
+          if(raw) currentUser = JSON.parse(raw);
+        } catch(e){}
+      }
+
+      if(currentAdminName){
+        currentAdminName.textContent = currentUser ? (currentUser.name || currentUser.username) : 'Store Administrator';
+      }
+
       pinGateScreen.style.display = 'none';
       adminDashboardScreen.style.display = 'block';
       renderInventory();
@@ -1513,14 +2086,154 @@
       try {
         sessionStorage.removeItem('drg_admin_active');
         sessionStorage.removeItem('drg_admin_token');
+        sessionStorage.removeItem('drg_admin_user');
       } catch(e){}
       pinGateScreen.style.display = 'flex';
       adminDashboardScreen.style.display = 'none';
-      gatePinInput.value = '';
-      gatePinError.style.display = 'none';
-      setTimeout(() => gatePinInput.focus(), 100);
+      switchAuthTab('signin');
+      if(loginPassword) loginPassword.value = '';
+      if(gatePinInput) gatePinInput.value = '';
+      if(loginError) loginError.style.display = 'none';
+      setTimeout(() => { if(loginUsername) loginUsername.focus(); }, 100);
     }
   }
+
+  // 1. Sign In form submit
+  adminLoginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const u = loginUsername.value.trim();
+    const p = loginPassword.value;
+
+    if(!u || !p){
+      loginError.textContent = 'Please enter both username/email and password.';
+      loginError.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      const data = await res.json();
+
+      if(res.ok && data.success && data.token){
+        sessionStorage.setItem('drg_admin_token', data.token);
+        setAuthenticated(true, data.user);
+        showToast(`👑 Welcome back, ${data.user?.name || data.user?.username || 'Admin'}!`);
+        return;
+      } else {
+        loginError.textContent = data.message || 'Invalid username or password.';
+        loginError.style.display = 'block';
+        pinCard.classList.remove('shake');
+        void pinCard.offsetWidth;
+        pinCard.classList.add('shake');
+        loginPassword.focus();
+        loginPassword.select();
+      }
+    } catch(err){
+      loginError.textContent = 'Unable to connect to server. Please check connection.';
+      loginError.style.display = 'block';
+    }
+  });
+
+  // 2. Quick Master PIN submit
+  if(pinUnlockSubmitBtn){
+    pinUnlockSubmitBtn.addEventListener('click', async () => {
+      const pin = gatePinInput.value.trim();
+      if(!pin) return;
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pin })
+        });
+        const data = await res.json();
+        if(res.ok && data.success && data.token){
+          sessionStorage.setItem('drg_admin_token', data.token);
+          setAuthenticated(true, data.user || { name: 'Master Admin', username: 'admin' });
+          showToast('👑 Unlocked via Master Security PIN!');
+          return;
+        }
+      } catch(e){}
+
+      if(pin === getStoredAdminPin()){
+        setAuthenticated(true, { name: 'Store Admin', username: 'admin' });
+        showToast('👑 Unlocked via Master Security PIN!');
+      } else {
+        loginError.textContent = '❌ Incorrect Master PIN. Please try again.';
+        loginError.style.display = 'block';
+        pinCard.classList.remove('shake');
+        void pinCard.offsetWidth;
+        pinCard.classList.add('shake');
+        gatePinInput.focus();
+      }
+    });
+  }
+
+  // 3. Create Admin Account (Register) submit
+  adminRegisterForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = regFullName.value.trim();
+    const username = regUsername.value.trim();
+    const email = regEmail.value.trim();
+    const password = regPassword.value;
+    const confirmPassword = regConfirmPassword.value;
+
+    if(password !== confirmPassword){
+      registerError.textContent = 'Passwords do not match. Please re-enter.';
+      registerError.style.display = 'block';
+      regConfirmPassword.focus();
+      return;
+    }
+
+    if(password.length < 4){
+      registerError.textContent = 'Password must be at least 4 characters long.';
+      registerError.style.display = 'block';
+      regPassword.focus();
+      return;
+    }
+
+    try {
+      registerError.style.display = 'none';
+      registerSuccess.style.display = 'none';
+
+      const res = await fetch('/api/admin/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, username, email, password })
+      });
+
+      const data = await res.json();
+
+      if(res.ok && data.success && data.token){
+        sessionStorage.setItem('drg_admin_token', data.token);
+        registerSuccess.textContent = `✅ Admin account "${username}" created successfully!`;
+        registerSuccess.style.display = 'block';
+
+        showToast(`🎉 Welcome, ${name}! Your admin account is now active.`);
+        setTimeout(() => {
+          setAuthenticated(true, data.user);
+        }, 600);
+      } else {
+        registerError.textContent = data.message || 'Failed to create admin account.';
+        registerError.style.display = 'block';
+        pinCard.classList.remove('shake');
+        void pinCard.offsetWidth;
+        pinCard.classList.add('shake');
+      }
+    } catch(err){
+      registerError.textContent = 'Server error during registration. Please try again.';
+      registerError.style.display = 'block';
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    setAuthenticated(false);
+    showToast("🔒 Admin session ended");
+  });
 
   // Background sync with Backend & Firebase
   async function syncAdminData(){
@@ -1567,48 +2280,6 @@
       }
     } catch(e){}
   }
-
-  pinGateForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const entered = gatePinInput.value.trim();
-
-    // 1. Attempt API authentication with backend / Firebase
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pin: entered })
-      });
-      if(res.ok){
-        const json = await res.json();
-        if(json.success && json.token){
-          sessionStorage.setItem('drg_admin_token', json.token);
-          setAuthenticated(true);
-          showToast("👑 Welcome to DRG Staff Portal!");
-          return;
-        }
-      }
-    } catch(err){}
-
-    // 2. Offline / Local PIN verification fallback
-    if(entered === getStoredAdminPin()){
-      setAuthenticated(true);
-      showToast("👑 Welcome to DRG Staff Portal!");
-    } else {
-      gatePinError.textContent = "❌ Incorrect PIN. Please try again.";
-      gatePinError.style.display = "block";
-      pinCard.classList.remove('shake');
-      void pinCard.offsetWidth; // trigger reflow
-      pinCard.classList.add('shake');
-      gatePinInput.focus();
-      gatePinInput.select();
-    }
-  });
-
-  logoutBtn.addEventListener('click', () => {
-    setAuthenticated(false);
-    showToast("🔒 Admin session locked");
-  });
 
   // Check existing session
   const hasActiveSession = sessionStorage.getItem('drg_admin_active') === 'true';
@@ -1732,6 +2403,9 @@
           </td>
           <td style="text-align:right;">
             <div class="table-actions" style="justify-content:flex-end;">
+              <button class="btn btn-outline btn-sm" onclick="openEditPhoneModal('${phone.id}')" title="Edit Device Details & Photos" style="border-color:var(--gold);color:var(--gold-bright);">
+                ✏️ Edit
+              </button>
               <button class="btn btn-outline btn-sm" onclick="testWaLink('${phone.id}')" title="Test Customer WhatsApp Inquiry Link">
                 💬 WhatsApp
               </button>
@@ -1877,6 +2551,13 @@
   });
 
   function openAddModal(){
+    editingPhoneId = null;
+    const modalTitle = addPhoneModal.querySelector('.modal-header h3');
+    if(modalTitle) modalTitle.textContent = '➕ Add Renewed Phone to Catalogue';
+    const submitBtn = addPhoneForm.querySelector('button[type="submit"]');
+    if(submitBtn) submitBtn.textContent = 'Add to Catalogue';
+    addPhoneForm.reset();
+    clearPhonePhoto();
     addPhoneModal.classList.add('open');
     setPlanType("multi");
     document.getElementById('newPhoneModel').focus();
@@ -1899,7 +2580,7 @@
     const category = document.getElementById('newPhoneCategory').value;
     const condition = document.getElementById('newPhoneCondition').value;
     const specsRaw = document.getElementById('newPhoneSpecs').value.trim();
-    const image = document.getElementById('newPhoneImage').value.trim() || `images/${model.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.jpg`;
+    const image = document.getElementById('newPhoneImage').value.trim();
     const cashPrice = Number(document.getElementById('newPhoneCashPrice').value);
 
     const specs = specsRaw.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
@@ -1959,37 +2640,76 @@
       defaultPlan = "standard";
     }
 
-    const newPhone = {
-      id: newId,
-      category: category,
-      categoryLabel: catLabels[category] || "Other Phones",
-      model: model,
-      storage: storage,
-      condition: condition,
-      image: image,
-      specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
-      cashPrice: cashPrice,
-      plans: plans,
-      defaultPlan: defaultPlan
-    };
+    if(editingPhoneId){
+      // UPDATE EXISTING PHONE
+      const index = phones.findIndex(p => p.id === editingPhoneId);
+      const updatedPhone = {
+        id: editingPhoneId,
+        category: category,
+        categoryLabel: catLabels[category] || "Other Renewed Phones",
+        model: model,
+        storage: storage,
+        condition: condition,
+        image: image,
+        specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
+        cashPrice: cashPrice,
+        plans: plans,
+        defaultPlan: defaultPlan
+      };
 
-    phones.unshift(newPhone);
-    savePhones();
-    closeAddModal();
-    renderInventory();
-    showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
+      if(index !== -1){
+        phones[index] = updatedPhone;
+      }
+      savePhones();
+      closeAddModal();
+      renderInventory();
+      showToast(`✅ Successfully updated ${model} details & photo!`);
 
-    // Sync to backend / Firebase
-    const token = sessionStorage.getItem('drg_admin_token');
-    if(token){
-      fetch('/api/phones', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(newPhone)
-      }).catch(err => console.warn('Backend add sync error:', err));
+      const token = sessionStorage.getItem('drg_admin_token');
+      if(token){
+        fetch(`/api/phones/${editingPhoneId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(updatedPhone)
+        }).catch(err => console.warn('Backend update sync error:', err));
+      }
+      editingPhoneId = null;
+    } else {
+      // ADD NEW PHONE
+      const newPhone = {
+        id: newId,
+        category: category,
+        categoryLabel: catLabels[category] || "Other Renewed Phones",
+        model: model,
+        storage: storage,
+        condition: condition,
+        image: image,
+        specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
+        cashPrice: cashPrice,
+        plans: plans,
+        defaultPlan: defaultPlan
+      };
+
+      phones.unshift(newPhone);
+      savePhones();
+      closeAddModal();
+      renderInventory();
+      showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
+
+      const token = sessionStorage.getItem('drg_admin_token');
+      if(token){
+        fetch('/api/phones', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(newPhone)
+        }).catch(err => console.warn('Backend add sync error:', err));
+      }
     }
   });
 

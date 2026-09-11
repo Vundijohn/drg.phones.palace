@@ -365,6 +365,105 @@ const db = {
     return true;
   },
 
+  // ---------------- ADMIN ACCOUNTS ----------------
+  async getAdminAccounts() {
+    const adminData = safeReadJson(ADMIN_FILE, {});
+    const accounts = adminData.accounts || [];
+    return accounts.map(({ passwordHash, ...safeAcc }) => safeAcc);
+  },
+
+  async createAdminAccount({ name, username, email, password }) {
+    const adminData = safeReadJson(ADMIN_FILE, {});
+    if (!Array.isArray(adminData.accounts)) {
+      adminData.accounts = [];
+    }
+
+    const cleanUsername = String(username || '').trim().toLowerCase();
+    const cleanEmail = String(email || '').trim().toLowerCase();
+
+    if (!cleanUsername) {
+      throw new Error('Username is required.');
+    }
+    if (!password || String(password).length < 4) {
+      throw new Error('Password must be at least 4 characters long.');
+    }
+
+    const exists = adminData.accounts.some(acc => 
+      (acc.username && acc.username.toLowerCase() === cleanUsername) ||
+      (cleanEmail && acc.email && acc.email.toLowerCase() === cleanEmail)
+    );
+
+    if (exists) {
+      throw new Error(`An admin account with username "${cleanUsername}" already exists.`);
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(String(password), salt);
+
+    const newAccount = {
+      id: `admin-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+      name: String(name || cleanUsername || 'Admin').trim(),
+      username: cleanUsername,
+      email: cleanEmail,
+      passwordHash,
+      role: 'admin',
+      createdAt: new Date().toISOString()
+    };
+
+    adminData.accounts.push(newAccount);
+    adminData.updatedAt = new Date().toISOString();
+
+    const engine = await getActiveEngine();
+    if (engine === 'rtdb') {
+      try {
+        await rtdbOps.set(`admin/accounts/${newAccount.id}`, newAccount);
+      } catch(e) {}
+    } else if (engine === 'firestore') {
+      try {
+        await firestoreOps.setDoc('admin_accounts', newAccount.id, newAccount);
+      } catch(e) {}
+    }
+
+    safeWriteJson(ADMIN_FILE, adminData);
+
+    const { passwordHash: _, ...safeAccount } = newAccount;
+    return safeAccount;
+  },
+
+  async verifyAdminAccount(loginIdentifier, password) {
+    const adminData = safeReadJson(ADMIN_FILE, {});
+    const accounts = Array.isArray(adminData.accounts) ? adminData.accounts : [];
+
+    const ident = String(loginIdentifier || '').trim().toLowerCase();
+    const user = accounts.find(acc => 
+      (acc.username && acc.username.toLowerCase() === ident) ||
+      (acc.email && acc.email.toLowerCase() === ident)
+    );
+
+    if (user && user.passwordHash) {
+      const match = bcrypt.compareSync(String(password), user.passwordHash);
+      if (match) {
+        const { passwordHash: _, ...safeAccount } = user;
+        return safeAccount;
+      }
+    }
+
+    // Also check master PIN fallback
+    if (adminData.pinHash && (ident === 'admin' || ident === '' || !user)) {
+      if (bcrypt.compareSync(String(password), adminData.pinHash)) {
+        return {
+          id: 'admin-master',
+          name: 'Store Administrator',
+          username: 'admin',
+          email: '',
+          role: 'admin'
+        };
+      }
+    }
+
+    return null;
+  },
+
   // ---------------- INQUIRIES ----------------
   async createInquiry(data) {
     const id = `inq-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;

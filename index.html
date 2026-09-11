@@ -7,7 +7,7 @@
 <meta name="description" content="Quality certified renewed iPhones, Samsung Galaxy, Motorola & more in Nairobi. Deposit today, weekly payments, renewed phone in hand this week. WhatsApp us now.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Epilogue:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Epilogue:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -48,7 +48,7 @@ body{
 
 /* THREE.JS CANVAS BACKGROUND */
 #three-canvas{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.42;
 }
 
 /* CONTENT POSITIONING */
@@ -137,11 +137,16 @@ html.light .btn-outline{border-color:rgba(0,0,0,0.2)}
 
 /* ---------- HERO ---------- */
 .hero{
-  min-height:96vh;display:grid;grid-template-columns:1.05fr 0.95fr;
-  padding-top:80px;background:transparent;align-items:center;
+  min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr);
+  padding-top:80px;background:
+    linear-gradient(90deg,rgba(7,7,14,.95) 0%,rgba(7,7,14,.78) 42%,rgba(7,7,14,.2) 100%),
+    linear-gradient(0deg,rgba(7,7,14,.84) 0%,transparent 35%),
+    url('images/phones-hero-lively.jpg') center/cover no-repeat;align-items:center;
+  position:relative;overflow:hidden;
 }
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(200,169,110,.08) 52%,transparent 70%);pointer-events:none}
 .hero-left{
-  padding:5rem 3.5rem 4rem;
+  max-width:760px;padding:5rem 3.5rem 4rem;position:relative;z-index:2;
   display:flex;flex-direction:column;justify-content:center;
 }
 .hero-eyebrow{
@@ -157,9 +162,9 @@ html.light .btn-outline{border-color:rgba(0,0,0,0.2)}
   font-family:var(--serif);font-size:clamp(3.2rem,5.5vw,5.6rem);
   line-height:1.05;letter-spacing:-0.02em;color:var(--accent);
   margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.7s ease forwards 0.4s;
-  text-shadow:0 0 60px rgba(200,169,110,0.18);
+  text-shadow:0 0 60px rgba(200,169,110,0.28);
 }
-html.light .hero-name{color:#0e0e1a;text-shadow:none}
+html.light .hero-name{color:#fff;text-shadow:0 0 60px rgba(0,0,0,.35)}
 .hero-name em{font-style:italic;color:var(--accent2)}
 .hero-desc{
   font-size:17px;font-weight:300;color:var(--accent);opacity:0;
@@ -167,7 +172,7 @@ html.light .hero-name{color:#0e0e1a;text-shadow:none}
   animation:fadeUp 0.7s ease forwards 0.6s;
   filter:opacity(0.72);line-height:1.75;
 }
-html.light .hero-desc{color:#2a2a3e;filter:opacity(1)}
+html.light .hero-desc{color:#fff;filter:opacity(.82)}
 .hero-cta{
   display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;
   opacity:0;animation:fadeUp 0.7s ease forwards 0.8s;
@@ -184,7 +189,7 @@ html.light .hero-desc{color:#2a2a3e;filter:opacity(1)}
 
 /* ---------- 3D TILT PHONE CARD ---------- */
 .hero-right{
-  position:relative;display:flex;align-items:center;justify-content:center;
+  display:none;
   perspective:1000px;padding:3rem 2rem;
 }
 .tilt-scene{
@@ -205,6 +210,10 @@ html.light .hero-desc{color:#2a2a3e;filter:opacity(1)}
   transform-style:preserve-3d;
   overflow:hidden;
 }
+.hero-slide-nav{display:flex;align-items:center;gap:12px;margin-top:2.5rem;opacity:0;animation:fadeUp .7s ease forwards 1.1s}
+.hero-slide-nav button{width:34px;height:2px;border:0;background:rgba(255,255,255,.3);cursor:pointer;padding:0;transition:all .25s}
+.hero-slide-nav button.active{width:68px;background:var(--accent2);box-shadow:0 0 14px var(--accent2-glow)}
+.hero-slide-count{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.15em}
 html.light .hero-terminal{
   background:rgba(22,22,40,0.92);
   border-color:rgba(200,169,110,0.35);
@@ -291,6 +300,11 @@ section{padding:6rem 2rem}
   border-top:0.5px solid var(--border);
   border-bottom:0.5px solid var(--border);
 }
+.brand-marquee{position:relative;z-index:1;overflow:hidden;background:#0b0b14;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.15rem 0}
+.brand-track{display:flex;width:max-content;align-items:center;gap:3.5rem;animation:marquee 26s linear infinite}
+.brand-track span{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(232,224,208,.56);white-space:nowrap}
+.brand-track span::before{content:'✦';color:var(--accent2);margin-right:3.5rem}
+@keyframes marquee{to{transform:translateX(-50%)}}
 html.light .catalogue-section{background:rgba(244,240,235,0.65)}
 
 /* Category & Plan Filter Bars */
@@ -649,6 +663,55 @@ html.light footer{background:rgba(244,240,235,0.85)}
   .step-num-badge{text-align:left}
   footer{padding:1.5rem;flex-direction:column;gap:1.2rem;text-align:center}
 }
+
+/* LUT-inspired showroom direction */
+:root{--surface:#0c0c0c;--surface-card:rgba(19,19,19,.82);--surface-card-hover:rgba(30,30,30,.95);--accent:#f4f3ee;--accent2:#d7ff3f;--accent2-glow:rgba(215,255,63,.22);--accent3:#b8b8b2;--border:rgba(244,243,238,.24);--border-hover:rgba(215,255,63,.78);--nav-bg:rgba(12,12,12,.72);--serif:'Space Grotesk',sans-serif;--sans:'Space Grotesk',sans-serif;--mono:'DM Mono',monospace}
+body{background:#0c0c0c;color:var(--accent);font-weight:400}
+nav{padding:1.3rem 2.4rem;background:rgba(12,12,12,.42);border-bottom:1px solid rgba(244,243,238,.22);backdrop-filter:blur(12px)}
+.nav-logo{font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--accent);gap:5px}
+.nav-logo em{color:var(--accent);opacity:.62;font-weight:400}
+.nav-links{gap:1.8rem}
+.nav-links a{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--accent);opacity:.86}
+.nav-links a:hover{color:var(--accent2)}
+.theme-btn{border:0;color:var(--accent);padding:6px 4px;font-size:10px}
+.nav-cta{background:var(--accent2);border-color:var(--accent2);color:#0c0c0c;font-weight:700;border-radius:999px;padding:9px 16px}
+.nav-cta:hover{background:#f4f3ee;color:#0c0c0c}
+.hero{background:linear-gradient(90deg,rgba(12,12,12,.92) 0%,rgba(12,12,12,.58) 46%,rgba(12,12,12,.12) 100%),linear-gradient(0deg,rgba(12,12,12,.88),transparent 50%),url('images/phones-hero-lively.jpg') center/cover no-repeat}
+.hero::after{background:linear-gradient(90deg,transparent 0%,rgba(215,255,63,.12) 48%,transparent 70%);mix-blend-mode:screen}
+.hero-left{max-width:920px;padding:7rem 3.5rem 4rem}
+.hero-eyebrow,.section-label{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--accent2)}
+.hero-name{font-family:var(--sans);font-size:clamp(4rem,10vw,9rem);font-weight:600;line-height:.86;letter-spacing:-.07em;text-transform:uppercase;max-width:900px;margin-bottom:2rem;text-shadow:0 5px 40px rgba(0,0,0,.42)}
+.hero-name em{color:var(--accent2);font-style:normal}
+.hero-desc{font-size:15px;line-height:1.55;max-width:430px;color:var(--accent);opacity:.82}
+.btn{border-radius:999px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;padding:1rem 1.6rem}
+.btn-gold{background:var(--accent2);color:#0c0c0c;box-shadow:none}
+.btn-gold:hover{box-shadow:0 0 0 6px rgba(215,255,63,.12);transform:translateY(-2px)}
+.btn-outline{border-color:rgba(244,243,238,.7);color:var(--accent)}
+.hero-delivery-tag{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);opacity:.7}
+.pulse-dot{background:var(--accent2);box-shadow:0 0 12px var(--accent2)}
+.hero-slide-nav{margin-top:4rem}
+.hero-slide-nav button{background:rgba(244,243,238,.55)}
+.hero-slide-nav button.active{background:var(--accent2);box-shadow:none}
+.brand-marquee{background:#0c0c0c;border-color:rgba(244,243,238,.22);padding:1.3rem 0}
+.brand-track{animation-duration:34s}
+.brand-track span{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.16em;color:rgba(244,243,238,.66)}
+.brand-track span::before{color:var(--accent2)}
+.catalogue-section,.about-section,.contact-section{background:#0c0c0c;border-color:rgba(244,243,238,.22);backdrop-filter:none}
+section{padding:8rem 2rem}
+.section-title,.contact-heading{font-family:var(--sans);font-weight:600;text-transform:uppercase;letter-spacing:-.055em;font-size:clamp(2.5rem,6vw,5.8rem);line-height:.92}
+.section-title em,.contact-heading em{color:var(--accent2);font-style:normal}
+.section-desc{max-width:510px;color:var(--accent);opacity:.65;font-size:15px}
+.controls-container{border-top:1px solid rgba(244,243,238,.22);padding-top:1.4rem}
+.phone-card,.stat-card,.contact-item{border-radius:0;background:rgba(244,243,238,.045);border-color:rgba(244,243,238,.22);box-shadow:none}
+.phone-card:hover{border-color:var(--accent2);box-shadow:0 18px 45px rgba(0,0,0,.35)}
+.filter-pill,.plan-pill,.customer-search-input{border-radius:999px;border-color:rgba(244,243,238,.28);background:transparent}
+.filter-pill.active,.plan-pill.active{background:var(--accent2);border-color:var(--accent2);color:#0c0c0c;box-shadow:none}
+.search-submit-btn{background:var(--accent2);color:#0c0c0c}
+.phone-card-title,.stat-number{font-family:var(--sans)}
+.phone-card-storage,.spotlight-tag{background:rgba(215,255,63,.12);border-color:rgba(215,255,63,.45);color:var(--accent2)}
+.contact-item:hover{transform:translateX(0);border-color:var(--accent2);box-shadow:none}
+footer{background:#0c0c0c;border-color:rgba(244,243,238,.22)}
+@media(max-width:960px){.hero-left{padding:6rem 1.5rem 3rem}.hero-name{font-size:clamp(3.6rem,17vw,6.2rem)}nav{padding:1rem 1.2rem}.nav-cta{padding:8px 12px}.hero-slide-nav{margin-top:3rem}}
 </style>
 </head>
 <body>
@@ -660,8 +723,8 @@ html.light footer{background:rgba(244,240,235,0.85)}
 <nav>
   <a href="#home" class="nav-logo">DRG <em>Phones Palace</em></a>
   <ul class="nav-links">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#phones">Renewed Phones</a></li>
+    <li><a href="#home">Showroom</a></li>
+    <li><a href="#phones">Cases</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -676,8 +739,8 @@ html.light footer{background:rgba(244,240,235,0.85)}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#home">Home</a>
-  <a href="#phones">Renewed Phones</a>
+  <a href="#home">Showroom</a>
+  <a href="#phones">Cases</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
 </div>
@@ -685,9 +748,9 @@ html.light footer{background:rgba(244,240,235,0.85)}
 <!-- ---------- HERO SECTION ---------- -->
 <section class="hero" id="home">
   <div class="hero-left">
-    <p class="hero-eyebrow">CERTIFIED RENEWED FLAGSHIPS · NAIROBI, KENYA</p>
-    <h1 class="hero-name">SIMU TOP,<br><em>Bei Poa.</em></h1>
-    <p class="hero-desc">Quality certified renewed iPhones, Samsung Galaxies, Motorolas & more. Rigorously tested hardware, small deposit today, easy weekly Lipa Mdogo Mdogo instalments, phone in your hand this week.</p>
+    <p class="hero-eyebrow">DRG PHONES PALACE · NAIROBI, KENYA</p>
+    <h1 class="hero-name">Phones<br><em>with presence.</em></h1>
+    <p class="hero-desc">A considered collection of certified renewed iPhones, Samsung Galaxy devices, and Motorola smartphones. Tested, transparent, and ready for your next move.</p>
     <div class="hero-cta">
       <a href="#phones" class="btn btn-gold">Explore Catalogue</a>
       <a href="https://wa.me/254797951374?text=Hi%20DRG%20Phones%20Palace%2C%20I%27d%20like%20to%20see%20your%20available%20renewed%20phones." target="_blank" rel="noopener" class="btn btn-outline">Inquire on WhatsApp</a>
@@ -695,50 +758,29 @@ html.light footer{background:rgba(244,240,235,0.85)}
     <div class="hero-delivery-tag">
       <span class="pulse-dot"></span> Same-day delivery across Nairobi & environs
     </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="tilt-scene" id="tilt-card">
-      <div class="float-badge badge-1">⬡ Certified Renewed · Grade A+</div>
-      <div class="float-badge badge-3">⬡ 100% Inspected & Genuine</div>
-      <div class="hero-terminal">
-        <div class="terminal-bar">
-          <div class="t-dot red"></div>
-          <div class="t-dot yellow"></div>
-          <div class="t-dot green"></div>
-          <span class="terminal-title">FLAGSHIP SHOWCASE · 5G</span>
-        </div>
-        <div class="hero-phone-body">
-          <img src="images/phones-hero-lively.jpg" alt="Galaxy S25 Ultra, iPhone 16 Pro, Foldable Flagships at DRG Phones Palace" class="phone-hero-banner">
-          <div class="phone-spotlight-details">
-            <span class="spotlight-eyebrow">FEATURED SPOTLIGHT</span>
-            <h3 class="spotlight-title">Galaxy S25 Ultra 256GB</h3>
-            <div class="spotlight-tags">
-              <span class="spotlight-tag">Snapdragon 8 Elite</span>
-              <span class="spotlight-tag">200MP Quad Zoom</span>
-              <span class="spotlight-tag">Titanium Frame</span>
-            </div>
-            <div class="spotlight-pricing">
-              <div class="spotlight-rate">
-                <span>MoStandard (12M):</span>
-                <strong>KES 3,300 / week</strong>
-              </div>
-              <a href="#phones" class="spotlight-cta">View Plans</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="float-badge badge-2">⬡ Lipa Mdogo Mdogo · From KES 750/wk</div>
+    <div class="hero-slide-nav" aria-label="Featured phone slides">
+      <button class="active" type="button" aria-label="Featured phones slide 1"></button>
+      <button type="button" aria-label="Featured phones slide 2"></button>
+      <button type="button" aria-label="Featured phones slide 3"></button>
+      <span class="hero-slide-count">01 / 03</span>
     </div>
   </div>
+
 </section>
+
+<div class="brand-marquee" aria-label="Available phone brands">
+  <div class="brand-track">
+    <span>Apple</span><span>Samsung</span><span>Motorola</span>
+    <span>Apple</span><span>Samsung</span><span>Motorola</span>
+  </div>
+</div>
 
 <!-- ---------- CATALOGUE SECTION ---------- -->
 <section id="phones" class="catalogue-section">
   <div class="section-inner">
     <p class="section-label reveal">RENEWED INVENTORY</p>
     <h2 class="section-title reveal">Curated Flagships,<br><em>accessible to everyone.</em></h2>
-    <p class="section-desc reveal">Every renewed device is backed by our multi-point hardware verification, tested battery health, and flexible financing with low upfront deposits.</p>
+    <p class="section-desc reveal">We deal exclusively in renewed iPhones, Samsung Galaxy devices, and Motorola smartphones. Every device is backed by our multi-point hardware verification, tested battery health, and flexible financing with low upfront deposits.</p>
 
     <!-- Controls Bar with Search -->
     <div class="controls-container reveal">
@@ -763,7 +805,6 @@ html.light footer{background:rgba(244,240,235,0.85)}
         <button class="filter-pill" data-cat="samsung">Samsung</button>
         <button class="filter-pill" data-cat="iphone">iPhone</button>
         <button class="filter-pill" data-cat="motorola">Motorola</button>
-        <button class="filter-pill" data-cat="other">Other Brands</button>
       </div>
 
       <div class="plan-filter-row">
@@ -787,7 +828,7 @@ html.light footer{background:rgba(244,240,235,0.85)}
     <h2 class="section-title reveal">Rigorous standards,<br><em>affordable ownership.</em></h2>
     <div class="about-grid">
       <div class="about-text reveal">
-        <p>DRG Phones Palace was founded in Nairobi to eliminate the barrier between everyday Kenyans and premium smartphones. Sourcing genuine, carefully certified renewed flagships from Apple, Samsung, Motorola, and other leading manufacturers, we make modern mobile technology accessible through honest financing.</p>
+        <p>DRG Phones Palace was founded in Nairobi to eliminate the barrier between everyday Kenyans and premium smartphones. We focus on genuine, carefully certified renewed iPhones, Samsung Galaxy devices, and Motorola smartphones, making modern mobile technology accessible through honest financing.</p>
         <p>Every single device in our live inventory undergoes rigorous functional grading, screen and battery diagnostics, and transparent cosmetic inspection. No hidden terms, no unverified clones — just authentic flagship devices with deposit-plus-weekly simplicity.</p>
       </div>
       <div class="about-stats reveal">
@@ -1057,6 +1098,21 @@ mobileMenu.querySelectorAll('a').forEach(a => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// ── CINEMATIC HERO SLIDER ────────────────────────────────
+const hero = document.querySelector('.hero');
+const heroSlideButtons = document.querySelectorAll('.hero-slide-nav button');
+const heroSlideCount = document.querySelector('.hero-slide-count');
+const heroImages = ['images/phones-hero-lively.jpg', 'images/phones-ambient-lively.jpg', 'images/phones-waves-lively.jpg'];
+function setHeroSlide(index) {
+  const image = heroImages[index];
+  hero.style.backgroundImage = `linear-gradient(90deg,rgba(7,7,14,.95) 0%,rgba(7,7,14,.78) 42%,rgba(7,7,14,.2) 100%),linear-gradient(0deg,rgba(7,7,14,.84) 0%,transparent 35%),url('${image}')`;
+  heroSlideButtons.forEach((button, buttonIndex) => button.classList.toggle('active', buttonIndex === index));
+  heroSlideCount.textContent = `0${index + 1} / 03`;
+}
+heroSlideButtons.forEach((button, index) => button.addEventListener('click', () => setHeroSlide(index)));
+let heroSlideIndex = 0;
+setInterval(() => { heroSlideIndex = (heroSlideIndex + 1) % heroImages.length; setHeroSlide(heroSlideIndex); }, 6500);
+
 // ── RENEWED PHONES CATALOGUE DATA & LOGIC ─────────────────
 let WHATSAPP_NUMBER = "254797951374";
 
@@ -1200,36 +1256,13 @@ const DEFAULT_PHONES = [
     },
     defaultPlan: "standard"
   },
-  {
-    id: "infinix-note-30", category: "other", categoryLabel: "Other Renewed Phones",
-    model: "Infinix Note 30", storage: "128GB", condition: "Renewed · Like New",
-    image: "images/infinix-note-30.jpg",
-    specs: ["6.78\" AMOLED, 120Hz refresh", "108MP ultra-clear camera", "5,000mAh, 45W All-Round FastCharge"],
-    cashPrice: 8000,
-    plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8000, hint: "One-time cash payment" },
-      standard: { label: "Weekly (8 Wks)", deposit: 2000, weekly: 750, weeks: 8, total: 8000, hint: "Lowest weekly instalment (KES 750/wk)" }
-    },
-    defaultPlan: "standard"
-  },
-  {
-    id: "tecno-camon-20", category: "other", categoryLabel: "Other Renewed Phones",
-    model: "Tecno Camon 20", storage: "128GB", condition: "Renewed · Like New",
-    image: "images/tecno-camon-20.jpg",
-    specs: ["6.67\" AMOLED display", "64MP RGBW ultra-sensitive camera", "5,000mAh battery, 33W charge"],
-    cashPrice: 8600,
-    plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8600, hint: "One-time cash payment" },
-      standard: { label: "Weekly (8 Wks)", deposit: 2200, weekly: 800, weeks: 8, total: 8600, hint: "8 Weeks Lipa Mdogo Mdogo" }
-    },
-    defaultPlan: "standard"
-  }
 ];
 
 let phones = [];
 let currentCategory = "all";
 let globalPlanMode = "default";
 const activePlanByPhone = {};
+const SUPPORTED_PHONE_CATEGORIES = new Set(["iphone", "samsung", "motorola"]);
 
 function money(n){
   return "KES " + Number(n).toLocaleString("en-KE");
@@ -1241,7 +1274,7 @@ function loadPhones(){
     if(stored){
       const parsed = JSON.parse(stored);
       if(Array.isArray(parsed) && parsed.length > 0){
-        phones = parsed;
+        phones = parsed.filter(phone => SUPPORTED_PHONE_CATEGORIES.has(phone.category));
         return;
       }
     }

@@ -332,46 +332,6 @@ const DEFAULT_PHONES = [
     },
     defaultPlan: "standard"
   },
-  {
-    id: "infinix-note-30",
-    category: "other",
-    categoryLabel: "Other Renewed Phones",
-    model: "Infinix Note 30",
-    storage: "128GB",
-    condition: "Renewed · Like New",
-    image: "images/infinix-note-30.jpg",
-    specs: [
-      "6.78\" AMOLED, 120Hz",
-      "108MP camera",
-      "5,000mAh, 45W charge"
-    ],
-    cashPrice: 8000,
-    plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8000, hint: "One-time cash payment" },
-      standard: { label: "Weekly (8 Wks)", deposit: 2000, weekly: 750, weeks: 8, total: 8000, hint: "Lowest weekly instalment (KES 750/wk)" }
-    },
-    defaultPlan: "standard"
-  },
-  {
-    id: "tecno-camon-20",
-    category: "other",
-    categoryLabel: "Other Renewed Phones",
-    model: "Tecno Camon 20",
-    storage: "128GB",
-    condition: "Renewed · Like New",
-    image: "images/tecno-camon-20.jpg",
-    specs: [
-      "6.67\" AMOLED display",
-      "64MP RGBW camera",
-      "5,000mAh battery"
-    ],
-    cashPrice: 8600,
-    plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 8600, hint: "One-time cash payment" },
-      standard: { label: "Weekly (8 Wks)", deposit: 2200, weekly: 800, weeks: 8, total: 8600, hint: "8 Weeks Lipa Mdogo Mdogo" }
-    },
-    defaultPlan: "standard"
-  }
 ];
 
 module.exports = { DEFAULT_PHONES };

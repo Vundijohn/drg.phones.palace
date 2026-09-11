@@ -189,9 +189,28 @@ html.light .hero-desc{color:#fff;filter:opacity(.82)}
 
 /* ---------- 3D TILT PHONE CARD ---------- */
 .hero-right{
-  display:none;
+  display:flex;align-items:center;justify-content:center;
   perspective:1000px;padding:3rem 2rem;
 }
+.hero-phone-showcase{width:min(100%,430px);position:relative;z-index:2}
+.hero-phone-slides{position:relative;min-height:450px}
+.hero-phone-slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;border:1px solid rgba(244,243,238,.28);background:#171717;
+  opacity:0;visibility:hidden;transform:translateX(18px) scale(.98);
+  transition:opacity .55s ease,transform .55s ease,visibility .55s;
+}
+.hero-phone-slide.active{opacity:1;visibility:visible;transform:none}
+.hero-phone-slide::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,.04) 22%,rgba(12,12,12,.92) 100%);z-index:1}
+.hero-phone-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-phone-slide-content{position:relative;z-index:2;padding:2rem}
+.hero-phone-slide-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--accent2);text-transform:uppercase;margin-bottom:.65rem}
+.hero-phone-slide h2{font-family:var(--sans);font-size:clamp(2rem,4vw,3.2rem);line-height:.95;letter-spacing:-.06em;text-transform:uppercase;color:var(--accent);max-width:280px}
+.hero-phone-slide-meta{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-top:1.2rem;padding-top:1rem;border-top:1px solid rgba(244,243,238,.28);font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:rgba(244,243,238,.72);text-transform:uppercase}
+.hero-phone-slide-meta strong{display:block;color:var(--accent);font-size:12px;margin-top:4px}
+.hero-phone-showcase .hero-slide-nav{margin-top:1rem;justify-content:flex-end}
+.hero-phone-showcase .hero-slide-nav button{height:3px}
+.hero-phone-showcase .float-badge{z-index:3}
 .tilt-scene{
   width:430px;transform-style:preserve-3d;
   transition:transform 0.1s ease;
@@ -712,6 +731,22 @@ section{padding:8rem 2rem}
 .contact-item:hover{transform:translateX(0);border-color:var(--accent2);box-shadow:none}
 footer{background:#0c0c0c;border-color:rgba(244,243,238,.22)}
 @media(max-width:960px){.hero-left{padding:6rem 1.5rem 3rem}.hero-name{font-size:clamp(3.6rem,17vw,6.2rem)}nav{padding:1rem 1.2rem}.nav-cta{padding:8px 12px}.hero-slide-nav{margin-top:3rem}}
+@media(min-width:961px){
+  .hero{grid-template-columns:minmax(0,1fr) minmax(360px,520px)}
+  .hero-left{padding-right:1rem}
+  .hero-right{display:flex;padding-right:3.5rem}
+}
+@media(max-width:960px){
+  .hero-right{display:flex;padding:1rem 1.5rem 4rem}
+  .hero-phone-showcase{width:min(100%,520px)}
+  .hero-phone-slides{min-height:390px}
+}
+@media(max-width:520px){
+  .hero-phone-slides{min-height:340px}
+  .hero-phone-slide-content{padding:1.35rem}
+  .hero-phone-slide h2{font-size:2rem}
+  .hero-phone-slide-meta{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -723,10 +758,10 @@ footer{background:#0c0c0c;border-color:rgba(244,243,238,.22)}
 <nav>
   <a href="#home" class="nav-logo">DRG <em>Phones Palace</em></a>
   <ul class="nav-links">
-    <li><a href="#home">Showroom</a></li>
-    <li><a href="#phones">Cases</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#home">Phones</a></li>
+    <li><a href="#phones">Shop Phones</a></li>
+    <li><a href="#about">Why DRG</a></li>
+    <li><a href="#contact">Talk Phones</a></li>
   </ul>
   <div class="nav-actions">
     <button id="theme-toggle" class="theme-btn" aria-label="Toggle light or dark theme">☀ Light</button>
@@ -739,10 +774,10 @@ footer{background:#0c0c0c;border-color:rgba(244,243,238,.22)}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#home">Showroom</a>
-  <a href="#phones">Cases</a>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
+  <a href="#home">Phones</a>
+  <a href="#phones">Shop Phones</a>
+  <a href="#about">Why DRG</a>
+  <a href="#contact">Talk Phones</a>
 </div>
 
 <!-- ---------- HERO SECTION ---------- -->
@@ -763,6 +798,46 @@ footer{background:#0c0c0c;border-color:rgba(244,243,238,.22)}
       <button type="button" aria-label="Featured phones slide 2"></button>
       <button type="button" aria-label="Featured phones slide 3"></button>
       <span class="hero-slide-count">01 / 03</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-phone-showcase" aria-label="Featured renewed phones">
+      <div class="hero-phone-slides" aria-live="polite">
+        <article class="hero-phone-slide active">
+          <img src="images/phones-hero-lively.jpg" alt="Renewed smartphones in the DRG Phones Palace showroom">
+          <div class="hero-phone-slide-content">
+            <p class="hero-phone-slide-kicker">Featured / 01</p>
+            <h2>Flagship phones. Ready now.</h2>
+            <div class="hero-phone-slide-meta">
+              <span>Certified renewed<strong>Grade A+ devices</strong></span>
+              <span>From<strong>KES 10,400</strong></span>
+            </div>
+          </div>
+        </article>
+        <article class="hero-phone-slide">
+          <img src="images/phones-ambient-lively.jpg" alt="Premium renewed phones available from DRG Phones Palace">
+          <div class="hero-phone-slide-content">
+            <p class="hero-phone-slide-kicker">Featured / 02</p>
+            <h2>Premium tech, made reachable.</h2>
+            <div class="hero-phone-slide-meta">
+              <span>Flexible ownership<strong>Weekly plans available</strong></span>
+              <span>From<strong>KES 750 / week</strong></span>
+            </div>
+          </div>
+        </article>
+        <article class="hero-phone-slide">
+          <img src="images/phones-waves-lively.jpg" alt="Tested smartphones ready for delivery in Nairobi">
+          <div class="hero-phone-slide-content">
+            <p class="hero-phone-slide-kicker">Featured / 03</p>
+            <h2>Your next move starts here.</h2>
+            <div class="hero-phone-slide-meta">
+              <span>Fast Nairobi delivery<strong>Tested and genuine</strong></span>
+              <span>Chat<strong>WhatsApp us</strong></span>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
   </div>
 
@@ -1102,14 +1177,19 @@ document.getElementById('year').textContent = new Date().getFullYear();
 const hero = document.querySelector('.hero');
 const heroSlideButtons = document.querySelectorAll('.hero-slide-nav button');
 const heroSlideCount = document.querySelector('.hero-slide-count');
+const heroPhoneSlides = document.querySelectorAll('.hero-phone-slide');
 const heroImages = ['images/phones-hero-lively.jpg', 'images/phones-ambient-lively.jpg', 'images/phones-waves-lively.jpg'];
 function setHeroSlide(index) {
   const image = heroImages[index];
   hero.style.backgroundImage = `linear-gradient(90deg,rgba(7,7,14,.95) 0%,rgba(7,7,14,.78) 42%,rgba(7,7,14,.2) 100%),linear-gradient(0deg,rgba(7,7,14,.84) 0%,transparent 35%),url('${image}')`;
   heroSlideButtons.forEach((button, buttonIndex) => button.classList.toggle('active', buttonIndex === index));
+  heroPhoneSlides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === index));
   heroSlideCount.textContent = `0${index + 1} / 03`;
 }
-heroSlideButtons.forEach((button, index) => button.addEventListener('click', () => setHeroSlide(index)));
+heroSlideButtons.forEach((button, index) => button.addEventListener('click', () => {
+  heroSlideIndex = index;
+  setHeroSlide(heroSlideIndex);
+}));
 let heroSlideIndex = 0;
 setInterval(() => { heroSlideIndex = (heroSlideIndex + 1) % heroImages.length; setHeroSlide(heroSlideIndex); }, 6500);
 

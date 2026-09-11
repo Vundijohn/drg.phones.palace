@@ -8,7 +8,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S25 Ultra",
     storage: "256GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s25-ultra.jpg",
     specs: [
       "Snapdragon 8 Elite, 5G ready",
@@ -29,7 +29,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S24 Ultra",
     storage: "256GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s24-ultra.jpg",
     specs: [
       "Galaxy AI built-in, 5G flagship",
@@ -50,7 +50,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S23 Ultra",
     storage: "256GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s23-ultra.jpg",
     specs: [
       "200MP camera, 100x Space Zoom",
@@ -71,7 +71,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S22 Ultra",
     storage: "256GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s22-ultra.jpg",
     specs: [
       "108MP Quad camera, 100x zoom",
@@ -92,7 +92,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S21 Ultra 5G",
     storage: "128GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s21-ultra.jpg",
     specs: [
       "108MP Pro Grade Camera, 8K video",
@@ -113,7 +113,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S21+ 5G",
     storage: "256GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s21-plus.jpg",
     specs: [
       "256GB storage, 6.7\" AMOLED 120Hz",
@@ -134,7 +134,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S22+",
     storage: "128GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s22-plus.jpg",
     specs: [
       "Bright 6.6\" AMOLED 120Hz display",
@@ -155,7 +155,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S20 Ultra 5G",
     storage: "128GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s20-ultra.jpg",
     specs: [
       "108MP camera, 100x Space Zoom",
@@ -176,7 +176,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy Note 20 5G",
     storage: "128GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-note-20.jpg",
     specs: [
       "Signature S-Pen stylus with air gestures",
@@ -197,7 +197,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy S21+ 5G",
     storage: "128GB",
-    condition: "Excellent · Grade A+",
+    condition: "Renewed · Grade A+",
     image: "images/galaxy-s21-plus.jpg",
     specs: [
       "6.7\" Dynamic AMOLED 120Hz display",
@@ -218,7 +218,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "iPhone",
     model: "iPhone 11",
     storage: "64GB",
-    condition: "UK Used · Grade A",
+    condition: "Renewed · Grade A",
     image: "images/iphone-11.jpg",
     specs: [
       "6.1\" Liquid Retina display",
@@ -238,7 +238,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "iPhone",
     model: "iPhone XR",
     storage: "128GB",
-    condition: "UK Used · Grade A",
+    condition: "Renewed · Grade A",
     image: "images/iphone-xr.jpg",
     specs: [
       "6.1\" Liquid Retina display",
@@ -258,7 +258,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "iPhone",
     model: "iPhone 12",
     storage: "128GB",
-    condition: "UK Used · Grade A",
+    condition: "Renewed · Grade A",
     image: "images/iphone-12.jpg",
     specs: [
       "5G ready flagship",
@@ -278,7 +278,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Samsung",
     model: "Galaxy A14",
     storage: "128GB",
-    condition: "Brand New",
+    condition: "Renewed · Like New",
     image: "images/galaxy-a14.jpg",
     specs: [
       "6.6\" 90Hz display",
@@ -298,7 +298,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Motorola",
     model: "Moto G54",
     storage: "256GB",
-    condition: "Brand New",
+    condition: "Renewed · Like New",
     image: "images/moto-g54.jpg",
     specs: [
       "5G, 6.5\" 120Hz display",
@@ -318,7 +318,7 @@ const DEFAULT_PHONES = [
     categoryLabel: "Motorola",
     model: "Moto Edge 40",
     storage: "256GB",
-    condition: "Brand New",
+    condition: "Renewed · Like New",
     image: "images/moto-edge-40.jpg",
     specs: [
       "Curved pOLED 144Hz display",
@@ -335,10 +335,10 @@ const DEFAULT_PHONES = [
   {
     id: "infinix-note-30",
     category: "other",
-    categoryLabel: "Other Phones",
+    categoryLabel: "Other Renewed Phones",
     model: "Infinix Note 30",
     storage: "128GB",
-    condition: "Brand New",
+    condition: "Renewed · Like New",
     image: "images/infinix-note-30.jpg",
     specs: [
       "6.78\" AMOLED, 120Hz",
@@ -355,10 +355,10 @@ const DEFAULT_PHONES = [
   {
     id: "tecno-camon-20",
     category: "other",
-    categoryLabel: "Other Phones",
+    categoryLabel: "Other Renewed Phones",
     model: "Tecno Camon 20",
     storage: "128GB",
-    condition: "Brand New",
+    condition: "Renewed · Like New",
     image: "images/tecno-camon-20.jpg",
     specs: [
       "6.67\" AMOLED display",

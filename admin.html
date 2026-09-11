@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DRG Phones Palace — Admin Dashboard</title>
+<title>DRG Phones Palace — Admin Dashboard | Renewed Phones Inventory</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -222,24 +222,36 @@
     position:fixed;
     inset:0;
     z-index:-1;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .admin-ambient-canvas{
+    position:absolute;
+    inset:-4%;
+    width:108%;
+    height:108%;
     background-image:
-      radial-gradient(circle at 15% 10%, rgba(108,75,175,0.45), transparent 45%),
-      radial-gradient(circle at 85% 20%, rgba(217,166,83,0.3), transparent 40%),
-      linear-gradient(180deg, rgba(10,8,18,0.78) 0%, rgba(10,8,18,0.88) 50%, rgba(10,8,18,0.95) 100%),
+      radial-gradient(ellipse at 80% 20%, rgba(217,166,83,0.22), transparent 45%),
+      radial-gradient(ellipse at 20% 70%, rgba(108,75,175,0.3), transparent 50%),
+      linear-gradient(180deg, rgba(10,8,18,0.58) 0%, rgba(10,8,18,0.75) 45%, rgba(10,8,18,0.9) 100%),
       url('images/phones-ambient-lively.jpg');
-    background-size:cover;
+    background-size:100% 100%, 100% 100%, cover;
     background-position:center top;
     background-repeat:no-repeat;
-    background-attachment:fixed;
-    opacity:0.65;
-    pointer-events:none;
+    animation:liveWallpaperDrift 24s ease-in-out infinite alternate;
     transition:opacity .3s ease;
   }
-  [data-theme="light"] .admin-ambient-bg{
+  [data-theme="light"] .admin-ambient-canvas{
     background-image:
-      linear-gradient(180deg, rgba(247,245,250,0.78) 0%, rgba(247,245,250,0.9) 50%, rgba(247,245,250,0.96) 100%),
+      radial-gradient(ellipse at 80% 20%, rgba(184,128,42,0.18), transparent 45%),
+      linear-gradient(180deg, rgba(247,245,250,0.68) 0%, rgba(247,245,250,0.82) 45%, rgba(247,245,250,0.94) 100%),
       url('images/phones-ambient-lively.jpg');
-    opacity:0.4;
+    opacity:0.75;
+  }
+  @keyframes liveWallpaperDrift{
+    0%{transform:scale(1) translate(0, 0);}
+    50%{transform:scale(1.04) translate(-1.2%, 0.8%);}
+    100%{transform:scale(1.02) translate(0.8%, -1%);}
   }
   .admin-header{
     position:sticky;
@@ -834,7 +846,7 @@
 <!-- ==================== ADMIN DASHBOARD ==================== -->
 <div class="admin-layout" id="adminDashboardScreen">
   <!-- Ambient Flagship Smartphone Background -->
-  <div class="admin-ambient-bg" aria-hidden="true"></div>
+  <div class="admin-ambient-bg" aria-hidden="true"><div class="admin-ambient-canvas"></div></div>
 
   <!-- TOP NAV -->
   <header class="admin-header">
@@ -873,7 +885,7 @@
             <span class="kpi-icon">📱</span>
           </div>
           <div class="kpi-value" id="kpiTotalDevices">0</div>
-          <div class="kpi-sub">Phones in live catalogue</div>
+          <div class="kpi-sub">Renewed phones in live catalogue</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-top">
@@ -916,7 +928,7 @@
         </div>
         <div class="action-buttons-group">
           <button class="btn btn-gold" id="openAddPhoneModalBtn">
-            <span>➕</span> Add New Phone
+            <span>➕</span> Add Renewed Phone
           </button>
           <button class="btn btn-outline" id="backupModalBtn" title="Export or import inventory backup">
             <span>💾</span> Backup / JSON
@@ -947,9 +959,9 @@
         </div>
         <div id="tableEmptyState" class="empty-state" style="display:none;">
           <div class="empty-icon">📱</div>
-          <h3>No phones match your search or filter</h3>
+          <h3>No renewed phones match your search or filter</h3>
           <p>Try searching for a different keyword or add a new device.</p>
-          <button class="btn btn-gold btn-sm" onclick="document.getElementById('openAddPhoneModalBtn').click()">➕ Add New Phone</button>
+          <button class="btn btn-gold btn-sm" onclick="document.getElementById('openAddPhoneModalBtn').click()">➕ Add Renewed Phone</button>
         </div>
       </section>
 
@@ -961,7 +973,7 @@
 <div class="modal-backdrop" id="addPhoneModal" aria-hidden="true">
   <div class="modal-box">
     <div class="modal-header">
-      <h3>➕ Add Phone to Catalogue</h3>
+      <h3>➕ Add Renewed Phone to Catalogue</h3>
       <button class="modal-close" id="closeAddPhoneModalBtn" aria-label="Close modal">&times;</button>
     </div>
     <form id="addPhoneForm">
@@ -980,16 +992,16 @@
             <option value="samsung">Samsung</option>
             <option value="iphone">iPhone</option>
             <option value="motorola">Motorola</option>
-            <option value="other">Other Phones</option>
+            <option value="other">Other Renewed Phones</option>
           </select>
         </div>
         <div class="form-group">
           <label for="newPhoneCondition">Condition *</label>
           <select id="newPhoneCondition" required>
-            <option value="Excellent · Grade A+">Excellent · Grade A+</option>
+            <option value="Renewed · Grade A+">Renewed · Grade A+</option>
+            <option value="Renewed · Grade A">Renewed · Grade A</option>
+            <option value="Renewed · Like New">Renewed · Like New</option>
             <option value="Brand New">Brand New</option>
-            <option value="UK Used · Grade A">UK Used · Grade A</option>
-            <option value="Refurbished">Refurbished</option>
           </select>
         </div>
         <div class="form-group full-width">
@@ -1151,7 +1163,7 @@
       id: "s25-ultra-256",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S25 Ultra", storage: "256GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s25-ultra.jpg",
       specs: ["Snapdragon 8 Elite, 5G ready", "200MP Quad Camera, 100x Space Zoom", "Built-in S-Pen, Titanium Armor Frame"],
       cashPrice: 115999,
@@ -1166,7 +1178,7 @@
       id: "s24-ultra-256",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S24 Ultra", storage: "256GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s24-ultra.jpg",
       specs: ["Galaxy AI built-in, 5G flagship", "200MP Quad Pro-visual camera", "Flat 120Hz display, S-Pen included"],
       cashPrice: 94999,
@@ -1181,7 +1193,7 @@
       id: "s23-ultra-256",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S23 Ultra", storage: "256GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s23-ultra.jpg",
       specs: ["200MP camera, 100x Space Zoom", "6.8\" Dynamic AMOLED 2X 120Hz", "Built-in S-Pen, 5,000mAh battery"],
       cashPrice: 76999,
@@ -1196,7 +1208,7 @@
       id: "s22-ultra-256",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S22 Ultra", storage: "256GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s22-ultra.jpg",
       specs: ["108MP Quad camera, 100x zoom", "Dynamic AMOLED 120Hz display", "Integrated S-Pen, 45W fast charge"],
       cashPrice: 66999,
@@ -1211,7 +1223,7 @@
       id: "s21-ultra-128",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S21 Ultra 5G", storage: "128GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s21-ultra.jpg",
       specs: ["108MP Pro Grade Camera, 8K video", "6.8\" Quad HD+ 120Hz display", "S-Pen support, 5,000mAh battery"],
       cashPrice: 45999,
@@ -1226,7 +1238,7 @@
       id: "s21-plus-256",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S21+ 5G", storage: "256GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s21-plus.jpg",
       specs: ["256GB storage, 6.7\" AMOLED 120Hz", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
       cashPrice: 43999,
@@ -1241,7 +1253,7 @@
       id: "s22-plus-128",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S22+", storage: "128GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s22-plus.jpg",
       specs: ["Bright 6.6\" AMOLED 120Hz display", "50MP Nightography triple camera", "Armor Aluminum frame, 5G ready"],
       cashPrice: 37999,
@@ -1256,7 +1268,7 @@
       id: "s20-ultra-128",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S20 Ultra 5G", storage: "128GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s20-ultra.jpg",
       specs: ["108MP camera, 100x Space Zoom", "Massive 6.9\" Dynamic AMOLED 120Hz", "5,000mAh battery, 5G ready"],
       cashPrice: 37999,
@@ -1271,7 +1283,7 @@
       id: "note-20-128",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy Note 20 5G", storage: "128GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-note-20.jpg",
       specs: ["Signature S-Pen stylus with air gestures", "6.7\" Super AMOLED Plus display", "64MP triple camera, 5G ready"],
       cashPrice: 35999,
@@ -1286,7 +1298,7 @@
       id: "s21-plus-128",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy S21+ 5G", storage: "128GB",
-      condition: "Excellent · Grade A+",
+      condition: "Renewed · Grade A+",
       image: "images/galaxy-s21-plus.jpg",
       specs: ["6.7\" Dynamic AMOLED 120Hz display", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
       cashPrice: 34199,
@@ -1301,7 +1313,7 @@
       id: "iphone-11",
       category: "iphone", categoryLabel: "iPhone",
       model: "iPhone 11", storage: "64GB",
-      condition: "UK Used · Grade A",
+      condition: "Renewed · Grade A",
       image: "images/iphone-11.jpg",
       specs: ["6.1\" Liquid Retina display", "12MP dual camera, Face ID", "89% battery health"],
       cashPrice: 16000,
@@ -1315,7 +1327,7 @@
       id: "iphone-xr",
       category: "iphone", categoryLabel: "iPhone",
       model: "iPhone XR", storage: "128GB",
-      condition: "UK Used · Grade A",
+      condition: "Renewed · Grade A",
       image: "images/iphone-xr.jpg",
       specs: ["6.1\" Liquid Retina display", "12MP camera, Face ID", "Clean IMEI, tested"],
       cashPrice: 13900,
@@ -1329,7 +1341,7 @@
       id: "iphone-12",
       category: "iphone", categoryLabel: "iPhone",
       model: "iPhone 12", storage: "128GB",
-      condition: "UK Used · Grade A",
+      condition: "Renewed · Grade A",
       image: "images/iphone-12.jpg",
       specs: ["5G ready flagship", "12MP dual camera, Night mode", "Face ID, Ceramic Shield"],
       cashPrice: 23000,
@@ -1343,7 +1355,7 @@
       id: "galaxy-a14",
       category: "samsung", categoryLabel: "Samsung",
       model: "Galaxy A14", storage: "128GB",
-      condition: "Brand New",
+      condition: "Renewed · Like New",
       image: "images/galaxy-a14.jpg",
       specs: ["6.6\" 90Hz display", "50MP triple camera", "5,000mAh battery"],
       cashPrice: 9700,
@@ -1357,7 +1369,7 @@
       id: "moto-g54",
       category: "motorola", categoryLabel: "Motorola",
       model: "Moto G54", storage: "256GB",
-      condition: "Brand New",
+      condition: "Renewed · Like New",
       image: "images/moto-g54.jpg",
       specs: ["5G, 6.5\" 120Hz display", "50MP OIS camera", "6,000mAh massive battery"],
       cashPrice: 10400,
@@ -1371,7 +1383,7 @@
       id: "moto-edge-40",
       category: "motorola", categoryLabel: "Motorola",
       model: "Moto Edge 40", storage: "256GB",
-      condition: "Brand New",
+      condition: "Renewed · Like New",
       image: "images/moto-edge-40.jpg",
       specs: ["Curved pOLED 144Hz display", "50MP camera, OIS", "68W fast charging"],
       cashPrice: 15950,
@@ -1383,9 +1395,9 @@
     },
     {
       id: "infinix-note-30",
-      category: "other", categoryLabel: "Other Phones",
+      category: "other", categoryLabel: "Other Renewed Phones",
       model: "Infinix Note 30", storage: "128GB",
-      condition: "Brand New",
+      condition: "Renewed · Like New",
       image: "images/infinix-note-30.jpg",
       specs: ["6.78\" AMOLED, 120Hz", "108MP camera", "5,000mAh, 45W charge"],
       cashPrice: 8000,
@@ -1397,9 +1409,9 @@
     },
     {
       id: "tecno-camon-20",
-      category: "other", categoryLabel: "Other Phones",
+      category: "other", categoryLabel: "Other Renewed Phones",
       model: "Tecno Camon 20", storage: "128GB",
-      condition: "Brand New",
+      condition: "Renewed · Like New",
       image: "images/tecno-camon-20.jpg",
       specs: ["6.67\" AMOLED display", "64MP RGBW camera", "5,000mAh battery"],
       cashPrice: 8600,
@@ -1455,7 +1467,7 @@
   let phones = [];
   function loadPhones(){
     try {
-      const stored = localStorage.getItem('drg_phones_data');
+      const stored = localStorage.getItem('drg_renewed_phones_data_v2');
       if(stored){
         const parsed = JSON.parse(stored);
         if(Array.isArray(parsed) && parsed.length > 0){
@@ -1469,7 +1481,7 @@
 
   function savePhones(){
     try {
-      localStorage.setItem('drg_phones_data', JSON.stringify(phones));
+      localStorage.setItem('drg_renewed_phones_data_v2', JSON.stringify(phones));
     } catch(e){}
     updateMetrics();
   }
@@ -1738,7 +1750,7 @@
     const phone = phones.find(p => p.id === phoneId);
     if(!phone) return;
     const plan = phone.plans.mostandard || phone.plans.standard || phone.plans.mosaver || phone.plans.cash;
-    let msg = `Hi DRG Phones Palace, I'm interested in the ${phone.model} ${phone.storage} (${phone.condition}). Cash Price: ${money(phone.cashPrice)}. Is it available?`;
+    let msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} (${phone.condition}). Cash Price: ${money(phone.cashPrice)}. Is it available?`;
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   };

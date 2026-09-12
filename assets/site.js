@@ -435,7 +435,9 @@ let phones = [];
 let currentCategory = "all";
 let globalPlanMode = "default";
 const activePlanByPhone = {};
-const SUPPORTED_PHONE_CATEGORIES = new Set(["iphone", "samsung", "motorola"]);
+const SUPPORTED_PHONE_CATEGORIES = new Set(["iphone", "samsung", "motorola", "other"]);
+const INVENTORY_STORAGE_KEY = 'drg_renewed_phones_data_v2';
+const INVENTORY_CHANNEL_NAME = 'drg_inventory_channel';
 
 function money(n){
   return "KES " + Number(n).toLocaleString("en-KE");
@@ -451,11 +453,11 @@ function displayCondition(phone){
 
 function loadPhones(){
   try {
-    const stored = localStorage.getItem('drg_vundi_phones_v3');
+    const stored = localStorage.getItem(INVENTORY_STORAGE_KEY) || localStorage.getItem('drg_vundi_phones_v3');
     if(stored){
       const parsed = JSON.parse(stored);
       if(Array.isArray(parsed) && parsed.length > 0){
-        phones = parsed.filter(phone => SUPPORTED_PHONE_CATEGORIES.has(phone.category));
+        phones = parsed;
         return;
       }
     }
@@ -465,11 +467,42 @@ function loadPhones(){
 
 function savePhones(){
   try {
+    localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(phones));
     localStorage.setItem('drg_vundi_phones_v3', JSON.stringify(phones));
   } catch(e){}
 }
 
 loadPhones();
+
+// Realtime cross-tab synchronization with Admin Studio
+if(typeof BroadcastChannel !== 'undefined'){
+  try {
+    const inventoryChannel = new BroadcastChannel(INVENTORY_CHANNEL_NAME);
+    inventoryChannel.onmessage = (event) => {
+      if(event.data && event.data.type === 'INVENTORY_UPDATED' && Array.isArray(event.data.phones)){
+        phones = event.data.phones;
+        savePhones();
+        renderPhones();
+        renderFeaturedPhones();
+      }
+    };
+  } catch(e){}
+}
+
+window.addEventListener('storage', (e) => {
+  if(e.key === INVENTORY_STORAGE_KEY || e.key === 'drg_vundi_phones_v3'){
+    loadPhones();
+    renderPhones();
+    renderFeaturedPhones();
+  }
+});
+
+// Auto-sync when customer returns to tab
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden){
+    syncBackendData();
+  }
+});
 
 // Sync from live server API if available
 async function syncBackendData(){
@@ -615,9 +648,9 @@ function renderFeaturedPhones(){
   const rail = document.getElementById('featuredPhoneRail');
   if(!rail) return;
   rail.innerHTML = phones.slice(0, 3).map((phone, index) => {
-    const image = phone.image && String(phone.image).trim() ? phone.image : 'images/phones-bg.jpg';
+    const image = (phone.image && String(phone.image).trim()) || (Array.isArray(phone.images) && phone.images.length ? String(phone.images[0]).trim() : '') || 'images/phones-bg.jpg';
     return `<article class="featured-phone" data-featured-phone="${phone.id}">
-      <img src="${image}" alt="${phone.model} ${phone.storage}" loading="lazy">
+      <img src="${image}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.src='images/phones-bg.jpg';">
       <div class="featured-phone-content"><small>0${index + 1} · ${displayCondition(phone)}</small><h3>${phone.model}</h3><a href="#phones" class="featured-phone-link" data-featured-action="${phone.id}">View Details</a></div>
     </article>`;
   }).join('');
@@ -755,10 +788,11 @@ function renderPhones(){
     card.tabIndex = 0;
     card.setAttribute('aria-label', `View details for ${phone.model}`);
 
-    const hasValidImage = Boolean(phone.image && String(phone.image).trim());
+    const primaryImg = (phone.image && String(phone.image).trim()) || (Array.isArray(phone.images) && phone.images.length ? String(phone.images[0]).trim() : '');
+    const hasValidImage = Boolean(primaryImg);
     const mediaHtml = hasValidImage ? `
       <div class="phone-media">
-        <img src="${phone.image}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
+        <img src="${primaryImg}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
         <span class="phone-condition-badge">${condition}</span>
       </div>
     ` : `
@@ -1039,4 +1073,5 @@ helpAgentForm.addEventListener('submit', event => { event.preventDefault(); cons
 renderPhones();
 renderFeaturedPhones();
 syncBackendData();
+setInterval(syncBackendData, 20000);
 

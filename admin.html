@@ -3053,9 +3053,21 @@
     }
   });
 
-  // Listen for storage events from other tabs
+  // Listen for storage and broadcast events from other tabs
+  if(typeof BroadcastChannel !== 'undefined'){
+    try {
+      const invChannel = new BroadcastChannel(INVENTORY_CHANNEL_NAME);
+      invChannel.onmessage = (e) => {
+        if(e.data && e.data.type === 'INVENTORY_UPDATED' && Array.isArray(e.data.phones)){
+          phones = e.data.phones;
+          renderInventory();
+          updateMetrics();
+        }
+      };
+    } catch(e){}
+  }
   window.addEventListener('storage', (e) => {
-    if(e.key === 'drg_phones_data'){
+    if(e.key === INVENTORY_STORAGE_KEY || e.key === 'drg_renewed_phones_data_v2' || e.key === 'drg_vundi_phones_v3'){
       loadPhones();
       renderInventory();
       updateMetrics();

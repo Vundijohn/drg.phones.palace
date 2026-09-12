@@ -1362,7 +1362,10 @@
 
         <!-- FINANCING PLAN CONFIG -->
         <div class="form-group full-width">
-          <label>Financing Structure *</label>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;">
+            <label style="margin:0;">Financing Structure *</label>
+            <button type="button" id="recalcPlansBtn" class="btn-sm btn-outline" style="border-color:var(--gold);color:var(--gold-bright);background:transparent;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;" title="Recalculate MoSaver and MoStandard based on cash price">⚡ Auto-Recalculate Plans from Price</button>
+          </div>
           <div class="plan-type-selector">
             <button type="button" class="plan-type-btn active" id="planTypeSamsungBtn">Multi-Tier Flagship (MoSaver 6M + MoStandard 12M)</button>
             <button type="button" class="plan-type-btn" id="planTypeStandardBtn">Standard Lipa Mdogo Mdogo (Single Tier)</button>
@@ -1488,6 +1491,60 @@
 
 <script>
   
+  // ---- AUTH TOKEN & CROSS-TAB BROADCAST ENGINE ----
+  const INVENTORY_STORAGE_KEY = 'drg_renewed_phones_data_v2';
+  const INVENTORY_CHANNEL_NAME = 'drg_inventory_channel';
+
+  function getStoredAdminPin(){
+    return localStorage.getItem('drg_admin_pin') || "2540";
+  }
+
+  function getAdminToken(){
+    return sessionStorage.getItem('drg_admin_token') || localStorage.getItem('drg_admin_token') || '';
+  }
+
+  function setAdminToken(token){
+    if(token){
+      try { sessionStorage.setItem('drg_admin_token', token); } catch(e){}
+      try { localStorage.setItem('drg_admin_token', token); } catch(e){}
+    } else {
+      try { sessionStorage.removeItem('drg_admin_token'); } catch(e){}
+      try { localStorage.removeItem('drg_admin_token'); } catch(e){}
+    }
+  }
+
+  async function ensureAdminToken(){
+    let token = getAdminToken();
+    if(token) return token;
+    // Auto-acquire fresh token using stored Master Security PIN
+    try {
+      const pin = getStoredAdminPin();
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin })
+      });
+      if(res.ok){
+        const data = await res.json();
+        if(data.success && data.token){
+          setAdminToken(data.token);
+          return data.token;
+        }
+      }
+    } catch(e){}
+    return null;
+  }
+
+  function broadcastInventoryUpdate(phonesList){
+    if(typeof BroadcastChannel !== 'undefined'){
+      try {
+        const bc = new BroadcastChannel(INVENTORY_CHANNEL_NAME);
+        bc.postMessage({ type: 'INVENTORY_UPDATED', phones: phonesList });
+        setTimeout(() => bc.close(), 1000);
+      } catch(e){}
+    }
+  }
+
   // ---- PHOTO UPLOAD, PREVIEW & GALLERY STUDIO ----
   const photoPreviewBox = document.getElementById('photoPreviewBox');
   const photoPreviewImg = document.getElementById('photoPreviewImg');
@@ -1503,9 +1560,10 @@
   function renderPhoneGalleryPreview(){
     if(!phoneGalleryPreview) return;
     phoneGalleryPreview.innerHTML = selectedPhoneImages.map((url, index) => `
-      <div class="gallery-thumb-item active" data-image-index="${index}">
+      <div class="gallery-thumb-item ${index === 0 ? 'active' : ''}" data-image-index="${index}" title="${index === 0 ? '★ Primary Cover Photo (shown on storefront)' : 'Click to set as Primary Photo'}">
         <img src="${url}" alt="Phone image ${index + 1}">
-        <button type="button" class="clear-photo-btn" data-remove-image="${index}" title="Remove image">✕</button>
+        <span class="thumb-label">${index === 0 ? '★ Primary' : '#' + (index + 1)}</span>
+        <button type="button" class="clear-photo-btn" data-remove-image="${index}" title="Remove image">&times;</button>
       </div>
     `).join('');
     const firstImage = selectedPhoneImages[0] || '';
@@ -1530,10 +1588,35 @@
     renderPhoneGalleryPreview();
   }
 
+  // Safe client-side image compression fallback to prevent quota overflow
   function readFileAsDataUrl(file){
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 800;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = () => resolve(reader.result);
+        img.src = reader.result;
+      };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -1545,8 +1628,6 @@
       return;
     }
     setPhonePhotos([url]);
-
-    
     if(uploadProgressHint){
       uploadProgressHint.className = 'upload-hint success';
       uploadProgressHint.textContent = '✓ Photo selected: ' + url.split('/').pop();
@@ -1556,7 +1637,7 @@
   function clearPhonePhoto(){
     selectedPhoneImages = [];
     newPhoneImage.value = "";
-    phoneFileInput.value = "";
+    if(phoneFileInput) phoneFileInput.value = "";
     photoPreviewImg.src = "";
     photoPreviewImg.style.display = 'none';
     photoPreviewPlaceholder.style.display = 'flex';
@@ -1573,50 +1654,78 @@
   if(clearPhotoBtn) clearPhotoBtn.addEventListener('click', clearPhonePhoto);
   if(uploadPhotoBtn) uploadPhotoBtn.addEventListener('click', () => phoneFileInput.click());
 
-  // Direct file selection and upload
+  // Direct file selection and server upload
   if(phoneFileInput){
     phoneFileInput.addEventListener('change', async () => {
       const files = Array.from(phoneFileInput.files || []);
       if(!files.length) return;
 
-      // Show immediate local preview
-      const localPreviewUrls = files.map(file => URL.createObjectURL(file));
-      setPhonePhotos([...selectedPhoneImages, ...localPreviewUrls]);
+      const submitBtn = addPhoneForm.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn ? submitBtn.textContent : 'Save Changes';
+      if(submitBtn){
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Uploading Photo...';
+      }
 
       if(uploadProgressHint){
         uploadProgressHint.className = 'upload-hint';
-        uploadProgressHint.textContent = `⏳ Uploading ${files.length} image${files.length === 1 ? '' : 's'}...`;
+        uploadProgressHint.textContent = `⏳ Uploading ${files.length} image${files.length === 1 ? '' : 's'} to server...`;
       }
 
-      for(let fileIndex = 0; fileIndex < files.length; fileIndex++){
-        const file = files[fileIndex];
-        try {
-          const formData = new FormData();
-          formData.append('image', file);
+      try {
+        const formData = new FormData();
+        files.forEach(file => formData.append('image', file));
 
-          const token = sessionStorage.getItem('drg_admin_token');
-          const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const token = await ensureAdminToken();
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
-          const res = await fetch('/api/upload', { method: 'POST', headers: headers, body: formData });
-          const data = await res.json();
-          if(data.success && data.url){
-            selectedPhoneImages[selectedPhoneImages.length - files.length + fileIndex] = data.url;
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: headers,
+          body: formData
+        });
+
+        const data = await res.json();
+        if(res.ok && data.success){
+          const uploadedUrls = (data.urls && data.urls.length) ? data.urls : (data.url ? [data.url] : []);
+          if(uploadedUrls.length){
+            // Prepend new images to front so newly uploaded image becomes the primary image!
+            const existingWithoutBlobs = selectedPhoneImages.filter(u => u && !u.startsWith('blob:'));
+            selectedPhoneImages = [...uploadedUrls, ...existingWithoutBlobs];
             setPhonePhotos(selectedPhoneImages);
-          } else {
-            selectedPhoneImages[selectedPhoneImages.length - files.length + fileIndex] = await readFileAsDataUrl(file);
-            setPhonePhotos(selectedPhoneImages);
-            showToast('Photo attached locally: ' + file.name);
+            showToast(`✅ Uploaded ${uploadedUrls.length} photo${uploadedUrls.length === 1 ? '' : 's'} and set as primary!`);
           }
-        } catch(err){
-          selectedPhoneImages[selectedPhoneImages.length - files.length + fileIndex] = await readFileAsDataUrl(file);
+          if(uploadProgressHint){
+            uploadProgressHint.className = 'upload-hint success';
+            uploadProgressHint.textContent = `✓ ${selectedPhoneImages.length} image${selectedPhoneImages.length === 1 ? '' : 's'} ready (primary photo set)`;
+          }
+        } else {
+          // Fallback if server upload rejected
+          showToast(`⚠️ Upload: ${data.message || 'Attached photo locally'}`);
+          for(const file of files){
+            const dataUrl = await readFileAsDataUrl(file);
+            selectedPhoneImages.unshift(dataUrl);
+          }
           setPhonePhotos(selectedPhoneImages);
-          showToast('Photo attached locally: ' + file.name);
+          if(uploadProgressHint){
+            uploadProgressHint.className = 'upload-hint';
+            uploadProgressHint.textContent = `Attached ${files.length} image(s) locally`;
+          }
         }
-      }
-
-      if(uploadProgressHint){
-        uploadProgressHint.className = 'upload-hint success';
-        uploadProgressHint.textContent = `✓ ${selectedPhoneImages.length} phone image${selectedPhoneImages.length === 1 ? '' : 's'} ready`;
+      } catch(err){
+        console.warn('Upload error:', err);
+        showToast('⚠️ Could not connect to upload server, attached photo locally');
+        for(const file of files){
+          const dataUrl = await readFileAsDataUrl(file);
+          selectedPhoneImages.unshift(dataUrl);
+        }
+        setPhonePhotos(selectedPhoneImages);
+      } finally {
+        if(submitBtn){
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+        phoneFileInput.value = '';
       }
     });
   }
@@ -1625,15 +1734,36 @@
   if(newPhoneImage){
     newPhoneImage.addEventListener('input', () => {
       const urls = newPhoneImage.value.split(',').map(value => value.trim()).filter(Boolean);
-      setPhonePhotos(urls);
+      selectedPhoneImages = urls;
+      renderPhoneGalleryPreview();
     });
   }
-  if(phoneGalleryPreview) phoneGalleryPreview.addEventListener('click', event => {
-    const removeButton = event.target.closest('[data-remove-image]');
-    if(!removeButton) return;
-    selectedPhoneImages.splice(Number(removeButton.dataset.removeImage), 1);
-    setPhonePhotos(selectedPhoneImages);
-  });
+
+  // Gallery click: remove or click thumbnail to set as Primary (index 0)
+  if(phoneGalleryPreview){
+    phoneGalleryPreview.addEventListener('click', event => {
+      const removeButton = event.target.closest('[data-remove-image]');
+      if(removeButton){
+        event.stopPropagation();
+        const removeIdx = Number(removeButton.dataset.removeImage);
+        selectedPhoneImages.splice(removeIdx, 1);
+        setPhonePhotos(selectedPhoneImages);
+        return;
+      }
+
+      const thumb = event.target.closest('[data-image-index]');
+      if(thumb){
+        const clickedIndex = Number(thumb.dataset.imageIndex);
+        if(clickedIndex > 0 && clickedIndex < selectedPhoneImages.length){
+          // Move chosen image to position 0 (Primary)
+          const primaryImg = selectedPhoneImages.splice(clickedIndex, 1)[0];
+          selectedPhoneImages.unshift(primaryImg);
+          setPhonePhotos(selectedPhoneImages);
+          showToast('★ Set as Primary Storefront Image');
+        }
+      }
+    });
+  }
 
   
 
@@ -2013,7 +2143,9 @@
   function savePhones(){
     try {
       localStorage.setItem('drg_renewed_phones_data_v2', JSON.stringify(phones));
+      localStorage.setItem('drg_vundi_phones_v3', JSON.stringify(phones));
     } catch(e){}
+    broadcastInventoryUpdate(phones);
     updateMetrics();
   }
 
@@ -2081,21 +2213,19 @@
     });
   }
 
-  function getStoredAdminPin(){
-    return localStorage.getItem('drg_admin_pin') || "2540";
-  }
-
   function setAuthenticated(auth, user = null){
     if(auth){
       try { sessionStorage.setItem('drg_admin_active', 'true'); } catch(e){}
+      try { localStorage.setItem('drg_admin_active', 'true'); } catch(e){}
       if(user){
         try { sessionStorage.setItem('drg_admin_user', JSON.stringify(user)); } catch(e){}
+        try { localStorage.setItem('drg_admin_user', JSON.stringify(user)); } catch(e){}
       }
       
       let currentUser = user;
       if(!currentUser){
         try {
-          const raw = sessionStorage.getItem('drg_admin_user');
+          const raw = sessionStorage.getItem('drg_admin_user') || localStorage.getItem('drg_admin_user');
           if(raw) currentUser = JSON.parse(raw);
         } catch(e){}
       }
@@ -2110,10 +2240,12 @@
       updateMetrics();
       syncAdminData();
     } else {
+      setAdminToken(null);
       try {
         sessionStorage.removeItem('drg_admin_active');
-        sessionStorage.removeItem('drg_admin_token');
+        localStorage.removeItem('drg_admin_active');
         sessionStorage.removeItem('drg_admin_user');
+        localStorage.removeItem('drg_admin_user');
       } catch(e){}
       pinGateScreen.style.display = 'flex';
       adminDashboardScreen.style.display = 'none';
@@ -2146,7 +2278,7 @@
       const data = await res.json();
 
       if(res.ok && data.success && data.token){
-        sessionStorage.setItem('drg_admin_token', data.token);
+        setAdminToken(data.token);
         setAuthenticated(true, data.user);
         showToast(`👑 Welcome back, ${data.user?.name || data.user?.username || 'Admin'}!`);
         return;
@@ -2179,7 +2311,7 @@
         });
         const data = await res.json();
         if(res.ok && data.success && data.token){
-          sessionStorage.setItem('drg_admin_token', data.token);
+          setAdminToken(data.token);
           setAuthenticated(true, data.user || { name: 'Master Admin', username: 'admin' });
           showToast('👑 Unlocked via Master Security PIN!');
           return;
@@ -2187,6 +2319,7 @@
       } catch(e){}
 
       if(pin === getStoredAdminPin()){
+        await ensureAdminToken();
         setAuthenticated(true, { name: 'Store Admin', username: 'admin' });
         showToast('👑 Unlocked via Master Security PIN!');
       } else {
@@ -2485,7 +2618,7 @@
   cancelDeleteBtn.addEventListener('click', closeDeleteModal);
   deleteConfirmModal.addEventListener('click', (e) => { if(e.target === deleteConfirmModal) closeDeleteModal(); });
 
-  confirmDeleteBtn.addEventListener('click', () => {
+  confirmDeleteBtn.addEventListener('click', async () => {
     if(!phoneIdToDelete) return;
     const deletedPhone = phones.find(p => p.id === phoneIdToDelete);
     const idToDelete = phoneIdToDelete;
@@ -2495,13 +2628,18 @@
     closeDeleteModal();
     showToast(`🗑️ Deleted ${deletedPhone ? deletedPhone.model : 'device'} from store catalogue!`);
 
-    const token = sessionStorage.getItem('drg_admin_token');
-    if(token){
-      fetch(`/api/phones/${idToDelete}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      }).catch(err => console.warn('Backend delete sync error:', err));
+    try {
+      const token = await ensureAdminToken();
+      if(token){
+        await fetch(`/api/phones/${idToDelete}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      }
+    } catch(err){
+      console.warn('Backend delete sync error:', err);
     }
+    phoneIdToDelete = null;
   });
 
   // ---- Add Phone Modal ----
@@ -2548,29 +2686,31 @@
   planTypeStandardBtn.addEventListener('click', () => setPlanType("single"));
 
   // Auto-calculate suggested deposit/weekly when Cash Price changes
-  document.getElementById('newPhoneCashPrice').addEventListener('input', (e) => {
-    const cash = Number(e.target.value);
+  function recalculateSuggestedPlans(force = false){
+    const cash = Number(document.getElementById('newPhoneCashPrice').value);
     if(cash > 1000){
-      if(!document.getElementById('newMoSaverDeposit').value){
-        document.getElementById('newMoSaverDeposit').value = Math.round(cash * 0.45);
-      }
-      if(!document.getElementById('newMoSaverWeekly').value){
-        document.getElementById('newMoSaverWeekly').value = Math.round((cash * 1.4 - (cash * 0.45)) / 26);
-      }
-      if(!document.getElementById('newMoStandardDeposit').value){
-        document.getElementById('newMoStandardDeposit').value = Math.round(cash * 0.35);
-      }
-      if(!document.getElementById('newMoStandardWeekly').value){
-        document.getElementById('newMoStandardWeekly').value = Math.round((cash * 1.8 - (cash * 0.35)) / 52);
-      }
-      if(!document.getElementById('newStandardDeposit').value){
-        document.getElementById('newStandardDeposit').value = Math.round(cash * 0.25);
-      }
-      if(!document.getElementById('newStandardWeekly').value){
-        document.getElementById('newStandardWeekly').value = Math.round((cash - (cash * 0.25)) / 8);
-      }
+      const moDep = document.getElementById('newMoSaverDeposit');
+      const moWk = document.getElementById('newMoSaverWeekly');
+      const stdDep = document.getElementById('newMoStandardDeposit');
+      const stdWk = document.getElementById('newMoStandardWeekly');
+      const sDep = document.getElementById('newStandardDeposit');
+      const sWk = document.getElementById('newStandardWeekly');
+
+      if(force || !moDep.value) moDep.value = Math.round(cash * 0.45);
+      if(force || !moWk.value) moWk.value = Math.round((cash * 1.4 - (cash * 0.45)) / 26);
+      if(force || !stdDep.value) stdDep.value = Math.round(cash * 0.35);
+      if(force || !stdWk.value) stdWk.value = Math.round((cash * 1.8 - (cash * 0.35)) / 52);
+      if(force || !sDep.value) sDep.value = Math.round(cash * 0.25);
+      if(force || !sWk.value) sWk.value = Math.round((cash - (cash * 0.25)) / 8);
+      if(force) showToast(`⚡ Recalculated deposits & weekly plans for ${money(cash)}`);
     }
-  });
+  }
+
+  document.getElementById('newPhoneCashPrice').addEventListener('input', () => recalculateSuggestedPlans(false));
+  const recalcPlansBtn = document.getElementById('recalcPlansBtn');
+  if(recalcPlansBtn){
+    recalcPlansBtn.addEventListener('click', () => recalculateSuggestedPlans(true));
+  }
 
   // Category change auto-selects plan type
   document.getElementById('newPhoneCategory').addEventListener('change', (e) => {
@@ -2604,8 +2744,15 @@
   cancelAddPhoneBtn.addEventListener('click', closeAddModal);
   addPhoneModal.addEventListener('click', (e) => { if(e.target === addPhoneModal) closeAddModal(); });
 
-  addPhoneForm.addEventListener('submit', (e) => {
+  addPhoneForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitBtn = addPhoneForm.querySelector('button[type="submit"]');
+    const origBtnText = submitBtn ? submitBtn.textContent : 'Save Changes';
+    if(submitBtn){
+      submitBtn.disabled = true;
+      submitBtn.textContent = '⏳ Saving to live store...';
+    }
+
     const model = document.getElementById('newPhoneModel').value.trim();
     const storage = document.getElementById('newPhoneStorage').value.trim();
     const category = document.getElementById('newPhoneCategory').value;
@@ -2674,77 +2821,105 @@
       defaultPlan = "standard";
     }
 
-    if(editingPhoneId){
-      // UPDATE EXISTING PHONE
-      const index = phones.findIndex(p => p.id === editingPhoneId);
-      const updatedPhone = {
-        id: editingPhoneId,
-        category: category,
-        categoryLabel: catLabels[category] || "Other Renewed Phones",
-        model: model,
-        storage: storage,
-        condition: condition,
-        image: image,
-        images: images,
-        specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
-        cashPrice: cashPrice,
-        plans: plans,
-        defaultPlan: defaultPlan
-      };
+    try {
+      const token = await ensureAdminToken();
+      const headers = { 'Content-Type': 'application/json' };
+      if(token) headers['Authorization'] = `Bearer ${token}`;
 
-      if(index !== -1){
-        phones[index] = updatedPhone;
+      let savedPhone = null;
+
+      if(editingPhoneId){
+        // UPDATE EXISTING PHONE
+        const index = phones.findIndex(p => p.id === editingPhoneId);
+        const updatedPhone = {
+          id: editingPhoneId,
+          category: category,
+          categoryLabel: catLabels[category] || "Other Renewed Phones",
+          model: model,
+          storage: storage,
+          condition: condition,
+          image: image,
+          images: images,
+          specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
+          cashPrice: cashPrice,
+          plans: plans,
+          defaultPlan: defaultPlan
+        };
+
+        try {
+          const res = await fetch(`/api/phones/${editingPhoneId}`, {
+            method: 'PUT',
+            headers: headers,
+            body: JSON.stringify(updatedPhone)
+          });
+          const data = await res.json();
+          if(res.ok && data.success && data.data){
+            savedPhone = data.data;
+          } else {
+            console.warn('Backend update notice:', data);
+            savedPhone = updatedPhone;
+          }
+        } catch(apiErr){
+          console.warn('Network update error:', apiErr);
+          savedPhone = updatedPhone;
+        }
+
+        if(index !== -1){
+          phones[index] = savedPhone;
+        } else {
+          phones.unshift(savedPhone);
+        }
+        editingPhoneId = null;
+        showToast(`✅ Successfully updated ${model} details & photo!`);
+      } else {
+        // ADD NEW PHONE
+        const newPhone = {
+          id: newId,
+          category: category,
+          categoryLabel: catLabels[category] || "Other Renewed Phones",
+          model: model,
+          storage: storage,
+          condition: condition,
+          image: image,
+          images: images,
+          specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
+          cashPrice: cashPrice,
+          plans: plans,
+          defaultPlan: defaultPlan
+        };
+
+        try {
+          const res = await fetch('/api/phones', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(newPhone)
+          });
+          const data = await res.json();
+          if(res.ok && data.success && data.data){
+            savedPhone = data.data;
+          } else {
+            console.warn('Backend add notice:', data);
+            savedPhone = newPhone;
+          }
+        } catch(apiErr){
+          console.warn('Network add error:', apiErr);
+          savedPhone = newPhone;
+        }
+
+        phones.unshift(savedPhone);
+        showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
       }
+
       savePhones();
       closeAddModal();
       renderInventory();
-      showToast(`✅ Successfully updated ${model} details & photo!`);
-
-      const token = sessionStorage.getItem('drg_admin_token');
-      if(token){
-        fetch(`/api/phones/${editingPhoneId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(updatedPhone)
-        }).catch(err => console.warn('Backend update sync error:', err));
-      }
-      editingPhoneId = null;
-    } else {
-      // ADD NEW PHONE
-      const newPhone = {
-        id: newId,
-        category: category,
-        categoryLabel: catLabels[category] || "Other Renewed Phones",
-        model: model,
-        storage: storage,
-        condition: condition,
-        image: image,
-        images: images,
-        specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
-        cashPrice: cashPrice,
-        plans: plans,
-        defaultPlan: defaultPlan
-      };
-
-      phones.unshift(newPhone);
-      savePhones();
-      closeAddModal();
-      renderInventory();
-      showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
-
-      const token = sessionStorage.getItem('drg_admin_token');
-      if(token){
-        fetch('/api/phones', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(newPhone)
-        }).catch(err => console.warn('Backend add sync error:', err));
+    } catch(err){
+      console.error('Save error:', err);
+      showToast(`⚠️ Notice: ${err.message || 'Error saving device'}`);
+    } finally {
+      if(submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.textContent = origBtnText;
       }
     }
   });

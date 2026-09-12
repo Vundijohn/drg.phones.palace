@@ -242,9 +242,10 @@ const db = {
     const index = phones.findIndex(p => p.id === id);
     if (index !== -1) {
       phones[index] = { ...phones[index], ...payload };
-      safeWriteJson(PHONES_FILE, phones);
-      return phones[index];
+    } else {
+      phones.unshift(payload);
     }
+    safeWriteJson(PHONES_FILE, phones);
     return payload;
   },
 

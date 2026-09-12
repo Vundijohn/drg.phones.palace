@@ -26,14 +26,14 @@ const storage = multer.diskStorage({
 
 // File filter (accept common image formats)
 const fileFilter = (req, file, cb) => {
-  const allowed = /jpeg|jpg|png|webp|gif/;
-  const mimeValid = allowed.test(file.mimetype);
-  const extValid = allowed.test(path.extname(file.originalname).toLowerCase());
+  const allowedExts = /\.(jpe?g|png|webp|gif|avif|bmp|jfif|svg)$/i;
+  const isImageExt = allowedExts.test(path.extname(file.originalname).toLowerCase());
+  const isImageMime = file.mimetype && (file.mimetype.startsWith('image/') || file.mimetype === 'application/octet-stream');
 
-  if (mimeValid && extValid) {
+  if (isImageExt || isImageMime) {
     return cb(null, true);
   }
-  cb(new Error('Only image files (JPG, PNG, WEBP) are allowed!'));
+  cb(new Error('Only image files (JPG, PNG, WEBP, GIF, AVIF) are allowed!'));
 };
 
 const upload = multer({

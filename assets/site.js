@@ -1,5 +1,5 @@
 
-// â”€â”€ THEME TOGGLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── THEME TOGGLE ──────────────────────────────────────────
 const themeBtn = document.getElementById('theme-toggle');
 const htmlEl = document.documentElement;
 
@@ -57,148 +57,155 @@ setLanguage(savedLanguage);
 languageButton.addEventListener('click', () => setLanguage((localStorage.getItem('drg_language') || 'en') === 'en' ? 'sw' : 'en'));
 footerLanguageButton.addEventListener('click', () => languageButton.click());
 
-// â”€â”€ THREE.JS 3D SCENE (PHONE-THEMED WIREFRAME GEOMETRY) â”€â”€â”€
+// ── THREE.JS 3D SCENE (PHONE-THEMED WIREFRAME GEOMETRY) ───
 const canvas = document.getElementById('three-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x000000, 0);
+if (typeof THREE !== 'undefined' && canvas) {
+  try {
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
-camera.position.set(0, 0, 50);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(0, 0, 50);
 
-// Particle field (Starfield)
-const PARTICLES = 1800;
-const pGeo = new THREE.BufferGeometry();
-const pPos = new Float32Array(PARTICLES * 3);
-const pSizes = new Float32Array(PARTICLES);
-for (let i = 0; i < PARTICLES; i++) {
-  pPos[i*3]   = (Math.random() - 0.5) * 160;
-  pPos[i*3+1] = (Math.random() - 0.5) * 100;
-  pPos[i*3+2] = (Math.random() - 0.5) * 80;
-  pSizes[i]   = Math.random() * 1.5 + 0.3;
+    // Particle field (Starfield)
+    const PARTICLES = 1800;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(PARTICLES * 3);
+    const pSizes = new Float32Array(PARTICLES);
+    for (let i = 0; i < PARTICLES; i++) {
+      pPos[i*3]   = (Math.random() - 0.5) * 160;
+      pPos[i*3+1] = (Math.random() - 0.5) * 100;
+      pPos[i*3+2] = (Math.random() - 0.5) * 80;
+      pSizes[i]   = Math.random() * 1.5 + 0.3;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    pGeo.setAttribute('size', new THREE.BufferAttribute(pSizes, 1));
+    const pMat = new THREE.PointsMaterial({
+      color: 0xc8a96e, size: 0.35, transparent: true, opacity: 0.55,
+      sizeAttenuation: true, depthWrite: false
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    // 3D Wireframe Smartphone Frame Silhouette
+    const phoneGroup = new THREE.Group();
+
+    // Phone outer body
+    const phoneBodyGeo = new THREE.BoxGeometry(9, 18, 0.8, 2, 4, 1);
+    const phoneBodyMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.15 });
+    const phoneBody = new THREE.Mesh(phoneBodyGeo, phoneBodyMat);
+    phoneGroup.add(phoneBody);
+
+    // Phone screen outline
+    const screenGeo = new THREE.PlaneGeometry(8, 16.5);
+    const screenMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.08 });
+    const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+    screenMesh.position.z = 0.41;
+    phoneGroup.add(screenMesh);
+
+    // Camera Island
+    const camBumpGeo = new THREE.BoxGeometry(3.6, 4.8, 0.35);
+    const camBumpMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.2 });
+    const camBump = new THREE.Mesh(camBumpGeo, camBumpMat);
+    camBump.position.set(-2, 5.8, -0.5);
+    phoneGroup.add(camBump);
+
+    // Camera Rings
+    for(let c = 0; c < 3; c++){
+      const ringGeo = new THREE.TorusGeometry(0.55, 0.1, 8, 20);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.25 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.set(-2, 7 - c * 1.2, -0.7);
+      phoneGroup.add(ring);
+    }
+
+    phoneGroup.position.set(24, -4, -18);
+    scene.add(phoneGroup);
+
+    // Floating wireframe torus ring
+    const torusGeo = new THREE.TorusGeometry(12, 3.5, 18, 55);
+    const torusMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.08 });
+    const torus = new THREE.Mesh(torusGeo, torusMat);
+    torus.position.set(-26, 12, -22);
+    scene.add(torus);
+
+    // Floating icosahedron (Chip / Prism)
+    const icoGeo = new THREE.IcosahedronGeometry(7, 1);
+    const icoMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.10 });
+    const ico = new THREE.Mesh(icoGeo, icoMat);
+    ico.position.set(-20, -18, -15);
+    scene.add(ico);
+
+    // Floating octahedron
+    const octGeo = new THREE.OctahedronGeometry(5, 0);
+    const octMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.12 });
+    const oct = new THREE.Mesh(octGeo, octMat);
+    oct.position.set(8, -22, -12);
+    scene.add(oct);
+
+    // Mouse parallax
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', e => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+    function animateScene() {
+      requestAnimationFrame(animateScene);
+      if (document.hidden) return;
+      const t = clock.getElapsedTime();
+
+      particles.rotation.y = t * 0.015;
+      particles.rotation.x = t * 0.007;
+
+      // Phone silhouette motion
+      phoneGroup.rotation.y = t * 0.22;
+      phoneGroup.rotation.x = Math.sin(t * 0.3) * 0.15;
+      phoneGroup.position.y = -4 + Math.sin(t * 0.4) * 2;
+
+      torus.rotation.x = t * 0.2;
+      torus.rotation.y = t * 0.15;
+      torus.position.y = 12 + Math.cos(t * 0.5) * 2.5;
+
+      ico.rotation.y = t * 0.25;
+      ico.rotation.x = t * 0.18;
+
+      oct.rotation.x = t * 0.35;
+      oct.rotation.z = t * 0.25;
+
+      // Parallax camera
+      camera.position.x += (mouseX * 4.5 - camera.position.x) * 0.04;
+      camera.position.y += (-mouseY * 3.5 - camera.position.y) * 0.04;
+      camera.lookAt(scene.position);
+
+      // Dynamic light/dark material colors
+      const isLight = htmlEl.classList.contains('light');
+      pMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+      pMat.opacity = isLight ? 0.65 : 0.55;
+      phoneBodyMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+      torusMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+      icoMat.color.setHex(isLight ? 0x1a4a80 : 0x6e9ec8);
+      octMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
+
+      renderer.render(scene, camera);
+    }
+    animateScene();
+  } catch (err) {
+    console.warn('Three.js canvas setup skipped:', err);
+  }
 }
-pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-pGeo.setAttribute('size', new THREE.BufferAttribute(pSizes, 1));
-const pMat = new THREE.PointsMaterial({
-  color: 0xc8a96e, size: 0.35, transparent: true, opacity: 0.55,
-  sizeAttenuation: true, depthWrite: false
-});
-const particles = new THREE.Points(pGeo, pMat);
-scene.add(particles);
 
-// 3D Wireframe Smartphone Frame Silhouette
-const phoneGroup = new THREE.Group();
-
-// Phone outer body
-const phoneBodyGeo = new THREE.BoxGeometry(9, 18, 0.8, 2, 4, 1);
-const phoneBodyMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.15 });
-const phoneBody = new THREE.Mesh(phoneBodyGeo, phoneBodyMat);
-phoneGroup.add(phoneBody);
-
-// Phone screen outline
-const screenGeo = new THREE.PlaneGeometry(8, 16.5);
-const screenMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.08 });
-const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-screenMesh.position.z = 0.41;
-phoneGroup.add(screenMesh);
-
-// Camera Island
-const camBumpGeo = new THREE.BoxGeometry(3.6, 4.8, 0.35);
-const camBumpMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.2 });
-const camBump = new THREE.Mesh(camBumpGeo, camBumpMat);
-camBump.position.set(-2, 5.8, -0.5);
-phoneGroup.add(camBump);
-
-// Camera Rings
-for(let c = 0; c < 3; c++){
-  const ringGeo = new THREE.TorusGeometry(0.55, 0.1, 8, 20);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.25 });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.position.set(-2, 7 - c * 1.2, -0.7);
-  phoneGroup.add(ring);
-}
-
-phoneGroup.position.set(24, -4, -18);
-scene.add(phoneGroup);
-
-// Floating wireframe torus ring
-const torusGeo = new THREE.TorusGeometry(12, 3.5, 18, 55);
-const torusMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.08 });
-const torus = new THREE.Mesh(torusGeo, torusMat);
-torus.position.set(-26, 12, -22);
-scene.add(torus);
-
-// Floating icosahedron (Chip / Prism)
-const icoGeo = new THREE.IcosahedronGeometry(7, 1);
-const icoMat = new THREE.MeshBasicMaterial({ color: 0x6e9ec8, wireframe: true, transparent: true, opacity: 0.10 });
-const ico = new THREE.Mesh(icoGeo, icoMat);
-ico.position.set(-20, -18, -15);
-scene.add(ico);
-
-// Floating octahedron
-const octGeo = new THREE.OctahedronGeometry(5, 0);
-const octMat = new THREE.MeshBasicMaterial({ color: 0xc8a96e, wireframe: true, transparent: true, opacity: 0.12 });
-const oct = new THREE.Mesh(octGeo, octMat);
-oct.position.set(8, -22, -12);
-scene.add(oct);
-
-// Mouse parallax
-let mouseX = 0, mouseY = 0;
-document.addEventListener('mousemove', e => {
-  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-const clock = new THREE.Clock();
-function animateScene() {
-  requestAnimationFrame(animateScene);
-  const t = clock.getElapsedTime();
-
-  particles.rotation.y = t * 0.015;
-  particles.rotation.x = t * 0.007;
-
-  // Phone silhouette motion
-  phoneGroup.rotation.y = t * 0.22;
-  phoneGroup.rotation.x = Math.sin(t * 0.3) * 0.15;
-  phoneGroup.position.y = -4 + Math.sin(t * 0.4) * 2;
-
-  torus.rotation.x = t * 0.2;
-  torus.rotation.y = t * 0.15;
-  torus.position.y = 12 + Math.cos(t * 0.5) * 2.5;
-
-  ico.rotation.y = t * 0.25;
-  ico.rotation.x = t * 0.18;
-
-  oct.rotation.x = t * 0.35;
-  oct.rotation.z = t * 0.25;
-
-  // Parallax camera
-  camera.position.x += (mouseX * 4.5 - camera.position.x) * 0.04;
-  camera.position.y += (-mouseY * 3.5 - camera.position.y) * 0.04;
-  camera.lookAt(scene.position);
-
-  // Dynamic light/dark material colors
-  const isLight = htmlEl.classList.contains('light');
-  pMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
-  pMat.opacity = isLight ? 0.65 : 0.55;
-  phoneBodyMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
-  torusMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
-  icoMat.color.setHex(isLight ? 0x1a4a80 : 0x6e9ec8);
-  octMat.color.setHex(isLight ? 0x7a4f0a : 0xc8a96e);
-
-  renderer.render(scene, camera);
-}
-animateScene();
-
-// â”€â”€ 3D TILT PHONE CARD INTERACTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── 3D TILT PHONE CARD INTERACTION ────────────────────────
 const tiltCard = document.getElementById('tilt-card');
 if(tiltCard){
   const heroRightContainer = tiltCard.parentElement;
@@ -217,7 +224,7 @@ if(tiltCard){
   });
 }
 
-// â”€â”€ SCROLL REVEAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SCROLL REVEAL ─────────────────────────────────────────
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
@@ -228,7 +235,7 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
   revealObserver.observe(el);
 });
 
-// â”€â”€ MOBILE MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── MOBILE MENU ───────────────────────────────────────────
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
@@ -238,7 +245,7 @@ mobileMenu.querySelectorAll('a').forEach(a => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// â”€â”€ CINEMATIC HERO SLIDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CINEMATIC HERO SLIDER ────────────────────────────────
 const hero = document.querySelector('.hero');
 const heroSlideButtons = document.querySelectorAll('.hero-slide-dot');
 const heroPrevButton = document.querySelector('.hero-prev');
@@ -279,104 +286,104 @@ document.addEventListener('keydown', e => {
 setHeroSlide(0);
 setInterval(() => { heroSlideIndex = (heroSlideIndex + 1) % heroImages.length; setHeroSlide(heroSlideIndex); }, 6500);
 
-// â”€â”€ RENEWED PHONES CATALOGUE DATA & LOGIC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── RENEWED PHONES CATALOGUE DATA & LOGIC ─────────────────
 let WHATSAPP_NUMBER = "254797951374";
 
 const DEFAULT_PHONES = [
   {
     id: "s25-ultra-256", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S25 Ultra", storage: "256GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S25 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s25-ultra.jpg",
     specs: ["Snapdragon 8 Elite, 5G ready", "200MP Quad Camera, 100x Space Zoom", "Built-in S-Pen, Titanium Armor Frame"],
     cashPrice: 115999,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 115999, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 52199, weekly: 4410, weeks: 26, total: 166859, hint: "âš¡ 6 Months Â· Save KES 45,340 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 40599, weekly: 3300, weeks: 52, total: 212199, hint: "Low deposit (35%) Â· 52 easy weekly payments" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 115999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 52199, weekly: 4410, weeks: 26, total: 166859, hint: "⚡ 6 Months · Save KES 45,340 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 40599, weekly: 3300, weeks: 52, total: 212199, hint: "Low deposit (35%) · 52 easy weekly payments" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "s24-ultra-256", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S24 Ultra", storage: "256GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S24 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s24-ultra.jpg",
     specs: ["Galaxy AI built-in, 5G flagship", "200MP Quad Pro-visual camera", "Flat 120Hz display, S-Pen included"],
     cashPrice: 94999,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 94999, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 42699, weekly: 3610, weeks: 26, total: 136559, hint: "âš¡ 6 Months Â· Save KES 37,040 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 33199, weekly: 2700, weeks: 52, total: 173599, hint: "Low deposit (35%) Â· 52 easy weekly payments" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 94999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 42699, weekly: 3610, weeks: 26, total: 136559, hint: "⚡ 6 Months · Save KES 37,040 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 33199, weekly: 2700, weeks: 52, total: 173599, hint: "Low deposit (35%) · 52 easy weekly payments" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "s23-ultra-256", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S23 Ultra", storage: "256GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S23 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s23-ultra.jpg",
     specs: ["200MP camera, 100x Space Zoom", "6.8\" Dynamic AMOLED 2X 120Hz", "Built-in S-Pen, 5,000mAh battery"],
     cashPrice: 76999,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 76999, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 34599, weekly: 2930, weeks: 26, total: 110779, hint: "âš¡ 6 Months Â· Save KES 30,000 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 26899, weekly: 2190, weeks: 52, total: 140779, hint: "Low deposit (35%) Â· 52 easy weekly payments" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 76999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 34599, weekly: 2930, weeks: 26, total: 110779, hint: "⚡ 6 Months · Save KES 30,000 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 26899, weekly: 2190, weeks: 52, total: 140779, hint: "Low deposit (35%) · 52 easy weekly payments" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "s22-ultra-256", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S22 Ultra", storage: "256GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S22 Ultra", storage: "256GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s22-ultra.jpg",
     specs: ["108MP Quad camera, 100x zoom", "Dynamic AMOLED 120Hz display", "Integrated S-Pen, 45W fast charge"],
     cashPrice: 66999,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 66999, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 30099, weekly: 2550, weeks: 26, total: 96399, hint: "âš¡ 6 Months Â· Save KES 25,800 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 23399, weekly: 1900, weeks: 52, total: 122199, hint: "Low deposit (35%) Â· 52 easy weekly payments" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 66999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 30099, weekly: 2550, weeks: 26, total: 96399, hint: "⚡ 6 Months · Save KES 25,800 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 23399, weekly: 1900, weeks: 52, total: 122199, hint: "Low deposit (35%) · 52 easy weekly payments" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "s21-ultra-128", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S21 Ultra 5G", storage: "128GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S21 Ultra 5G", storage: "128GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s21-ultra.jpg",
     specs: ["108MP Pro Grade Camera, 8K video", "6.8\" Quad HD+ 120Hz display", "S-Pen support, 5,000mAh battery"],
     cashPrice: 42999,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 42999, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 19399, weekly: 1640, weeks: 26, total: 62039, hint: "âš¡ 6 Months Â· Save KES 16,580 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 10499, weekly: 1310, weeks: 52, total: 78619, hint: "Low deposit (KES 10,499) Â· KES 1,310/week" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 42999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 19399, weekly: 1640, weeks: 26, total: 62039, hint: "⚡ 6 Months · Save KES 16,580 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 10499, weekly: 1310, weeks: 52, total: 78619, hint: "Low deposit (KES 10,499) · KES 1,310/week" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "s22-plus-128", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S22+ 5G", storage: "128GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S22+ 5G", storage: "128GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s22-plus.jpg",
     specs: ["6.6\" Dynamic AMOLED 2X 120Hz", "50MP Triple camera, Nightography", "Armor Aluminum Frame, 45W charge"],
     cashPrice: 44999,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 44999, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 20299, weekly: 1710, weeks: 26, total: 64759, hint: "âš¡ 6 Months Â· Save KES 17,540 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 11299, weekly: 1370, weeks: 52, total: 82539, hint: "Low deposit (KES 11,299) Â· KES 1,370/week" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 44999, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 20299, weekly: 1710, weeks: 26, total: 64759, hint: "⚡ 6 Months · Save KES 17,540 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 11299, weekly: 1370, weeks: 52, total: 82539, hint: "Low deposit (KES 11,299) · KES 1,370/week" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "s21-plus-128", category: "samsung", categoryLabel: "Samsung",
-    model: "Galaxy S21+ 5G", storage: "128GB", condition: "Renewed Â· Grade A+",
+    model: "Galaxy S21+ 5G", storage: "128GB", condition: "Renewed · Grade A+",
     image: "images/galaxy-s21-plus.jpg",
     specs: ["6.7\" Dynamic AMOLED 120Hz display", "64MP telephoto camera, 30x zoom", "4,800mAh battery, 5G ready"],
     cashPrice: 34199,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 34199, hint: "One-time payment Â· 0% financing fee" },
-      mosaver: { label: "MoSaver (6M)", deposit: 15399, weekly: 1300, weeks: 26, total: 49199, hint: "âš¡ 6 Months Â· Save KES 17,020 vs 12M" },
-      mostandard: { label: "MoStandard (12M)", deposit: 8499, weekly: 1110, weeks: 52, total: 66219, hint: "Lowest deposit (KES 8,499) Â· KES 1,110/week" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 34199, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 15399, weekly: 1300, weeks: 26, total: 49199, hint: "⚡ 6 Months · Save KES 17,020 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 8499, weekly: 1110, weeks: 52, total: 66219, hint: "Lowest deposit (KES 8,499) · KES 1,110/week" }
     },
     defaultPlan: "mostandard"
   },
   {
     id: "iphone-12", category: "iphone", categoryLabel: "iPhone",
-    model: "iPhone 12", storage: "128GB", condition: "Renewed Â· Grade A",
+    model: "iPhone 12", storage: "128GB", condition: "Renewed · Grade A",
     image: "images/iphone-12.jpg",
     specs: ["5G ready flagship, Super Retina XDR", "12MP dual camera, Night mode & 4K", "Face ID, Ceramic Shield, MagSafe"],
     cashPrice: 23000,
@@ -388,7 +395,7 @@ const DEFAULT_PHONES = [
   },
   {
     id: "iphone-11", category: "iphone", categoryLabel: "iPhone",
-    model: "iPhone 11", storage: "64GB", condition: "Renewed Â· Grade A",
+    model: "iPhone 11", storage: "64GB", condition: "Renewed · Grade A",
     image: "images/iphone-11.jpg",
     specs: ["Liquid Retina HD 6.1\" display", "12MP Ultra-Wide dual camera", "All-day battery life, A13 Bionic"],
     cashPrice: 16500,
@@ -400,7 +407,7 @@ const DEFAULT_PHONES = [
   },
   {
     id: "moto-g54", category: "motorola", categoryLabel: "Motorola",
-    model: "Moto G54 5G", storage: "256GB", condition: "Renewed Â· Like New",
+    model: "Moto G54 5G", storage: "256GB", condition: "Renewed · Like New",
     image: "images/moto-g54.jpg",
     specs: ["5G ready, 6.5\" 120Hz display", "50MP OIS camera, Quad Pixel", "6,000mAh massive battery"],
     cashPrice: 10400,
@@ -412,7 +419,7 @@ const DEFAULT_PHONES = [
   },
   {
     id: "moto-edge-40", category: "motorola", categoryLabel: "Motorola",
-    model: "Moto Edge 40", storage: "256GB", condition: "Renewed Â· Like New",
+    model: "Moto Edge 40", storage: "256GB", condition: "Renewed · Like New",
     image: "images/moto-edge-40.jpg",
     specs: ["Curved pOLED 144Hz display", "50MP camera, OIS & f/1.4 aperture", "68W TurboPower fast charging"],
     cashPrice: 15950,
@@ -435,7 +442,7 @@ function money(n){
 }
 
 function displayCondition(phone){
-  const raw = String(phone.condition || '').replace(/^renewed\s*(?:[-]|Â·)\s*/i, '').trim();
+  const raw = String(phone.condition || '').replace(/^renewed\s*(?:[-]|·)\s*/i, '').trim();
   if(/brand\s*new/i.test(raw)) return 'Renewed - Grade A';
   if(/excellent/i.test(raw)) return 'Renewed - Grade A+';
   if(!raw) return 'Renewed - Verified';
@@ -533,7 +540,7 @@ function renderPlanBox(phone, activeKey){
     detailsHtml = `
       <div class="phone-plan-breakdown" id="plan-details-${phone.id}">
         <div class="plan-col"><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
-        <div class="plan-col"><span>Weekly Ã—${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
+        <div class="plan-col"><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
         <div class="plan-col"><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
       </div>
     `;
@@ -586,7 +593,7 @@ function updateCardPlanView(phoneId, newPlanKey){
       detailsContainer.className = "phone-plan-breakdown";
       detailsContainer.innerHTML = `
         <div class="plan-col"><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
-        <div class="plan-col"><span>Weekly Ã—${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
+        <div class="plan-col"><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
         <div class="plan-col"><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
       `;
     }
@@ -611,7 +618,7 @@ function renderFeaturedPhones(){
     const image = phone.image && String(phone.image).trim() ? phone.image : 'images/phones-bg.jpg';
     return `<article class="featured-phone" data-featured-phone="${phone.id}">
       <img src="${image}" alt="${phone.model} ${phone.storage}" loading="lazy">
-      <div class="featured-phone-content"><small>0${index + 1} Â· ${displayCondition(phone)}</small><h3>${phone.model}</h3><a href="#phones" class="featured-phone-link" data-featured-action="${phone.id}">View Details</a></div>
+      <div class="featured-phone-content"><small>0${index + 1} · ${displayCondition(phone)}</small><h3>${phone.model}</h3><a href="#phones" class="featured-phone-link" data-featured-action="${phone.id}">View Details</a></div>
     </article>`;
   }).join('');
 }
@@ -624,9 +631,9 @@ document.getElementById('featuredPhoneRail').addEventListener('click', e => {
 });
 
 const processSteps = [
-  {image:'images/phones-bg.jpg', label:'01 / 03 Â· PHONE MATCHING', titleKey:'process1Title', descKey:'process1Desc'},
-  {image:'images/phones-ambient-lively.jpg', label:'02 / 03 Â· DEVICE CHECK', titleKey:'process2Title', descKey:'process2Desc'},
-  {image:'images/phones-waves-lively.jpg', label:'03 / 03 Â· DELIVERY', titleKey:'process3Title', descKey:'process3Desc'}
+  {image:'images/phones-bg.jpg', label:'01 / 03 · PHONE MATCHING', titleKey:'process1Title', descKey:'process1Desc'},
+  {image:'images/phones-ambient-lively.jpg', label:'02 / 03 · DEVICE CHECK', titleKey:'process2Title', descKey:'process2Desc'},
+  {image:'images/phones-waves-lively.jpg', label:'03 / 03 · DELIVERY', titleKey:'process3Title', descKey:'process3Desc'}
 ];
 let processStepIndex = 0;
 function renderProcessStep(){
@@ -679,8 +686,8 @@ function renderBudgetRecommendation(){
   const isWithinBudget = Number(bestMatch.cashPrice) <= customerBudget;
   budgetViewDetails.dataset.phoneId = bestMatch.id;
   copy.innerHTML = isWithinBudget
-    ? `Best match for ${money(customerBudget)} budget:<strong>${bestMatch.model} Â· ${money(bestMatch.cashPrice)}</strong><span>${displayCondition(bestMatch)} Â· ${bestMatch.storage}</span>`
-    : `Closest match to ${money(customerBudget)} budget:<strong>${bestMatch.model} Â· ${money(bestMatch.cashPrice)}</strong><span>Consider increasing your budget or ask us about weekly plans.</span>`;
+    ? `Best match for ${money(customerBudget)} budget:<strong>${bestMatch.model} · ${money(bestMatch.cashPrice)}</strong><span>${displayCondition(bestMatch)} · ${bestMatch.storage}</span>`
+    : `Closest match to ${money(customerBudget)} budget:<strong>${bestMatch.model} · ${money(bestMatch.cashPrice)}</strong><span>Consider increasing your budget or ask us about weekly plans.</span>`;
   recommendation.classList.add('visible');
 }
 
@@ -720,7 +727,7 @@ function renderPhones(){
     if(customerSearchQuery){
       grid.innerHTML = `
         <div class="catalogue-empty">
-          <div style="font-size:32px;margin-bottom:12px;">ðŸ”</div>
+          <div style="font-size:32px;margin-bottom:12px;">🔍</div>
           <h3>No renewed phones found matching "${customerSearchQuery}"</h3>
           <p>Try searching for a different brand, model, or specification, or clear the search to see all devices.</p>
           <button type="button" class="btn btn-gold" onclick="clearSearch()">Clear Search</button>
@@ -729,7 +736,7 @@ function renderPhones(){
     } else {
       grid.innerHTML = `
         <div class="catalogue-empty">
-          <div style="font-size:32px;margin-bottom:12px;">ðŸ“±</div>
+          <div style="font-size:32px;margin-bottom:12px;">📱</div>
           <h3>No renewed phones found in this category</h3>
           <p>Check back soon for newly verified devices or chat with our team directly.</p>
           <a class="btn btn-gold" href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20DRG%20Phones%20Palace%2C%20do%20you%20have%20any%20renewed%20phones%20in%20stock%3F" target="_blank" rel="noopener">Inquire on WhatsApp</a>
@@ -751,13 +758,13 @@ function renderPhones(){
     const hasValidImage = Boolean(phone.image && String(phone.image).trim());
     const mediaHtml = hasValidImage ? `
       <div class="phone-media">
-        <img src="${phone.image}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>ðŸ“±</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
+        <img src="${phone.image}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
         <span class="phone-condition-badge">${condition}</span>
       </div>
     ` : `
       <div class="phone-media phone-media-placeholder">
         <div class="placeholder-content">
-          <span class="placeholder-icon">ðŸ“±</span>
+          <span class="placeholder-icon">📱</span>
           <span class="placeholder-title">${phone.model}</span>
           <span class="placeholder-subtitle">Verified Renewed Device</span>
         </div>
@@ -850,7 +857,7 @@ function openPhoneDetails(phone){
   const image = images[0];
   phoneDetailsVisual.innerHTML = image
     ? `<img id="phoneDetailsMainImage" src="${image}" alt="${phone.model} ${phone.storage}"><div class="phone-details-gallery">${images.map((galleryImage, index) => `<button type="button" class="${index === 0 ? 'active' : ''}" data-gallery-image="${galleryImage}" aria-label="View image ${index + 1}"><img src="${galleryImage}" alt="${phone.model} image ${index + 1}"></button>`).join('')}</div><span class="phone-details-visual-label">${condition}</span>`
-    : `<div class="placeholder-content"><span class="placeholder-icon">ðŸ“±</span><span class="placeholder-title">${phone.model}</span><span class="placeholder-subtitle">Verified Renewed Device</span></div><span class="phone-details-visual-label">${condition}</span>`;
+    : `<div class="placeholder-content"><span class="placeholder-icon">📱</span><span class="placeholder-title">${phone.model}</span><span class="placeholder-subtitle">Verified Renewed Device</span></div><span class="phone-details-visual-label">${condition}</span>`;
   phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
     phoneDetailsVisual.querySelector('#phoneDetailsMainImage').src = button.dataset.galleryImage;
     phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(item => item.classList.toggle('active', item === button));
@@ -858,7 +865,7 @@ function openPhoneDetails(phone){
   phoneDetailsContent.innerHTML = `
     <p class="phone-details-kicker">${phone.categoryLabel || phone.category} / ${phone.storage}</p>
     <h2 class="phone-details-title" id="phoneDetailsTitle">${phone.model}</h2>
-    <p class="phone-details-meta">${condition} Â· Available for delivery in Nairobi</p>
+    <p class="phone-details-meta">${condition} · Available for delivery in Nairobi</p>
     <div class="phone-details-specs">
       ${(phone.specs || []).map(spec => `<span class="phone-details-spec">${spec}</span>`).join('')}
     </div>
@@ -1022,7 +1029,7 @@ function getHelpReply(question){
   if(/delivery|location|where|address/.test(query)) return 'We offer free countrywide delivery. Our store is at Pioneer House, 5th Floor, Kimathi Street, Nairobi.';
   if(/pay|plan|weekly|installment|deposit/.test(query)) return 'Payment options depend on the phone and include cash, standard weekly plans, MoSaver, and MoStandard.';
   if(/return|change|mind/.test(query)) return 'You have 48 hours to change your mind. Contact the team promptly so we can guide you through the return process.';
-  return 'I can help with a phone model, budget, payment plan, warranty, repairs, delivery, or returns. Try â€œphone under KES 30,000â€.';
+  return 'I can help with a phone model, budget, payment plan, warranty, repairs, delivery, or returns. Try “phone under KES 30,000”.';
 }
 helpAgentToggle.addEventListener('click', () => { helpAgent.classList.toggle('open'); if(helpAgent.classList.contains('open')) helpAgentInput.focus(); });
 helpAgentClose.addEventListener('click', () => helpAgent.classList.remove('open'));

@@ -520,7 +520,7 @@ html.light .phone-card-storage{
   font-weight:500;line-height:1.55;display:flex;align-items:flex-start;gap:7px;
 }
 .phone-spec-item::before{
-  content:'âœ¦';color:var(--accent2);opacity:0.95;font-size:10.5px;margin-top:2px;flex-shrink:0;
+  content:'\2726';color:var(--accent2);opacity:0.95;font-size:10.5px;margin-top:2px;flex-shrink:0;
 }
 
 /* Card Plan Box */
@@ -894,7 +894,7 @@ html.light .featured-rail{background:rgba(0,0,0,.14)}
 .faq-list summary{cursor:pointer;list-style:none;font-family:var(--sans);font-size:1.05rem;color:var(--accent);display:flex;justify-content:space-between;gap:1rem}
 .faq-list summary::-webkit-details-marker{display:none}
 .faq-list summary::after{content:'+';font-family:var(--mono);color:var(--accent2);font-size:1.3rem}
-.faq-list details[open] summary::after{content:'âˆ’'}
+.faq-list details[open] summary::after{content:'\2212'}
 .faq-list details p{color:rgba(244,243,238,.64);font-size:14px;line-height:1.7;padding:1rem 2rem 0 0;max-width:620px}
 .request-section{background:#151515}
 .request-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:5rem;align-items:start}

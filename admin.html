@@ -98,6 +98,15 @@
     padding:38px 32px;
     width:100%;
     max-width:490px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 35px rgba(217,166,83,0.18);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  [data-theme="light"] .pin-card{
+    background:rgba(255,255,255,0.92);
+    box-shadow:0 25px 60px rgba(80,50,120,0.18);
+  }
   .auth-tabs{
     display:flex;
     background:rgba(0,0,0,0.32);
@@ -159,16 +168,6 @@
   .auth-input:focus{
     border-color:var(--gold);
     box-shadow:0 0 0 3px rgba(217,166,83,0.2);
-  }
-
-    box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 35px rgba(217,166,83,0.18);
-    text-align:center;
-    position:relative;
-    overflow:hidden;
-  }
-  [data-theme="light"] .pin-card{
-    background:rgba(255,255,255,0.92);
-    box-shadow:0 25px 60px rgba(80,50,120,0.18);
   }
   .pin-card::before{
     content:"";

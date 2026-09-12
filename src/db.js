@@ -384,8 +384,14 @@ const db = {
     if (!cleanUsername) {
       throw new Error('Username is required.');
     }
-    if (!password || String(password).length < 4) {
-      throw new Error('Password must be at least 4 characters long.');
+    const passwordText = String(password || '');
+    const passwordIsStrong = passwordText.length >= 8
+      && /[A-Z]/.test(passwordText)
+      && /[a-z]/.test(passwordText)
+      && /\d/.test(passwordText);
+
+    if (!passwordIsStrong) {
+      throw new Error('Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.');
     }
 
     const exists = adminData.accounts.some(acc => 
@@ -398,7 +404,7 @@ const db = {
     }
 
     const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync(String(password), salt);
+    const passwordHash = bcrypt.hashSync(passwordText, salt);
 
     const newAccount = {
       id: `admin-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,

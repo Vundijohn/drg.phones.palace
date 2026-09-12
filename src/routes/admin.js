@@ -17,10 +17,16 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    if (String(password).length < 4) {
+    const passwordText = String(password);
+    const passwordIsStrong = passwordText.length >= 8
+      && /[A-Z]/.test(passwordText)
+      && /[a-z]/.test(passwordText)
+      && /\d/.test(passwordText);
+
+    if (!passwordIsStrong) {
       return res.status(400).json({
         success: false,
-        message: 'Password must be at least 4 characters long.'
+        message: 'Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.'
       });
     }
 

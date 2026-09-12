@@ -1138,11 +1138,11 @@
       </div>
       <div class="auth-form-group">
         <label for="regPassword">Password *</label>
-        <input type="password" id="regPassword" class="auth-input" placeholder="At least 4 characters" minlength="4" required autocomplete="new-password">
+        <input type="password" id="regPassword" class="auth-input" placeholder="8+ chars, uppercase, lowercase, number" minlength="8" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}" title="Use at least 8 characters with an uppercase letter, a lowercase letter, and a number." required autocomplete="new-password">
       </div>
       <div class="auth-form-group">
         <label for="regConfirmPassword">Confirm Password *</label>
-        <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Repeat your password" minlength="4" required autocomplete="new-password">
+            <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Repeat your password" minlength="8" required autocomplete="new-password">
       </div>
       <div id="registerError" class="form-error" style="display:none;"></div>
       <div id="registerSuccess" style="display:none;color:var(--whatsapp);background:rgba(47,195,91,0.12);border:1px solid rgba(47,195,91,0.3);padding:10px;border-radius:8px;font-size:12.5px;font-weight:700;margin-bottom:14px;"></div>
@@ -2217,8 +2217,12 @@
       return;
     }
 
-    if(password.length < 4){
-      registerError.textContent = 'Password must be at least 4 characters long.';
+    const passwordIsStrong = password.length >= 8
+      && /[A-Z]/.test(password)
+      && /[a-z]/.test(password)
+      && /\d/.test(password);
+    if(!passwordIsStrong){
+      registerError.textContent = 'Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.';
       registerError.style.display = 'block';
       regPassword.focus();
       return;

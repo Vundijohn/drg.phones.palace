@@ -435,11 +435,11 @@ function money(n){
 }
 
 function displayCondition(phone){
-  const raw = String(phone.condition || '').replace(/^renewed\s*[-]?\s*/i, '').trim();
-  if(/brand\s*new/i.test(raw)) return 'Renewed Â· Grade A';
-  if(/excellent/i.test(raw)) return 'Renewed Â· Grade A+';
-  if(!raw) return 'Renewed Â· Verified';
-  return `Renewed Â· ${raw}`;
+  const raw = String(phone.condition || '').replace(/^renewed\s*(?:[-]|Â·)\s*/i, '').trim();
+  if(/brand\s*new/i.test(raw)) return 'Renewed - Grade A';
+  if(/excellent/i.test(raw)) return 'Renewed - Grade A+';
+  if(!raw) return 'Renewed - Verified';
+  return `Renewed - ${raw}`;
 }
 
 function loadPhones(){

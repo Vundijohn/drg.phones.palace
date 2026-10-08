@@ -970,52 +970,6 @@ html.light body{color:#111820}
 html.light .nav-links a,html.light .theme-btn,html.light .section-title,html.light .section-desc,html.light .phone-card-title,html.light .about-text p,html.light .contact-heading,html.light .contact-sub,html.light .contact-val{color:#111820}
 html.light .hero-name em,html.light .section-title em,html.light .contact-heading em,html.light .section-label,html.light .hero-eyebrow{color:#168dcc}
 
-/* ---------- M-PESA & LIPA MDOGO MDOGO TRUST STYLING ---------- */
-.mpesa-trust-strip{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  background:rgba(37,211,102,0.09);border:1px solid rgba(37,211,102,0.32);
-  padding:12px 18px;border-radius:6px;margin-bottom:2rem;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-}
-html.light .mpesa-trust-strip{
-  background:rgba(30,169,74,0.08);border-color:rgba(30,169,74,0.3);
-}
-.mpesa-badge-chip{
-  display:inline-flex;align-items:center;gap:8px;
-  color:#2fc35b;font-family:var(--mono);font-size:12px;letter-spacing:0.04em;
-}
-html.light .mpesa-badge-chip{color:#15803d}
-.mpesa-logo-dot{
-  width:9px;height:9px;border-radius:50%;background:#25d366;
-  box-shadow:0 0 10px #25d366;display:inline-block;
-  animation:pulseMpesaDot 2s infinite ease-in-out;
-}
-@keyframes pulseMpesaDot{
-  0%,100%{transform:scale(1);opacity:1;}
-  50%{transform:scale(1.3);opacity:0.75;}
-}
-.mpesa-pill-tag{
-  font-family:var(--mono);font-size:11px;color:var(--accent);opacity:0.88;
-  background:rgba(255,255,255,0.06);padding:3px 10px;border-radius:999px;
-  border:0.5px solid rgba(255,255,255,0.12);white-space:nowrap;
-}
-html.light .mpesa-pill-tag{
-  background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);color:#111820;
-}
-
-/* Card M-Pesa Guarantee Tag */
-.card-mpesa-guarantee{
-  display:flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:0.03em;
-  color:#2fc35b;background:rgba(37,211,102,0.08);
-  border:0.5px solid rgba(37,211,102,0.25);border-radius:4px;
-  padding:5px 9px;margin-top:2px;
-}
-html.light .card-mpesa-guarantee{
-  color:#15803d;background:rgba(30,169,74,0.08);border-color:rgba(30,169,74,0.25);
-}
-.card-mpesa-guarantee strong{font-weight:700}
-
 /* Mobile Sticky Filter Row */
 @media(max-width:760px){
   .filter-row{

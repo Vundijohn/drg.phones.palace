@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', requireAdminAuth, async (req, res) => {
   try {
     const { model, category, cashPrice, plans } = req.body;
-    if (!model || !category || !cashPrice || !plans) {
+    if (!model || !category || cashPrice === undefined || cashPrice === null || cashPrice === '' || !plans) {
       return res.status(400).json({
         success: false,
         message: 'Missing required fields: model, category, cashPrice, plans'

@@ -1357,7 +1357,7 @@
         </div>
         <div class="form-group full-width">
           <label for="newPhoneCashPrice">Full Cash Price (KES) *</label>
-          <input type="number" id="newPhoneCashPrice" required min="1000" step="50" placeholder="e.g. 55000">
+          <input type="number" id="newPhoneCashPrice" required min="0" step="any" placeholder="e.g. 35999">
         </div>
 
         <!-- FINANCING PLAN CONFIG -->
@@ -1376,22 +1376,22 @@
         <div id="multiTierFields" class="full-width form-grid" style="grid-column:1/-1;">
           <div class="form-group">
             <label for="newMoSaverDeposit">MoSaver (6M) Deposit (KES) *</label>
-            <input type="number" id="newMoSaverDeposit" min="0" step="50" placeholder="e.g. 24000">
+            <input type="number" id="newMoSaverDeposit" min="0" step="any" placeholder="e.g. 16199">
             <span class="form-hint">Typically ~45% of cash price</span>
           </div>
           <div class="form-group">
             <label for="newMoSaverWeekly">MoSaver (6M) Weekly (KES) *</label>
-            <input type="number" id="newMoSaverWeekly" min="0" step="10" placeholder="e.g. 2100">
+            <input type="number" id="newMoSaverWeekly" min="0" step="any" placeholder="e.g. 1370">
             <span class="form-hint">26 Weekly payments</span>
           </div>
           <div class="form-group">
             <label for="newMoStandardDeposit">MoStandard (12M) Deposit (KES) *</label>
-            <input type="number" id="newMoStandardDeposit" min="0" step="50" placeholder="e.g. 15000">
+            <input type="number" id="newMoStandardDeposit" min="0" step="any" placeholder="e.g. 8999">
             <span class="form-hint">Low deposit (25-35%)</span>
           </div>
           <div class="form-group">
             <label for="newMoStandardWeekly">MoStandard (12M) Weekly (KES) *</label>
-            <input type="number" id="newMoStandardWeekly" min="0" step="10" placeholder="e.g. 1650">
+            <input type="number" id="newMoStandardWeekly" min="0" step="any" placeholder="e.g. 1160">
             <span class="form-hint">52 Weekly payments</span>
           </div>
         </div>
@@ -1400,15 +1400,15 @@
         <div id="singleTierFields" class="full-width form-grid" style="display:none;grid-column:1/-1;">
           <div class="form-group">
             <label for="newStandardDeposit">Deposit (KES) *</label>
-            <input type="number" id="newStandardDeposit" min="0" step="50" placeholder="e.g. 5000">
+            <input type="number" id="newStandardDeposit" min="0" step="any" placeholder="e.g. 5000">
           </div>
           <div class="form-group">
             <label for="newStandardWeekly">Weekly Payment (KES) *</label>
-            <input type="number" id="newStandardWeekly" min="0" step="10" placeholder="e.g. 1500">
+            <input type="number" id="newStandardWeekly" min="0" step="any" placeholder="e.g. 1500">
           </div>
           <div class="form-group full-width">
             <label for="newStandardWeeks">Duration (Weeks) *</label>
-            <input type="number" id="newStandardWeeks" min="1" max="104" value="8">
+            <input type="number" id="newStandardWeeks" min="1" max="104" step="1" value="8">
           </div>
         </div>
 
@@ -2688,7 +2688,7 @@
   // Auto-calculate suggested deposit/weekly when Cash Price changes
   function recalculateSuggestedPlans(force = false){
     const cash = Number(document.getElementById('newPhoneCashPrice').value);
-    if(cash > 1000){
+    if(cash > 0){
       const moDep = document.getElementById('newMoSaverDeposit');
       const moWk = document.getElementById('newMoSaverWeekly');
       const stdDep = document.getElementById('newMoStandardDeposit');
@@ -2779,12 +2779,16 @@
     let defaultPlan = "cash";
 
     if(currentPlanType === "multi"){
-      const saverDep = Number(document.getElementById('newMoSaverDeposit').value) || Math.round(cashPrice * 0.45);
-      const saverWk = Number(document.getElementById('newMoSaverWeekly').value) || Math.round(cashPrice / 26);
+      const saverDepInput = document.getElementById('newMoSaverDeposit').value;
+      const saverWkInput = document.getElementById('newMoSaverWeekly').value;
+      const saverDep = saverDepInput !== "" ? Number(saverDepInput) : Math.round(cashPrice * 0.45);
+      const saverWk = saverWkInput !== "" ? Number(saverWkInput) : Math.round(cashPrice / 26);
       const saverTot = saverDep + (saverWk * 26);
 
-      const stdDep = Number(document.getElementById('newMoStandardDeposit').value) || Math.round(cashPrice * 0.35);
-      const stdWk = Number(document.getElementById('newMoStandardWeekly').value) || Math.round(cashPrice / 52);
+      const stdDepInput = document.getElementById('newMoStandardDeposit').value;
+      const stdWkInput = document.getElementById('newMoStandardWeekly').value;
+      const stdDep = stdDepInput !== "" ? Number(stdDepInput) : Math.round(cashPrice * 0.35);
+      const stdWk = stdWkInput !== "" ? Number(stdWkInput) : Math.round(cashPrice / 52);
       const stdTot = stdDep + (stdWk * 52);
 
       plans.mosaver = {
@@ -2805,8 +2809,10 @@
       };
       defaultPlan = "mostandard";
     } else {
-      const dep = Number(document.getElementById('newStandardDeposit').value) || Math.round(cashPrice * 0.25);
-      const wk = Number(document.getElementById('newStandardWeekly').value) || Math.round(cashPrice / 8);
+      const depInput = document.getElementById('newStandardDeposit').value;
+      const wkInput = document.getElementById('newStandardWeekly').value;
+      const dep = depInput !== "" ? Number(depInput) : Math.round(cashPrice * 0.25);
+      const wk = wkInput !== "" ? Number(wkInput) : Math.round(cashPrice / 8);
       const wks = Number(document.getElementById('newStandardWeeks').value) || 8;
       const tot = dep + (wk * wks);
 

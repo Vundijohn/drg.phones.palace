@@ -332,6 +332,30 @@ const DEFAULT_PHONES = [
     },
     defaultPlan: "standard"
   },
+  {
+    id: "moto-g17",
+    category: "motorola",
+    categoryLabel: "Motorola",
+    model: "Motorola Moto G17 4G",
+    storage: "128GB",
+    condition: "Renewed · Like New",
+    image: "images/moto-g54.jpg",
+    specs: [
+      "Smooth 90Hz HD+ display",
+      "50MP Quad Pixel camera system",
+      "5,000mAh long battery life",
+      "Dolby Atmos stereo speakers"
+    ],
+    cashPrice: 27500,
+    onOffer: true,
+    originalPrice: 29500,
+    offerTag: "OFFER",
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time cash payment · Special offer" },
+      standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
+  },
 ];
 
 module.exports = { DEFAULT_PHONES };

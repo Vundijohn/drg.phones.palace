@@ -429,6 +429,21 @@ const DEFAULT_PHONES = [
     },
     defaultPlan: "standard"
   },
+  {
+    id: "moto-g17", category: "motorola", categoryLabel: "Motorola",
+    model: "Motorola Moto G17 4G", storage: "128GB", condition: "Renewed · Like New",
+    image: "images/moto-g54.jpg",
+    specs: ["Smooth 90Hz HD+ display", "50MP Quad Pixel camera system", "5,000mAh long battery life", "Dolby Atmos stereo speakers"],
+    cashPrice: 27500,
+    onOffer: true,
+    originalPrice: 29500,
+    offerTag: "OFFER",
+    plans: {
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time cash payment · Special offer" },
+      standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo" }
+    },
+    defaultPlan: "standard"
+  },
 ];
 
 let phones = [];
@@ -545,7 +560,9 @@ function getWaLink(phone, planKey){
   const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
   const condition = displayCondition(phone);
   let msg = "";
-  if(planKey === "cash"){
+  if(phone.onOffer && planKey === "cash"){
+    msg = `Hi DRG Phones Palace, I saw the special OFFER on the renewed ${phone.model} ${phone.storage} (${condition}) for ${money(plan.total)}${phone.originalPrice ? ` (was ${money(phone.originalPrice)})` : ''}. Is it available?`;
+  } else if(planKey === "cash"){
     msg = `Hi DRG Phones Palace, I'd like to buy the renewed ${phone.model} ${phone.storage} (${condition}) in Cash for ${money(plan.total)}. Is it available?`;
   } else if(planKey === "mosaver"){
     msg = `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} on MoSaver (6 Months). Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}. Is it in stock?`;
@@ -563,10 +580,16 @@ function renderPlanBox(phone, activeKey){
 
   let detailsHtml = "";
   if(isCash){
+    const priceText = (phone.onOffer && phone.originalPrice)
+      ? `<span style="color:#e63946;">${money(plan.total)}</span> <del style="font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:4px;">${money(phone.originalPrice)}</del>`
+      : money(plan.total);
+    const feeText = (phone.onOffer && phone.originalPrice && phone.originalPrice > phone.cashPrice)
+      ? `<span style="color:var(--accent2);font-weight:700;">Save ${money(phone.originalPrice - phone.cashPrice)}</span>`
+      : `0% (KES 0)`;
     detailsHtml = `
       <div class="phone-plan-breakdown cash-layout" id="plan-details-${phone.id}">
-        <div class="plan-col"><span>Cash Price</span><strong>${money(plan.total)}</strong></div>
-        <div class="plan-col"><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
+        <div class="plan-col"><span>Cash Price</span><strong>${priceText}</strong></div>
+        <div class="plan-col"><span>${phone.onOffer ? 'Special Offer' : 'Financing Fee'}</span><strong>${feeText}</strong></div>
       </div>
     `;
   } else {
@@ -617,10 +640,16 @@ function updateCardPlanView(phoneId, newPlanKey){
   const detailsContainer = card.querySelector(`#plan-details-${phoneId}`);
   if(detailsContainer){
     if(newPlanKey === "cash"){
+      const priceText = (phone.onOffer && phone.originalPrice)
+        ? `<span style="color:#e63946;">${money(plan.total)}</span> <del style="font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:4px;">${money(phone.originalPrice)}</del>`
+        : money(plan.total);
+      const feeText = (phone.onOffer && phone.originalPrice && phone.originalPrice > phone.cashPrice)
+        ? `<span style="color:var(--accent2);font-weight:700;">Save ${money(phone.originalPrice - phone.cashPrice)}</span>`
+        : `0% (KES 0)`;
       detailsContainer.className = "phone-plan-breakdown cash-layout";
       detailsContainer.innerHTML = `
-        <div class="plan-col"><span>Cash Price</span><strong>${money(plan.total)}</strong></div>
-        <div class="plan-col"><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
+        <div class="plan-col"><span>Cash Price</span><strong>${priceText}</strong></div>
+        <div class="plan-col"><span>${phone.onOffer ? 'Special Offer' : 'Financing Fee'}</span><strong>${feeText}</strong></div>
       `;
     } else {
       detailsContainer.className = "phone-plan-breakdown";
@@ -782,6 +811,10 @@ function renderPhones(){
   list.forEach(phone => {
     const activeKey = getEffectivePlan(phone);
     const condition = displayCondition(phone);
+    const isOffer = Boolean(phone.onOffer);
+    const offerBadgeHtml = isOffer
+      ? `<span class="offer-card-badge">${phone.offerTag || 'OFFER'}</span>`
+      : '';
     const card = document.createElement('article');
     card.className = 'phone-card';
     card.id = `phone-card-${phone.id}`;
@@ -791,12 +824,14 @@ function renderPhones(){
     const primaryImg = (phone.image && String(phone.image).trim()) || (Array.isArray(phone.images) && phone.images.length ? String(phone.images[0]).trim() : '');
     const hasValidImage = Boolean(primaryImg);
     const mediaHtml = hasValidImage ? `
-      <div class="phone-media">
+      <div class="phone-media ${isOffer ? 'has-offer' : ''}">
+        ${offerBadgeHtml}
         <img src="${primaryImg}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
         <span class="phone-condition-badge">${condition}</span>
       </div>
     ` : `
-      <div class="phone-media phone-media-placeholder">
+      <div class="phone-media phone-media-placeholder ${isOffer ? 'has-offer' : ''}">
+        ${offerBadgeHtml}
         <div class="placeholder-content">
           <span class="placeholder-icon">📱</span>
           <span class="placeholder-title">${phone.model}</span>
@@ -810,9 +845,23 @@ function renderPhones(){
       ${mediaHtml}
       <div class="phone-card-body">
         <div class="phone-card-header">
-          <h3 class="phone-card-title">${phone.model}</h3>
+          <div>
+            <h3 class="phone-card-title">${phone.model}</h3>
+            <span class="phone-card-brand">${phone.categoryLabel || phone.category}</span>
+          </div>
           <span class="phone-card-storage">${phone.storage}</span>
         </div>
+        ${isOffer ? `
+          <div class="phone-card-offer-row">
+            <div class="offer-price-stack">
+              <span class="offer-current-price">KSh ${Number(phone.cashPrice).toLocaleString('en-KE')}</span>
+              ${phone.originalPrice ? `<del class="offer-original-price">KSh ${Number(phone.originalPrice).toLocaleString('en-KE')}</del>` : ''}
+            </div>
+            ${(phone.originalPrice && phone.originalPrice > phone.cashPrice) ? `
+              <span class="offer-discount-badge">-${Math.round(((phone.originalPrice - phone.cashPrice) / phone.originalPrice) * 100)}%</span>
+            ` : ''}
+          </div>
+        ` : ''}
         <div class="phone-specs-list">
           ${phone.specs.map(s => `<span class="phone-spec-item">${s}</span>`).join("")}
         </div>
@@ -885,25 +934,37 @@ function openPhoneDetails(phone){
   const activeKey = getEffectivePlan(phone);
   const activePlan = phone.plans[activeKey] || Object.values(phone.plans)[0];
   const condition = displayCondition(phone);
+  const isOffer = Boolean(phone.onOffer);
   const images = Array.isArray(phone.images) && phone.images.length
     ? phone.images.filter(Boolean)
     : (phone.image && String(phone.image).trim() ? [phone.image] : []);
   const image = images[0];
   phoneDetailsVisual.innerHTML = image
-    ? `<img id="phoneDetailsMainImage" src="${image}" alt="${phone.model} ${phone.storage}"><div class="phone-details-gallery">${images.map((galleryImage, index) => `<button type="button" class="${index === 0 ? 'active' : ''}" data-gallery-image="${galleryImage}" aria-label="View image ${index + 1}"><img src="${galleryImage}" alt="${phone.model} image ${index + 1}"></button>`).join('')}</div><span class="phone-details-visual-label">${condition}</span>`
-    : `<div class="placeholder-content"><span class="placeholder-icon">📱</span><span class="placeholder-title">${phone.model}</span><span class="placeholder-subtitle">Verified Renewed Device</span></div><span class="phone-details-visual-label">${condition}</span>`;
+    ? `${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}<img id="phoneDetailsMainImage" src="${image}" alt="${phone.model} ${phone.storage}"><div class="phone-details-gallery">${images.map((galleryImage, index) => `<button type="button" class="${index === 0 ? 'active' : ''}" data-gallery-image="${galleryImage}" aria-label="View image ${index + 1}"><img src="${galleryImage}" alt="${phone.model} image ${index + 1}"></button>`).join('')}</div><span class="phone-details-visual-label">${condition}</span>`
+    : `${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}<div class="placeholder-content"><span class="placeholder-icon">📱</span><span class="placeholder-title">${phone.model}</span><span class="placeholder-subtitle">Verified Renewed Device</span></div><span class="phone-details-visual-label">${condition}</span>`;
   phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
     phoneDetailsVisual.querySelector('#phoneDetailsMainImage').src = button.dataset.galleryImage;
     phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(item => item.classList.toggle('active', item === button));
   }));
+
+  const priceDetailsHtml = (isOffer && activeKey === 'cash' && phone.originalPrice)
+    ? `${activePlan.label}<strong><span style="color:#e63946;">${money(activePlan.total)}</span><del style="font-size:1.05rem;color:var(--ink-faint);margin-left:8px;font-weight:400;">${money(phone.originalPrice)}</del></strong>`
+    : `${activePlan.label}<strong>${activeKey === 'cash' ? money(activePlan.total) : `${money(activePlan.weekly)} / week`}</strong>`;
+
   phoneDetailsContent.innerHTML = `
     <p class="phone-details-kicker">${phone.categoryLabel || phone.category} / ${phone.storage}</p>
     <h2 class="phone-details-title" id="phoneDetailsTitle">${phone.model}</h2>
+    ${isOffer ? `
+      <div style="display:flex;align-items:center;gap:10px;margin:2px 0 6px;">
+        <span class="offer-card-badge" style="position:static;padding:3px 10px;font-size:10.5px;">${phone.offerTag || 'OFFER'}</span>
+        ${phone.originalPrice && phone.originalPrice > phone.cashPrice ? `<span style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:#e63946;">SAVE ${money(phone.originalPrice - phone.cashPrice)} (-${Math.round(((phone.originalPrice - phone.cashPrice) / phone.originalPrice) * 100)}%)</span>` : ''}
+      </div>
+    ` : ''}
     <p class="phone-details-meta">${condition} · Available for delivery in Nairobi</p>
     <div class="phone-details-specs">
       ${(phone.specs || []).map(spec => `<span class="phone-details-spec">${spec}</span>`).join('')}
     </div>
-    <p class="phone-details-price">${activePlan.label}<strong>${activeKey === 'cash' ? money(activePlan.total) : `${money(activePlan.weekly)} / week`}</strong></p>
+    <p class="phone-details-price">${priceDetailsHtml}</p>
     <div class="phone-details-actions">
       <a class="btn btn-gold" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">Ask About This Phone</a>
       <button type="button" class="btn btn-outline" id="modalContinueBrowsing">Continue Browsing</button>

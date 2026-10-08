@@ -597,6 +597,10 @@ function renderPlanBox(phone, activeKey){
       ${tabsHtml}
       ${detailsHtml}
       <div class="plan-hint-text" id="plan-hint-${phone.id}">${plan.hint || ""}</div>
+      <div class="card-mpesa-guarantee">
+        <span class="mpesa-logo-dot"></span>
+        <span>Lipa Mdogo Mdogo via <strong>Safaricom M-PESA</strong></span>
+      </div>
     </div>
   `;
 }

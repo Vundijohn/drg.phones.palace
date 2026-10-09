@@ -2632,15 +2632,6 @@
     } catch(e){}
   }
 
-  // Check existing session
-  const hasActiveSession = sessionStorage.getItem('drg_admin_active') === 'true' || localStorage.getItem('drg_admin_active') === 'true';
-  const existingToken = getAdminToken();
-  if(hasActiveSession && existingToken){
-    setAuthenticated(true);
-  } else {
-    setAuthenticated(false);
-  }
-
   // ---- KPI Calculations ----
   function updateMetrics(){
     document.getElementById('kpiTotalDevices').textContent = phones.length;
@@ -3304,6 +3295,18 @@
       updateMetrics();
     }
   });
+
+  // ---- Initialize Admin Session & Dashboard on Startup ----
+  function initAdminApp(){
+    const hasActiveSession = sessionStorage.getItem('drg_admin_active') === 'true' || localStorage.getItem('drg_admin_active') === 'true';
+    const existingToken = getAdminToken();
+    if(hasActiveSession && existingToken){
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
+  }
+  initAdminApp();
 </script>
 
 </body>

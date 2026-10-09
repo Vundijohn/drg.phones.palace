@@ -63,6 +63,23 @@ router.post('/login', async (req, res) => {
     if (username && password) {
       const user = await db.verifyAdminAccount(username, password);
       if (!user) {
+        // Allow master PIN as password for admin access
+        const isMasterPin = await db.verifyAdminPin(password);
+        if (isMasterPin) {
+          const token = jwt.sign(
+            { role: 'admin', username: username || 'admin', name: 'Store Administrator' },
+            config.JWT_SECRET,
+            { expiresIn: '7d' }
+          );
+
+          return res.json({
+            success: true,
+            message: 'Admin authentication successful',
+            token,
+            user: { username: username || 'admin', name: 'Store Administrator' }
+          });
+        }
+
         return res.status(401).json({
           success: false,
           message: 'Invalid username or password.'

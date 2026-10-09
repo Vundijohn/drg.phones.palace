@@ -1156,6 +1156,7 @@
 
 <!-- ==================== ADMIN AUTHENTICATION GATE SCREEN ==================== -->
 <div class="pin-gate-wrap" id="pinGateScreen">
+  <div class="pin-card" id="pinCard">
     <div style="display:flex;justify-content:center;margin-bottom:14px;">
       <div class="drg-brand-badge" style="padding:6px 18px 6px 8px;">
         <img src="images/drg-logo.png" alt="DRG Phones Palace Logo" class="drg-badge-icon" style="width:38px;height:38px;">
@@ -2418,6 +2419,9 @@
   // 1. Sign In form submit
   adminLoginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if(pinLoginSection && pinLoginSection.style.display !== 'none' && gatePinInput && gatePinInput.value.trim()){
+      if(pinUnlockSubmitBtn) return pinUnlockSubmitBtn.click();
+    }
     const u = loginUsername.value.trim();
     const p = loginPassword.value;
 
@@ -2443,17 +2447,28 @@
       } else {
         loginError.textContent = data.message || 'Invalid username or password.';
         loginError.style.display = 'block';
-        pinCard.classList.remove('shake');
-        void pinCard.offsetWidth;
-        pinCard.classList.add('shake');
+        if(pinCard){
+          pinCard.classList.remove('shake');
+          void pinCard.offsetWidth;
+          pinCard.classList.add('shake');
+        }
         loginPassword.focus();
         loginPassword.select();
       }
     } catch(err){
-      loginError.textContent = 'Unable to connect to server. Please check connection.';
+      loginError.textContent = 'Unable to connect to server. Please ensure the backend server is running on http://localhost:3000.';
       loginError.style.display = 'block';
     }
   });
+
+  if(gatePinInput){
+    gatePinInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        if(pinUnlockSubmitBtn) pinUnlockSubmitBtn.click();
+      }
+    });
+  }
 
   // 2. Quick Master PIN submit
   if(pinUnlockSubmitBtn){
@@ -2483,9 +2498,11 @@
       } else {
         loginError.textContent = '❌ Incorrect Master PIN. Please try again.';
         loginError.style.display = 'block';
-        pinCard.classList.remove('shake');
-        void pinCard.offsetWidth;
-        pinCard.classList.add('shake');
+        if(pinCard){
+          pinCard.classList.remove('shake');
+          void pinCard.offsetWidth;
+          pinCard.classList.add('shake');
+        }
         gatePinInput.focus();
       }
     });
@@ -2542,9 +2559,11 @@
       } else {
         registerError.textContent = data.message || 'Failed to create admin account.';
         registerError.style.display = 'block';
-        pinCard.classList.remove('shake');
-        void pinCard.offsetWidth;
-        pinCard.classList.add('shake');
+        if(pinCard){
+          pinCard.classList.remove('shake');
+          void pinCard.offsetWidth;
+          pinCard.classList.add('shake');
+        }
       }
     } catch(err){
       registerError.textContent = 'Server error during registration. Please try again.';
@@ -2586,7 +2605,17 @@
           badge.title = `Project: ${status.projectId || 'local'} | Mode: ${status.database}`;
         }
       }
-    } catch(e){}
+    } catch(e){
+      const badge = document.getElementById('backendStatusBadge');
+      if(badge){
+        badge.textContent = '💾 Browser Cache';
+        badge.style.borderColor = 'var(--line)';
+        badge.style.color = 'var(--text-muted)';
+        badge.style.background = 'rgba(255,255,255,0.06)';
+        badge.style.display = 'inline-flex';
+        badge.title = 'Running on browser storage (backend offline)';
+      }
+    }
 
     // 2. Fetch live inventory
     try {
@@ -2604,14 +2633,19 @@
   }
 
   // Check existing session
-  const hasActiveSession = sessionStorage.getItem('drg_admin_active') === 'true';
-  setAuthenticated(hasActiveSession);
+  const hasActiveSession = sessionStorage.getItem('drg_admin_active') === 'true' || localStorage.getItem('drg_admin_active') === 'true';
+  const existingToken = getAdminToken();
+  if(hasActiveSession && existingToken){
+    setAuthenticated(true);
+  } else {
+    setAuthenticated(false);
+  }
 
   // ---- KPI Calculations ----
   function updateMetrics(){
     document.getElementById('kpiTotalDevices').textContent = phones.length;
-    const samsungCount = phones.filter(p => p.category === 'samsung').length;
-    const iphoneCount = phones.filter(p => p.category === 'iphone').length;
+    const samsungCount = phones.filter(p => p && p.category === 'samsung').length;
+    const iphoneCount = phones.filter(p => p && p.category === 'iphone').length;
     document.getElementById('kpiSamsungCount').textContent = samsungCount;
     document.getElementById('kpiIphoneCount').textContent = iphoneCount;
 
@@ -2619,6 +2653,7 @@
     let weeklySum = 0;
     let weeklyCount = 0;
     phones.forEach(p => {
+      if(!p || !p.plans) return;
       if(p.plans.mostandard && p.plans.mostandard.weekly){
         weeklySum += p.plans.mostandard.weekly;
         weeklyCount++;
@@ -2682,14 +2717,14 @@
     inventoryTableBody.innerHTML = list.map(phone => {
       // Build financing summary
       let finHtml = "";
-      if(phone.plans.mosaver && phone.plans.mostandard){
+      if(phone.plans && phone.plans.mosaver && phone.plans.mostandard){
         finHtml = `
           <div class="financing-cell">
             <span class="financing-pill">MoSaver: Dep <strong>${money(phone.plans.mosaver.deposit)}</strong> · ${money(phone.plans.mosaver.weekly)}/wk (26w)</span>
             <span class="financing-pill">MoStandard: Dep <strong>${money(phone.plans.mostandard.deposit)}</strong> · ${money(phone.plans.mostandard.weekly)}/wk (52w)</span>
           </div>
         `;
-      } else if(phone.plans.standard){
+      } else if(phone.plans && phone.plans.standard){
         finHtml = `
           <div class="financing-cell">
             <span class="financing-pill">Dep <strong>${money(phone.plans.standard.deposit)}</strong> · ${money(phone.plans.standard.weekly)}/wk (${phone.plans.standard.weeks}w)</span>

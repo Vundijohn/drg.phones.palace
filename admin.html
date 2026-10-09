@@ -1452,35 +1452,10 @@
           <input type="number" id="newPhoneCashPrice" required min="0" step="any" placeholder="e.g. 27500">
         </div>
 
-        <!-- SPECIAL OFFER / DISCOUNT CONFIG -->
-        <div class="form-group full-width" style="background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.28);border-radius:12px;padding:14px;margin:2px 0 10px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-            <label style="margin:0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-primary);cursor:pointer;">
-              <input type="checkbox" id="phoneOnOffer" style="width:18px;height:18px;accent-color:#e63946;cursor:pointer;">
-              <strong style="color:#ff4d4d;">🔥 Put this phone on Special Offer / Discount</strong>
-            </label>
-            <span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em;">OFFER</span>
-          </div>
-          <span class="form-hint" style="color:var(--text-muted);display:block;margin-bottom:8px;">When enabled, the customer card displays a red "OFFER" badge and strikes through the original price.</span>
-
-          <div id="offerFieldsWrap" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
-            <div class="form-group">
-              <label for="phoneOriginalPrice">Original Strikethrough Price (KES) *</label>
-              <input type="number" id="phoneOriginalPrice" min="0" step="any" placeholder="e.g. 29500">
-              <span class="form-hint">Shown struck out, e.g. <del>KES 29,500</del></span>
-            </div>
-            <div class="form-group">
-              <label for="phoneOfferTag">Custom Offer Badge Text</label>
-              <input type="text" id="phoneOfferTag" placeholder="OFFER (default), -15% OFF, HOT DEAL">
-              <span class="form-hint">Red badge displayed on customer card</span>
-            </div>
-          </div>
-        </div>
-
         <!-- FINANCING PLAN CONFIG -->
-        <div class="form-group full-width">
+        <div class="form-group full-width" style="border-top:1px solid var(--line);padding-top:14px;margin-top:6px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;">
-            <label style="margin:0;">Financing Structure *</label>
+            <label style="margin:0;font-size:14px;font-weight:700;">Financing Structure *</label>
             <button type="button" id="recalcPlansBtn" class="btn-sm btn-outline" style="border-color:var(--gold);color:var(--gold-bright);background:transparent;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;" title="Recalculate MoSaver and MoStandard based on cash price">⚡ Auto-Recalculate Plans from Price</button>
           </div>
           <div class="plan-type-selector">
@@ -1526,6 +1501,31 @@
           <div class="form-group full-width">
             <label for="newStandardWeeks">Duration (Weeks) *</label>
             <input type="number" id="newStandardWeeks" min="1" max="104" step="1" value="8">
+          </div>
+        </div>
+
+        <!-- SPECIAL OFFER / DISCOUNT CONFIG (ON FINANCIAL STRUCTURE ONLY) -->
+        <div class="form-group full-width" style="background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.28);border-radius:12px;padding:14px;margin:10px 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <label style="margin:0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-primary);cursor:pointer;">
+              <input type="checkbox" id="phoneOnOffer" style="width:18px;height:18px;accent-color:#e63946;cursor:pointer;">
+              <strong style="color:#ff4d4d;">🔥 Put Financing Structure on Special Offer / Discount</strong>
+            </label>
+            <span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em;">FINANCING OFFER</span>
+          </div>
+          <span class="form-hint" style="color:var(--text-muted);display:block;margin-bottom:8px;">Applies discount specifically to the Lipa Mdogo Mdogo financial structure (not cash). Displays an OFFER badge on financing plans with optional strikethrough comparison.</span>
+
+          <div id="offerFieldsWrap" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+            <div class="form-group">
+              <label for="phoneOriginalPrice">Original Financing Total / Comparison (KES)</label>
+              <input type="number" id="phoneOriginalPrice" min="0" step="any" placeholder="e.g. 29500">
+              <span class="form-hint">Shown struck out on the financing plan, e.g. <del>KES 29,500</del></span>
+            </div>
+            <div class="form-group">
+              <label for="phoneOfferTag">Custom Offer Badge Text</label>
+              <input type="text" id="phoneOfferTag" placeholder="OFFER (default), LOW DEPOSIT, HOT DEAL">
+              <span class="form-hint">Red badge displayed on customer card & financing breakdown</span>
+            </div>
           </div>
         </div>
 
@@ -2223,8 +2223,8 @@
       originalPrice: 29500,
       offerTag: "OFFER",
       plans: {
-        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time cash payment · Special offer" },
-        standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo" }
+        cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time payment · 0% financing fee" },
+        standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo · Special Financing Offer" }
       },
       defaultPlan: "standard"
     },
@@ -2722,18 +2722,27 @@
     tableEmptyState.style.display = "none";
     inventoryTableBody.innerHTML = list.map(phone => {
       // Build financing summary
+      const finOfferBadge = phone.onOffer 
+        ? `<span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;display:inline-block;letter-spacing:0.04em;margin-bottom:4px;">🔥 ${phone.offerTag || 'FINANCING OFFER'}</span>` 
+        : '';
+      const origFinText = (phone.onOffer && phone.originalPrice)
+        ? `<del style="font-size:11px;color:var(--text-muted);margin-left:4px;" title="Original Financing Total">${money(phone.originalPrice)}</del>`
+        : '';
+
       let finHtml = "";
       if(phone.plans && phone.plans.mosaver && phone.plans.mostandard){
         finHtml = `
           <div class="financing-cell">
+            ${finOfferBadge ? `<div>${finOfferBadge}</div>` : ''}
             <span class="financing-pill">MoSaver: Dep <strong>${money(phone.plans.mosaver.deposit)}</strong> · ${money(phone.plans.mosaver.weekly)}/wk (26w)</span>
-            <span class="financing-pill">MoStandard: Dep <strong>${money(phone.plans.mostandard.deposit)}</strong> · ${money(phone.plans.mostandard.weekly)}/wk (52w)</span>
+            <span class="financing-pill">MoStd: Dep <strong>${money(phone.plans.mostandard.deposit)}</strong> · ${money(phone.plans.mostandard.weekly)}/wk (52w) ${origFinText}</span>
           </div>
         `;
       } else if(phone.plans && phone.plans.standard){
         finHtml = `
           <div class="financing-cell">
-            <span class="financing-pill">Dep <strong>${money(phone.plans.standard.deposit)}</strong> · ${money(phone.plans.standard.weekly)}/wk (${phone.plans.standard.weeks}w)</span>
+            ${finOfferBadge ? `<div>${finOfferBadge}</div>` : ''}
+            <span class="financing-pill">Dep <strong>${money(phone.plans.standard.deposit)}</strong> · ${money(phone.plans.standard.weekly)}/wk (${phone.plans.standard.weeks}w) ${origFinText}</span>
           </div>
         `;
       } else {
@@ -2748,9 +2757,7 @@
         ? `<span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:0.04em;margin-left:6px;display:inline-block;vertical-align:middle;">${phone.offerTag || 'OFFER'}</span>` 
         : '';
 
-      const priceDisplay = (phone.onOffer && phone.originalPrice)
-        ? `<div><span style="color:#ff4d4d;font-weight:800;font-size:14px;">${money(phone.cashPrice)}</span><br><del style="font-size:11.5px;color:var(--text-muted);">${money(phone.originalPrice)}</del></div>`
-        : `<strong>${money(phone.cashPrice)}</strong>`;
+      const priceDisplay = `<strong>${money(phone.cashPrice)}</strong>`;
 
       return `
         <tr id="row-${phone.id}">

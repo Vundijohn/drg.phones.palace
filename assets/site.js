@@ -439,8 +439,8 @@ const DEFAULT_PHONES = [
     originalPrice: 29500,
     offerTag: "OFFER",
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time cash payment · Special offer" },
-      standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time payment · 0% financing fee" },
+      standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo · Special Financing Offer" }
     },
     defaultPlan: "standard"
   },
@@ -560,8 +560,8 @@ function getWaLink(phone, planKey){
   const plan = phone.plans[planKey] || Object.values(phone.plans)[0];
   const condition = displayCondition(phone);
   let msg = "";
-  if(phone.onOffer && planKey === "cash"){
-    msg = `Hi DRG Phones Palace, I saw the special OFFER on the renewed ${phone.model} ${phone.storage} (${condition}) for ${money(plan.total)}${phone.originalPrice ? ` (was ${money(phone.originalPrice)})` : ''}. Is it available?`;
+  if(phone.onOffer && planKey !== "cash"){
+    msg = `Hi DRG Phones Palace, I saw the special FINANCING OFFER on the renewed ${phone.model} ${phone.storage} on the ${plan.label} plan. Deposit: ${money(plan.deposit)}, Weekly: ${money(plan.weekly)}, Total: ${money(plan.total)}${phone.originalPrice ? ` (was ${money(phone.originalPrice)})` : ''}. Is it available?`;
   } else if(planKey === "cash"){
     msg = `Hi DRG Phones Palace, I'd like to buy the renewed ${phone.model} ${phone.storage} (${condition}) in Cash for ${money(plan.total)}. Is it available?`;
   } else if(planKey === "mosaver"){
@@ -577,27 +577,26 @@ function getWaLink(phone, planKey){
 function renderPlanBox(phone, activeKey){
   const plan = phone.plans[activeKey] || Object.values(phone.plans)[0];
   const isCash = activeKey === "cash";
+  const isOffer = Boolean(phone.onOffer && !isCash);
 
   let detailsHtml = "";
   if(isCash){
-    const priceText = (phone.onOffer && phone.originalPrice)
-      ? `<span style="color:#e63946;">${money(plan.total)}</span> <del style="font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:4px;">${money(phone.originalPrice)}</del>`
-      : money(plan.total);
-    const feeText = (phone.onOffer && phone.originalPrice && phone.originalPrice > phone.cashPrice)
-      ? `<span style="color:var(--accent2);font-weight:700;">Save ${money(phone.originalPrice - phone.cashPrice)}</span>`
-      : `0% (KES 0)`;
     detailsHtml = `
       <div class="phone-plan-breakdown cash-layout" id="plan-details-${phone.id}">
-        <div class="plan-col"><span>Cash Price</span><strong>${priceText}</strong></div>
-        <div class="plan-col"><span>${phone.onOffer ? 'Special Offer' : 'Financing Fee'}</span><strong>${feeText}</strong></div>
+        <div class="plan-col"><span>Cash Price</span><strong>${money(plan.total)}</strong></div>
+        <div class="plan-col"><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
       </div>
     `;
   } else {
+    const totalHtml = (phone.onOffer && phone.originalPrice && phone.originalPrice > plan.total)
+      ? `<strong><span style="color:#e63946;">${money(plan.total)}</span> <del style="font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:2px;">${money(phone.originalPrice)}</del></strong>`
+      : `<strong>${money(plan.total)}</strong>`;
+
     detailsHtml = `
-      <div class="phone-plan-breakdown" id="plan-details-${phone.id}">
+      <div class="phone-plan-breakdown ${isOffer ? 'has-financing-offer' : ''}" id="plan-details-${phone.id}">
         <div class="plan-col"><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
         <div class="plan-col"><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
-        <div class="plan-col"><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
+        <div class="plan-col"><span>Total Cost</span>${totalHtml}</div>
       </div>
     `;
   }
@@ -606,20 +605,32 @@ function renderPlanBox(phone, activeKey){
   const tabsHtml = `
     <div class="card-plan-tabs" role="tablist">
       ${planKeys.map(k => `
-        <button class="card-plan-tab ${k === activeKey ? 'active' : ''}"
+        <button class="card-plan-tab ${k === activeKey ? 'active' : ''} ${phone.onOffer && k !== 'cash' ? 'has-plan-offer' : ''}"
                 data-phone="${phone.id}"
                 data-plan="${k}">
-          ${phone.plans[k].label}
+          ${phone.plans[k].label}${phone.onOffer && k !== 'cash' ? ' 🔥' : ''}
         </button>
       `).join("")}
     </div>
   `;
 
+  const bannerHtml = isOffer ? `
+    <div class="financial-structure-offer-banner" id="plan-offer-banner-${phone.id}">
+      <span class="f-offer-badge">🔥 ${phone.offerTag || 'OFFER'}</span>
+      <span class="f-offer-desc">${(phone.originalPrice && phone.originalPrice > plan.total) ? `Save ${money(phone.originalPrice - plan.total)} on Financing` : 'Special Financing Offer'}</span>
+    </div>
+  ` : `<div id="plan-offer-banner-${phone.id}" style="display:none;"></div>`;
+
+  const hintText = isOffer && phone.originalPrice && phone.originalPrice > plan.total
+    ? `🔥 Save ${money(phone.originalPrice - plan.total)} on this Lipa Mdogo Mdogo plan! · ${plan.hint || ''}`
+    : (plan.hint || "");
+
   return `
-    <div class="card-plan-box" id="plan-box-${phone.id}">
+    <div class="card-plan-box ${isOffer ? 'has-financing-offer' : ''}" id="plan-box-${phone.id}">
+      ${bannerHtml}
       ${tabsHtml}
       ${detailsHtml}
-      <div class="plan-hint-text" id="plan-hint-${phone.id}">${plan.hint || ""}</div>
+      <div class="plan-hint-text" id="plan-hint-${phone.id}">${hintText}</div>
     </div>
   `;
 }
@@ -637,32 +648,58 @@ function updateCardPlanView(phoneId, newPlanKey){
   });
 
   const plan = phone.plans[newPlanKey];
-  const detailsContainer = card.querySelector(`#plan-details-${phoneId}`);
-  if(detailsContainer){
-    if(newPlanKey === "cash"){
-      const priceText = (phone.onOffer && phone.originalPrice)
-        ? `<span style="color:#e63946;">${money(plan.total)}</span> <del style="font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:4px;">${money(phone.originalPrice)}</del>`
-        : money(plan.total);
-      const feeText = (phone.onOffer && phone.originalPrice && phone.originalPrice > phone.cashPrice)
-        ? `<span style="color:var(--accent2);font-weight:700;">Save ${money(phone.originalPrice - phone.cashPrice)}</span>`
-        : `0% (KES 0)`;
-      detailsContainer.className = "phone-plan-breakdown cash-layout";
-      detailsContainer.innerHTML = `
-        <div class="plan-col"><span>Cash Price</span><strong>${priceText}</strong></div>
-        <div class="plan-col"><span>${phone.onOffer ? 'Special Offer' : 'Financing Fee'}</span><strong>${feeText}</strong></div>
+  const isCash = newPlanKey === "cash";
+  const isOffer = Boolean(phone.onOffer && !isCash);
+
+  const planBox = card.querySelector(`#plan-box-${phoneId}`);
+  if(planBox){
+    planBox.classList.toggle('has-financing-offer', isOffer);
+  }
+
+  const offerBanner = card.querySelector(`#plan-offer-banner-${phoneId}`);
+  if(offerBanner){
+    if(isOffer){
+      offerBanner.style.display = 'flex';
+      offerBanner.className = 'financial-structure-offer-banner';
+      offerBanner.innerHTML = `
+        <span class="f-offer-badge">🔥 ${phone.offerTag || 'OFFER'}</span>
+        <span class="f-offer-desc">${(phone.originalPrice && phone.originalPrice > plan.total) ? `Save ${money(phone.originalPrice - plan.total)} on Financing` : 'Special Financing Offer'}</span>
       `;
     } else {
-      detailsContainer.className = "phone-plan-breakdown";
+      offerBanner.style.display = 'none';
+      offerBanner.innerHTML = '';
+    }
+  }
+
+  const detailsContainer = card.querySelector(`#plan-details-${phoneId}`);
+  if(detailsContainer){
+    if(isCash){
+      detailsContainer.className = "phone-plan-breakdown cash-layout";
+      detailsContainer.innerHTML = `
+        <div class="plan-col"><span>Cash Price</span><strong>${money(plan.total)}</strong></div>
+        <div class="plan-col"><span>Financing Fee</span><strong>0% (KES 0)</strong></div>
+      `;
+    } else {
+      const totalHtml = (phone.onOffer && phone.originalPrice && phone.originalPrice > plan.total)
+        ? `<strong><span style="color:#e63946;">${money(plan.total)}</span> <del style="font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:2px;">${money(phone.originalPrice)}</del></strong>`
+        : `<strong>${money(plan.total)}</strong>`;
+
+      detailsContainer.className = `phone-plan-breakdown ${isOffer ? 'has-financing-offer' : ''}`;
       detailsContainer.innerHTML = `
         <div class="plan-col"><span>Deposit</span><strong>${money(plan.deposit)}</strong></div>
         <div class="plan-col"><span>Weekly ×${plan.weeks}</span><strong>${money(plan.weekly)}</strong></div>
-        <div class="plan-col"><span>Total Cost</span><strong>${money(plan.total)}</strong></div>
+        <div class="plan-col"><span>Total Cost</span>${totalHtml}</div>
       `;
     }
   }
 
   const hintEl = card.querySelector(`#plan-hint-${phoneId}`);
-  if(hintEl) hintEl.textContent = plan.hint || "";
+  if(hintEl){
+    const hintText = isOffer && phone.originalPrice && phone.originalPrice > plan.total
+      ? `🔥 Save ${money(phone.originalPrice - plan.total)} on this Lipa Mdogo Mdogo plan! · ${plan.hint || ''}`
+      : (plan.hint || "");
+    hintEl.textContent = hintText;
+  }
 
   const ctaBtn = card.querySelector('.card-action-btn');
   if(ctaBtn){
@@ -851,17 +888,6 @@ function renderPhones(){
           </div>
           <span class="phone-card-storage">${phone.storage}</span>
         </div>
-        ${isOffer ? `
-          <div class="phone-card-offer-row">
-            <div class="offer-price-stack">
-              <span class="offer-current-price">KSh ${Number(phone.cashPrice).toLocaleString('en-KE')}</span>
-              ${phone.originalPrice ? `<del class="offer-original-price">KSh ${Number(phone.originalPrice).toLocaleString('en-KE')}</del>` : ''}
-            </div>
-            ${(phone.originalPrice && phone.originalPrice > phone.cashPrice) ? `
-              <span class="offer-discount-badge">-${Math.round(((phone.originalPrice - phone.cashPrice) / phone.originalPrice) * 100)}%</span>
-            ` : ''}
-          </div>
-        ` : ''}
         <div class="phone-specs-list">
           ${phone.specs.map(s => `<span class="phone-spec-item">${s}</span>`).join("")}
         </div>
@@ -947,17 +973,20 @@ function openPhoneDetails(phone){
     phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(item => item.classList.toggle('active', item === button));
   }));
 
-  const priceDetailsHtml = (isOffer && activeKey === 'cash' && phone.originalPrice)
-    ? `${activePlan.label}<strong><span style="color:#e63946;">${money(activePlan.total)}</span><del style="font-size:1.05rem;color:var(--ink-faint);margin-left:8px;font-weight:400;">${money(phone.originalPrice)}</del></strong>`
-    : `${activePlan.label}<strong>${activeKey === 'cash' ? money(activePlan.total) : `${money(activePlan.weekly)} / week`}</strong>`;
+  const isFinancing = activeKey !== 'cash';
+  const isFinancingOffer = Boolean(isOffer && isFinancing);
+
+  const priceDetailsHtml = (isFinancingOffer && phone.originalPrice && phone.originalPrice > activePlan.total)
+    ? `${activePlan.label}<strong><span style="color:#e63946;">${money(activePlan.weekly)} / week</span> <span style="font-size:0.95rem;color:var(--ink-faint);font-weight:400;margin-left:6px;">(Deposit ${money(activePlan.deposit)} · Total <del>${money(phone.originalPrice)}</del> <span style="color:#e63946;font-weight:700;">${money(activePlan.total)}</span>)</span></strong>`
+    : `${activePlan.label}<strong>${activeKey === 'cash' ? money(activePlan.total) : `${money(activePlan.weekly)} / week (Deposit ${money(activePlan.deposit)})`}</strong>`;
 
   phoneDetailsContent.innerHTML = `
     <p class="phone-details-kicker">${phone.categoryLabel || phone.category} / ${phone.storage}</p>
     <h2 class="phone-details-title" id="phoneDetailsTitle">${phone.model}</h2>
-    ${isOffer ? `
+    ${isFinancingOffer ? `
       <div style="display:flex;align-items:center;gap:10px;margin:2px 0 6px;">
-        <span class="offer-card-badge" style="position:static;padding:3px 10px;font-size:10.5px;">${phone.offerTag || 'OFFER'}</span>
-        ${phone.originalPrice && phone.originalPrice > phone.cashPrice ? `<span style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:#e63946;">SAVE ${money(phone.originalPrice - phone.cashPrice)} (-${Math.round(((phone.originalPrice - phone.cashPrice) / phone.originalPrice) * 100)}%)</span>` : ''}
+        <span class="offer-card-badge" style="position:static;padding:3px 10px;font-size:10.5px;">🔥 ${phone.offerTag || 'FINANCING OFFER'}</span>
+        ${phone.originalPrice && phone.originalPrice > activePlan.total ? `<span style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:#e63946;">SAVE ${money(phone.originalPrice - activePlan.total)} ON FINANCING</span>` : '<span style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:#e63946;">LIPA MDOGO MDOGO DEAL</span>'}
       </div>
     ` : ''}
     <p class="phone-details-meta">${condition} · Available for delivery in Nairobi</p>

@@ -351,8 +351,8 @@ const DEFAULT_PHONES = [
     originalPrice: 29500,
     offerTag: "OFFER",
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time cash payment · Special offer" },
-      standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 27500, hint: "One-time payment · 0% financing fee" },
+      standard: { label: "Weekly (10 Wks)", deposit: 6500, weekly: 2100, weeks: 10, total: 27500, hint: "10 Weeks Lipa Mdogo Mdogo · Special Financing Offer" }
     },
     defaultPlan: "standard"
   },

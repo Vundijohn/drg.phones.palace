@@ -669,10 +669,63 @@ html.light .card-plan-tabs{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0
   background:var(--accent2);color:#0b0b14;opacity:1;font-weight:700;
   border-radius:3px;box-shadow:0 2px 8px rgba(0,0,0,0.25);
 }
+.card-plan-box.has-financing-offer{
+  border:1px solid rgba(230,57,70,0.35);
+  box-shadow:0 4px 18px rgba(230,57,70,0.12);
+  border-radius:8px;
+  padding:8px;
+  background:rgba(230,57,70,0.03);
+}
+.financial-structure-offer-banner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  background:rgba(230,57,70,0.12);
+  border:1px solid rgba(230,57,70,0.32);
+  border-radius:6px;
+  padding:5px 10px;
+  margin-bottom:8px;
+}
+html.light .financial-structure-offer-banner{
+  background:rgba(230,57,70,0.08);
+  border-color:rgba(230,57,70,0.25);
+}
+.f-offer-badge{
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  color:#ffffff;
+  background:#e63946;
+  padding:2px 7px;
+  border-radius:4px;
+  letter-spacing:0.04em;
+}
+.f-offer-desc{
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:700;
+  color:#ff5e6c;
+}
+html.light .f-offer-desc{
+  color:#c92a2a;
+}
+.card-plan-tab.has-plan-offer{
+  color:var(--accent2);
+}
 .phone-plan-breakdown{
   display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
   background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.25);
   border-radius:6px;padding:12px;
+}
+.phone-plan-breakdown.has-financing-offer{
+  border-color:rgba(230,57,70,0.4);
+  background:rgba(230,57,70,0.06);
+}
+html.light .phone-plan-breakdown.has-financing-offer{
+  background:rgba(230,57,70,0.04);
+  border-color:rgba(230,57,70,0.3);
 }
 html.light .phone-plan-breakdown{
   background:rgba(184,137,30,0.06);border-color:rgba(184,137,30,0.2);

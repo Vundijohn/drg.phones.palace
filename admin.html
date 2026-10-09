@@ -1412,8 +1412,8 @@
           </select>
         </div>
         <div class="form-group full-width">
-          <label for="newPhoneSpecs">Key Specs (Comma-separated) *</label>
-          <input type="text" id="newPhoneSpecs" required placeholder="e.g. 50MP OIS Camera, 6.7 AMOLED 120Hz, 5000mAh battery">
+          <label for="newPhoneSpecs">Key Specs (Optional, comma-separated)</label>
+          <input type="text" id="newPhoneSpecs" placeholder="e.g. 50MP OIS Camera, 6.7 AMOLED 120Hz, 5000mAh battery">
         </div>
         <div class="form-group full-width phone-photo-field">
           <label>Phone Photo (Manually added by Admin)</label>
@@ -1630,9 +1630,24 @@
     }
   }
 
-  async function ensureAdminToken(){
+  function isTokenValid(token){
+    if(!token || typeof token !== 'string') return false;
+    try {
+      const parts = token.split('.');
+      if(parts.length !== 3) return false;
+      const payload = JSON.parse(atob(parts[1]));
+      if(payload.exp && (payload.exp * 1000) < (Date.now() + 10000)){
+        return false;
+      }
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
+
+  async function ensureAdminToken(force = false){
     let token = getAdminToken();
-    if(token) return token;
+    if(!force && isTokenValid(token)) return token;
     // Auto-acquire fresh token using stored Master Security PIN
     try {
       const pin = getStoredAdminPin();
@@ -1649,7 +1664,7 @@
         }
       }
     } catch(e){}
-    return null;
+    return token || null;
   }
 
   function broadcastInventoryUpdate(phonesList){
@@ -2850,30 +2865,24 @@
   let currentPlanType = "multi"; // "multi" or "single"
 
   function setPlanType(type){
-    currentPlanType = type;
-    if(type === "multi"){
+    currentPlanType = (type === "single" || type === "standard") ? "single" : "multi";
+    if(currentPlanType === "multi"){
       planTypeSamsungBtn.classList.add('active');
       planTypeStandardBtn.classList.remove('active');
       multiTierFields.style.display = 'grid';
       singleTierFields.style.display = 'none';
-      document.getElementById('newMoSaverDeposit').required = true;
-      document.getElementById('newMoSaverWeekly').required = true;
-      document.getElementById('newMoStandardDeposit').required = true;
-      document.getElementById('newMoStandardWeekly').required = true;
-      document.getElementById('newStandardDeposit').required = false;
-      document.getElementById('newStandardWeekly').required = false;
     } else {
       planTypeSamsungBtn.classList.remove('active');
       planTypeStandardBtn.classList.add('active');
       multiTierFields.style.display = 'none';
       singleTierFields.style.display = 'grid';
-      document.getElementById('newMoSaverDeposit').required = false;
-      document.getElementById('newMoSaverWeekly').required = false;
-      document.getElementById('newMoStandardDeposit').required = false;
-      document.getElementById('newMoStandardWeekly').required = false;
-      document.getElementById('newStandardDeposit').required = true;
-      document.getElementById('newStandardWeekly').required = true;
     }
+    // Remove blocking required constraints so auto-calculated fallback values work seamlessly
+    ['newMoSaverDeposit','newMoSaverWeekly','newMoStandardDeposit','newMoStandardWeekly','newStandardDeposit','newStandardWeekly'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.required = false;
+    });
+    recalculateSuggestedPlans(false);
   }
 
   planTypeSamsungBtn.addEventListener('click', () => setPlanType("multi"));
@@ -2967,6 +2976,15 @@
       : document.getElementById('newPhoneImage').value.split(',').map(value => value.trim()).filter(Boolean);
     const image = images[0] || '';
     const cashPrice = Number(document.getElementById('newPhoneCashPrice').value);
+    if(!cashPrice || isNaN(cashPrice) || cashPrice <= 0){
+      showToast('⚠️ Please enter a valid Cash Price for the phone');
+      document.getElementById('newPhoneCashPrice').focus();
+      if(submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.textContent = origBtnText;
+      }
+      return;
+    }
 
     // Offer / Discount values
     const onOffer = Boolean(document.getElementById('phoneOnOffer')?.checked);
@@ -3038,8 +3056,8 @@
     }
 
     try {
-      const token = await ensureAdminToken();
-      const headers = { 'Content-Type': 'application/json' };
+      let token = await ensureAdminToken();
+      let headers = { 'Content-Type': 'application/json' };
       if(token) headers['Authorization'] = `Bearer ${token}`;
 
       let savedPhone = null;
@@ -3065,24 +3083,32 @@
           defaultPlan: defaultPlan
         };
 
-        try {
-          const res = await fetch(`/api/phones/${editingPhoneId}`, {
-            method: 'PUT',
-            headers: headers,
-            body: JSON.stringify(updatedPhone)
-          });
-          const data = await res.json();
-          if(res.ok && data.success && data.data){
-            savedPhone = data.data;
-          } else {
-            console.warn('Backend update notice:', data);
-            savedPhone = updatedPhone;
+        let res = await fetch(`/api/phones/${editingPhoneId}`, {
+          method: 'PUT',
+          headers: headers,
+          body: JSON.stringify(updatedPhone)
+        });
+
+        if(res.status === 401){
+          token = await ensureAdminToken(true);
+          if(token){
+            headers['Authorization'] = `Bearer ${token}`;
+            res = await fetch(`/api/phones/${editingPhoneId}`, {
+              method: 'PUT',
+              headers: headers,
+              body: JSON.stringify(updatedPhone)
+            });
           }
-        } catch(apiErr){
-          console.warn('Network update error:', apiErr);
-          savedPhone = updatedPhone;
         }
 
+        let data = {};
+        try { data = await res.json(); } catch(e){}
+
+        if(!res.ok || !data.success){
+          throw new Error(data.message || `Server update error (${res.status})`);
+        }
+
+        savedPhone = data.data || updatedPhone;
         if(index !== -1){
           phones[index] = savedPhone;
         } else {
@@ -3110,24 +3136,32 @@
           defaultPlan: defaultPlan
         };
 
-        try {
-          const res = await fetch('/api/phones', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(newPhone)
-          });
-          const data = await res.json();
-          if(res.ok && data.success && data.data){
-            savedPhone = data.data;
-          } else {
-            console.warn('Backend add notice:', data);
-            savedPhone = newPhone;
+        let res = await fetch('/api/phones', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(newPhone)
+        });
+
+        if(res.status === 401){
+          token = await ensureAdminToken(true);
+          if(token){
+            headers['Authorization'] = `Bearer ${token}`;
+            res = await fetch('/api/phones', {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify(newPhone)
+            });
           }
-        } catch(apiErr){
-          console.warn('Network add error:', apiErr);
-          savedPhone = newPhone;
         }
 
+        let data = {};
+        try { data = await res.json(); } catch(e){}
+
+        if(!res.ok || !data.success){
+          throw new Error(data.message || `Server add error (${res.status})`);
+        }
+
+        savedPhone = data.data || newPhone;
         phones.unshift(savedPhone);
         showToast(`✅ Successfully added ${model} (${storage}) to live store!`);
       }
@@ -3137,7 +3171,7 @@
       renderInventory();
     } catch(err){
       console.error('Save error:', err);
-      showToast(`⚠️ Notice: ${err.message || 'Error saving device'}`);
+      showToast(`❌ Could not save device: ${err.message || 'Server error'}`);
     } finally {
       if(submitBtn){
         submitBtn.disabled = false;

@@ -70,6 +70,27 @@ router.put('/:id', requireAdminAuth, async (req, res) => {
   }
 });
 
+// Protected: PATCH /api/phones/:id/stock (Toggle stock status)
+router.patch('/:id/stock', requireAdminAuth, async (req, res) => {
+  try {
+    const { inStock } = req.body;
+    if (typeof inStock !== 'boolean') {
+      return res.status(400).json({ success: false, message: 'Field "inStock" must be a boolean' });
+    }
+    const updated = await db.updatePhone(req.params.id, { inStock });
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Device not found' });
+    }
+    res.json({
+      success: true,
+      message: `Stock status set to ${inStock ? 'In Stock' : 'Out of Stock'}`,
+      data: updated
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // Protected: DELETE /api/phones/:id (Delete phone)
 router.delete('/:id', requireAdminAuth, async (req, res) => {
   try {

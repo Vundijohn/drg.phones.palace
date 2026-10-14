@@ -1169,3 +1169,53 @@ html.light .hero-name em,html.light .section-title em,html.light .contact-headin
   }
 }
 
+/* Out of Stock Styling */
+.stock-card-badge{
+  position:absolute;top:12px;right:12px;z-index:4;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:0.06em;font-weight:800;
+  text-transform:uppercase;color:#ffffff;
+  background:linear-gradient(135deg,#363b45,#1f232b);
+  border:1px solid rgba(255,255,255,0.22);
+  padding:4px 10px;border-radius:4px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.45);
+  display:inline-flex;align-items:center;gap:4px;
+}
+html.light .stock-card-badge{
+  background:linear-gradient(135deg,#4a5260,#2d3440);
+  color:#ffffff;
+  border-color:rgba(0,0,0,0.2);
+}
+.phone-media.has-offer .stock-card-badge{
+  top:44px;right:12px;
+}
+.phone-card.is-out-of-stock{
+  opacity:0.92;
+}
+.phone-card.is-out-of-stock .phone-media img{
+  filter:grayscale(45%) contrast(0.92);
+}
+.phone-card.is-out-of-stock:hover .phone-media img{
+  filter:grayscale(20%) contrast(0.98);
+}
+.card-action-btn.out-of-stock-btn{
+  background:rgba(105,201,255,0.08) !important;
+  border:1.5px solid var(--accent2) !important;
+  color:var(--accent2) !important;
+  font-weight:700 !important;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+}
+.card-action-btn.out-of-stock-btn:hover{
+  background:var(--accent2) !important;
+  color:#090d12 !important;
+  transform:translateY(-2px);
+}
+html.light .card-action-btn.out-of-stock-btn{
+  background:rgba(22,141,204,0.08) !important;
+  border-color:var(--accent2) !important;
+  color:var(--accent2) !important;
+}
+html.light .card-action-btn.out-of-stock-btn:hover{
+  background:var(--accent2) !important;
+  color:#ffffff !important;
+}
+

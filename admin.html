@@ -726,6 +726,34 @@
     color:var(--gold-bright);
     border-color:rgba(217,166,83,0.3);
   }
+  .stock-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    padding:2px 8px;
+    font-size:10.5px;
+    font-weight:800;
+    border-radius:var(--radius-pill);
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    line-height:1.4;
+  }
+  .stock-pill.in-stock{
+    background:rgba(46,204,113,0.14);
+    color:#2ecc71;
+    border:1px solid rgba(46,204,113,0.35);
+  }
+  .stock-pill.out-of-stock{
+    background:rgba(255,77,77,0.14);
+    color:#ff6b6b;
+    border:1px solid rgba(255,77,77,0.35);
+  }
+  .is-out-of-stock-row{
+    background:rgba(255,77,77,0.035);
+  }
+  .is-out-of-stock-row .device-thumb{
+    filter:grayscale(65%) opacity(0.85);
+  }
   .condition-tag{
     font-size:11.5px;
     color:var(--text-muted);
@@ -1333,6 +1361,11 @@
           <button class="pill-btn" data-cat="motorola">Motorola</button>
           <button class="pill-btn" data-cat="other">Other</button>
         </div>
+        <div class="filter-pills" id="adminStockFilter" title="Filter by stock availability">
+          <button class="pill-btn active" data-stock="all">All Stock</button>
+          <button class="pill-btn" data-stock="in">🟢 In Stock</button>
+          <button class="pill-btn" data-stock="out">🔴 Out of Stock</button>
+        </div>
         <div class="action-buttons-group">
           <button class="btn btn-gold" id="openAddPhoneModalBtn">
             <span>➕</span> Add Renewed Phone
@@ -1354,6 +1387,7 @@
               <tr>
                 <th>Device</th>
                 <th>Category</th>
+                <th>Stock Status</th>
                 <th>Cash Price</th>
                 <th>Financing Details</th>
                 <th style="text-align:right;">Actions</th>
@@ -1502,6 +1536,20 @@
             <label for="newStandardWeeks">Duration (Weeks) *</label>
             <input type="number" id="newStandardWeeks" min="1" max="104" step="1" value="8">
           </div>
+        </div>
+
+        <!-- INVENTORY & STOCK AVAILABILITY -->
+        <div class="form-group full-width" style="background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.3);border-radius:12px;padding:14px;margin:8px 0;" id="stockConfigBox">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <label style="margin:0;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);cursor:pointer;">
+              <input type="checkbox" id="phoneInStock" checked style="width:19px;height:19px;accent-color:#2ecc71;cursor:pointer;">
+              <span id="phoneInStockLabel" style="font-weight:700;color:#2ecc71;">🟢 In Stock (Available for customer orders)</span>
+            </label>
+            <span id="stockStatusBadge" class="stock-pill in-stock">IN STOCK</span>
+          </div>
+          <span class="form-hint" style="color:var(--text-muted);display:block;margin-top:6px;">
+            Uncheck if this model is temporarily sold out or awaiting restock. Customers on the website will see an <strong>"Out of Stock"</strong> badge and can send you a restock inquiry via WhatsApp. You can still edit prices, specs, and photos at any time.
+          </span>
         </div>
 
         <!-- SPECIAL OFFER / DISCOUNT CONFIG (ON FINANCIAL STRUCTURE ONLY) -->
@@ -1880,6 +1928,14 @@
     document.getElementById('newPhoneSpecs').value = (phone.specs || []).join(", ");
     document.getElementById('newPhoneCashPrice').value = phone.cashPrice || "";
 
+    // Stock Status
+    const phoneInStockCheckbox = document.getElementById('phoneInStock');
+    const isInStock = phone.inStock !== false;
+    if(phoneInStockCheckbox){
+      phoneInStockCheckbox.checked = isInStock;
+      updateStockModalUI(isInStock);
+    }
+
     // Special Offer / Discount fields
     const onOfferCheckbox = document.getElementById('phoneOnOffer');
     const offerWrap = document.getElementById('offerFieldsWrap');
@@ -1931,6 +1987,34 @@
       if(phoneOnOfferCheckbox.checked && offerTagEl && !offerTagEl.value.trim()){
         offerTagEl.value = 'OFFER';
       }
+    });
+  }
+
+  // Stock Availability toggle listener & UI updater
+  function updateStockModalUI(isInStock){
+    const phoneInStockLabel = document.getElementById('phoneInStockLabel');
+    const stockStatusBadge = document.getElementById('stockStatusBadge');
+    const stockConfigBox = document.getElementById('stockConfigBox');
+    if(phoneInStockLabel){
+      phoneInStockLabel.innerHTML = isInStock
+        ? '🟢 In Stock (Available for customer orders)'
+        : '🔴 Out of Stock (Marked as Sold Out / Inquire Only)';
+      phoneInStockLabel.style.color = isInStock ? '#2ecc71' : '#ff6b6b';
+    }
+    if(stockStatusBadge){
+      stockStatusBadge.className = isInStock ? 'stock-pill in-stock' : 'stock-pill out-of-stock';
+      stockStatusBadge.textContent = isInStock ? 'IN STOCK' : 'OUT OF STOCK';
+    }
+    if(stockConfigBox){
+      stockConfigBox.style.background = isInStock ? 'rgba(46,204,113,0.06)' : 'rgba(255,77,77,0.06)';
+      stockConfigBox.style.borderColor = isInStock ? 'rgba(46,204,113,0.3)' : 'rgba(255,77,77,0.3)';
+    }
+  }
+
+  const phoneInStockInput = document.getElementById('phoneInStock');
+  if(phoneInStockInput){
+    phoneInStockInput.addEventListener('change', (e) => {
+      updateStockModalUI(e.target.checked);
     });
   }
 
@@ -2610,7 +2694,12 @@
 
   // ---- KPI Calculations ----
   function updateMetrics(){
+    const inStockCount = phones.filter(p => p && p.inStock !== false).length;
+    const outStockCount = phones.filter(p => p && p.inStock === false).length;
     document.getElementById('kpiTotalDevices').textContent = phones.length;
+    const totalSub = document.querySelector('.kpi-card .kpi-sub');
+    if(totalSub) totalSub.textContent = `${inStockCount} In Stock · ${outStockCount} Sold Out`;
+
     const samsungCount = phones.filter(p => p && p.category === 'samsung').length;
     const iphoneCount = phones.filter(p => p && p.category === 'iphone').length;
     document.getElementById('kpiSamsungCount').textContent = samsungCount;
@@ -2639,12 +2728,14 @@
 
   // ---- Table Rendering & Search / Filter ----
   let currentCategory = "all";
+  let currentStockFilter = "all";
   let searchQuery = "";
 
   const adminSearchInput = document.getElementById('adminSearchInput');
   const inventoryTableBody = document.getElementById('inventoryTableBody');
   const tableEmptyState = document.getElementById('tableEmptyState');
   const adminCategoryFilter = document.getElementById('adminCategoryFilter');
+  const adminStockFilter = document.getElementById('adminStockFilter');
 
   adminSearchInput.addEventListener('input', (e) => {
     searchQuery = e.target.value.trim().toLowerCase();
@@ -2660,11 +2751,28 @@
     renderInventory();
   });
 
+  if(adminStockFilter){
+    adminStockFilter.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill-btn');
+      if(!btn) return;
+      adminStockFilter.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentStockFilter = btn.dataset.stock;
+      renderInventory();
+    });
+  }
+
   function renderInventory(){
     let list = phones;
 
     if(currentCategory !== "all"){
       list = list.filter(p => p.category === currentCategory);
+    }
+
+    if(currentStockFilter === "in"){
+      list = list.filter(p => p.inStock !== false);
+    } else if(currentStockFilter === "out"){
+      list = list.filter(p => p.inStock === false);
     }
 
     if(searchQuery){
@@ -2682,6 +2790,7 @@
 
     tableEmptyState.style.display = "none";
     inventoryTableBody.innerHTML = list.map(phone => {
+      const isOutOfStock = phone.inStock === false;
       // Build financing summary
       const finOfferBadge = phone.onOffer 
         ? `<span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;display:inline-block;letter-spacing:0.04em;margin-bottom:4px;">🔥 ${phone.offerTag || 'FINANCING OFFER'}</span>` 
@@ -2718,21 +2827,39 @@
         ? `<span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:0.04em;margin-left:6px;display:inline-block;vertical-align:middle;">${phone.offerTag || 'OFFER'}</span>` 
         : '';
 
+      const stockBadge = isOutOfStock
+        ? `<span class="stock-pill out-of-stock" style="margin-left:6px;vertical-align:middle;">OUT OF STOCK</span>`
+        : '';
+
+      const stockCell = `
+        <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-start;">
+          ${isOutOfStock 
+            ? '<span class="stock-pill out-of-stock">🔴 Out of Stock</span>' 
+            : '<span class="stock-pill in-stock">🟢 In Stock</span>'}
+          <button type="button" class="btn btn-outline btn-xs" onclick="toggleStockQuick('${phone.id}')" title="Quick toggle stock availability" style="font-size:10px;padding:2px 7px;border-radius:6px;border-color:var(--line);background:transparent;cursor:pointer;white-space:nowrap;color:var(--text-muted);">
+            ${isOutOfStock ? '🔄 Set In Stock' : '📦 Set Out of Stock'}
+          </button>
+        </div>
+      `;
+
       const priceDisplay = `<strong>${money(phone.cashPrice)}</strong>`;
 
       return `
-        <tr id="row-${phone.id}">
+        <tr id="row-${phone.id}" class="${isOutOfStock ? 'is-out-of-stock-row' : ''}">
           <td>
             <div class="device-cell">
               ${imgHtml}
               <div class="device-info-meta">
-                <div class="device-model">${phone.model} ${offerBadge}</div>
+                <div class="device-model">${phone.model} ${offerBadge} ${stockBadge}</div>
                 <div class="device-storage">${phone.storage} · <span class="condition-tag">${phone.condition}</span></div>
               </div>
             </div>
           </td>
           <td>
             <span class="brand-pill ${phone.category}">${phone.categoryLabel || phone.category}</span>
+          </td>
+          <td>
+            ${stockCell}
           </td>
           <td class="price-cell">
             ${priceDisplay}
@@ -2742,7 +2869,7 @@
           </td>
           <td style="text-align:right;">
             <div class="table-actions" style="justify-content:flex-end;">
-              <button class="btn btn-outline btn-sm" onclick="openEditPhoneModal('${phone.id}')" title="Edit Device Details & Photos" style="border-color:var(--gold);color:var(--gold-bright);">
+              <button class="btn btn-outline btn-sm" onclick="openEditPhoneModal('${phone.id}')" title="Edit Device Details, Stock & Photos" style="border-color:var(--gold);color:var(--gold-bright);">
                 ✏️ Edit
               </button>
               <button class="btn btn-outline btn-sm" onclick="testWaLink('${phone.id}')" title="Test Customer WhatsApp Inquiry Link">
@@ -2758,10 +2885,69 @@
     }).join("");
   }
 
+  // ---- Quick Toggle Stock Function ----
+  window.toggleStockQuick = async function(phoneId){
+    const phone = phones.find(p => p.id === phoneId);
+    if(!phone) return;
+    const currentInStock = phone.inStock !== false;
+    const newInStock = !currentInStock;
+
+    // Optimistic UI update
+    phone.inStock = newInStock;
+    renderInventory();
+    updateMetrics();
+
+    showToast(`⏳ Updating stock status for ${phone.model}...`);
+
+    try {
+      let token = await ensureAdminToken();
+      let headers = { 'Content-Type': 'application/json' };
+      if(token) headers['Authorization'] = `Bearer ${token}`;
+
+      let res = await fetch(`/api/phones/${phoneId}/stock`, {
+        method: 'PATCH',
+        headers: headers,
+        body: JSON.stringify({ inStock: newInStock })
+      });
+
+      if(res.status === 401){
+        token = await ensureAdminToken(true);
+        if(token){
+          headers['Authorization'] = `Bearer ${token}`;
+          res = await fetch(`/api/phones/${phoneId}/stock`, {
+            method: 'PATCH',
+            headers: headers,
+            body: JSON.stringify({ inStock: newInStock })
+          });
+        }
+      }
+
+      const data = await res.json();
+      if(!res.ok || !data.success){
+        throw new Error(data.message || 'Server error updating stock');
+      }
+
+      savePhones();
+      showToast(`✅ ${phone.model} marked ${newInStock ? '🟢 In Stock' : '🔴 Out of Stock'}!`);
+    } catch(err){
+      console.error('Stock toggle failed:', err);
+      // Revert optimistic update
+      phone.inStock = currentInStock;
+      renderInventory();
+      updateMetrics();
+      showToast(`⚠️ Failed to update stock status: ${err.message}`);
+    }
+  };
+
   // ---- Test WhatsApp Link ----
   window.testWaLink = function(phoneId){
     const phone = phones.find(p => p.id === phoneId);
     if(!phone) return;
+    if(phone.inStock === false){
+      const msg = `Hi DRG Phones Palace, I saw the renewed ${phone.model} ${phone.storage} (${phone.condition}) is currently marked Out of Stock. When will you be restocking this model, or can I place a reservation?`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+      return;
+    }
     const plan = phone.plans.mostandard || phone.plans.standard || phone.plans.mosaver || phone.plans.cash;
     let msg = phone.onOffer
       ? `Hi DRG Phones Palace, I'm interested in the renewed ${phone.model} ${phone.storage} (${phone.condition}) on SPECIAL OFFER at ${money(phone.cashPrice)}${phone.originalPrice ? ` (was ${money(phone.originalPrice)})` : ''}. Is it available?`
@@ -2910,6 +3096,11 @@
     if(originalPriceInput) originalPriceInput.value = '';
     const offerTagInput = document.getElementById('phoneOfferTag');
     if(offerTagInput) offerTagInput.value = 'OFFER';
+    const phoneInStockCheckbox = document.getElementById('phoneInStock');
+    if(phoneInStockCheckbox){
+      phoneInStockCheckbox.checked = true;
+      updateStockModalUI(true);
+    }
     addPhoneModal.classList.add('open');
     setPlanType("multi");
     document.getElementById('newPhoneModel').focus();
@@ -2959,6 +3150,9 @@
     const origPriceVal = document.getElementById('phoneOriginalPrice')?.value;
     const originalPrice = (onOffer && origPriceVal !== '') ? Number(origPriceVal) : null;
     const offerTag = onOffer ? (document.getElementById('phoneOfferTag')?.value.trim() || 'OFFER') : '';
+
+    // Stock Availability value
+    const inStock = Boolean(document.getElementById('phoneInStock')?.checked);
 
     const specs = specsRaw.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
     const catLabels = {
@@ -3044,6 +3238,7 @@
           images: images,
           specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
           cashPrice: cashPrice,
+          inStock: inStock,
           onOffer: onOffer,
           originalPrice: originalPrice,
           offerTag: offerTag,
@@ -3097,6 +3292,7 @@
           images: images,
           specs: specs.length ? specs : ["Genuine quality inspected", "Tested & verified", "Clean IMEI"],
           cashPrice: cashPrice,
+          inStock: inStock,
           onOffer: onOffer,
           originalPrice: originalPrice,
           offerTag: offerTag,

@@ -574,6 +574,12 @@ function getWaLink(phone, planKey){
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
+function getRestockWaLink(phone){
+  const condition = displayCondition(phone);
+  const msg = `Hi DRG Phones Palace, I saw the renewed ${phone.model} ${phone.storage} (${condition}) is currently marked Out of Stock. When will you be restocking this model, or can I place a reservation?`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+
 function renderPlanBox(phone, activeKey){
   const plan = phone.plans[activeKey] || Object.values(phone.plans)[0];
   const isCash = activeKey === "cash";
@@ -849,11 +855,15 @@ function renderPhones(){
     const activeKey = getEffectivePlan(phone);
     const condition = displayCondition(phone);
     const isOffer = Boolean(phone.onOffer);
+    const isOutOfStock = phone.inStock === false;
     const offerBadgeHtml = isOffer
       ? `<span class="offer-card-badge">${phone.offerTag || 'OFFER'}</span>`
       : '';
+    const stockBadgeHtml = isOutOfStock
+      ? `<span class="stock-card-badge out-of-stock">SOLD OUT</span>`
+      : '';
     const card = document.createElement('article');
-    card.className = 'phone-card';
+    card.className = `phone-card ${isOutOfStock ? 'is-out-of-stock' : ''}`;
     card.id = `phone-card-${phone.id}`;
     card.tabIndex = 0;
     card.setAttribute('aria-label', `View details for ${phone.model}`);
@@ -861,14 +871,16 @@ function renderPhones(){
     const primaryImg = (phone.image && String(phone.image).trim()) || (Array.isArray(phone.images) && phone.images.length ? String(phone.images[0]).trim() : '');
     const hasValidImage = Boolean(primaryImg);
     const mediaHtml = hasValidImage ? `
-      <div class="phone-media ${isOffer ? 'has-offer' : ''}">
+      <div class="phone-media ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}">
         ${offerBadgeHtml}
+        ${stockBadgeHtml}
         <img src="${primaryImg}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
         <span class="phone-condition-badge">${condition}</span>
       </div>
     ` : `
-      <div class="phone-media phone-media-placeholder ${isOffer ? 'has-offer' : ''}">
+      <div class="phone-media phone-media-placeholder ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}">
         ${offerBadgeHtml}
+        ${stockBadgeHtml}
         <div class="placeholder-content">
           <span class="placeholder-icon">📱</span>
           <span class="placeholder-title">${phone.model}</span>
@@ -876,6 +888,16 @@ function renderPhones(){
         </div>
         <span class="phone-condition-badge">${condition}</span>
       </div>
+    `;
+
+    const actionBtnHtml = isOutOfStock ? `
+      <a class="btn card-action-btn out-of-stock-btn" href="${getRestockWaLink(phone)}" onclick="recordInquiry('${phone.id}', 'restock')" target="_blank" rel="noopener">
+        <span>💬</span> Out of Stock — Inquire Restock
+      </a>
+    ` : `
+      <a class="btn btn-gold card-action-btn" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">
+        Get This Renewed Phone
+      </a>
     `;
 
     card.innerHTML = `
@@ -892,9 +914,7 @@ function renderPhones(){
           ${phone.specs.map(s => `<span class="phone-spec-item">${s}</span>`).join("")}
         </div>
         ${renderPlanBox(phone, activeKey)}
-        <a class="btn btn-gold card-action-btn" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">
-          Get This Renewed Phone
-        </a>
+        ${actionBtnHtml}
       </div>
     `;
     grid.appendChild(card);
@@ -975,13 +995,17 @@ function openPhoneDetails(phone){
 
   const isFinancing = activeKey !== 'cash';
   const isFinancingOffer = Boolean(isOffer && isFinancing);
+  const isOutOfStock = phone.inStock === false;
 
   const priceDetailsHtml = (isFinancingOffer && phone.originalPrice && phone.originalPrice > activePlan.total)
     ? `${activePlan.label}<strong><span style="color:#e63946;">${money(activePlan.weekly)} / week</span> <span style="font-size:0.95rem;color:var(--ink-faint);font-weight:400;margin-left:6px;">(Deposit ${money(activePlan.deposit)} · Total <del>${money(phone.originalPrice)}</del> <span style="color:#e63946;font-weight:700;">${money(activePlan.total)}</span>)</span></strong>`
     : `${activePlan.label}<strong>${activeKey === 'cash' ? money(activePlan.total) : `${money(activePlan.weekly)} / week (Deposit ${money(activePlan.deposit)})`}</strong>`;
 
   phoneDetailsContent.innerHTML = `
-    <p class="phone-details-kicker">${phone.categoryLabel || phone.category} / ${phone.storage}</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+      <p class="phone-details-kicker" style="margin:0;">${phone.categoryLabel || phone.category} / ${phone.storage}</p>
+      ${isOutOfStock ? '<span class="stock-card-badge out-of-stock" style="position:static;padding:3px 9px;">SOLD OUT</span>' : '<span style="font-family:var(--mono);font-size:10px;font-weight:800;color:#2ecc71;background:rgba(46,204,113,0.12);padding:3px 8px;border-radius:4px;border:1px solid rgba(46,204,113,0.3);">🟢 IN STOCK</span>'}
+    </div>
     <h2 class="phone-details-title" id="phoneDetailsTitle">${phone.model}</h2>
     ${isFinancingOffer ? `
       <div style="display:flex;align-items:center;gap:10px;margin:2px 0 6px;">
@@ -995,7 +1019,13 @@ function openPhoneDetails(phone){
     </div>
     <p class="phone-details-price">${priceDetailsHtml}</p>
     <div class="phone-details-actions">
-      <a class="btn btn-gold" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">Ask About This Phone</a>
+      ${isOutOfStock ? `
+        <a class="btn btn-outline" style="border-color:var(--accent2);color:var(--accent2);display:inline-flex;align-items:center;gap:6px;" href="${getRestockWaLink(phone)}" onclick="recordInquiry('${phone.id}', 'restock')" target="_blank" rel="noopener">
+          <span>💬</span> Out of Stock — Inquire Restock
+        </a>
+      ` : `
+        <a class="btn btn-gold" href="${getWaLink(phone, activeKey)}" onclick="recordInquiry('${phone.id}', '${activeKey}')" target="_blank" rel="noopener">Ask About This Phone</a>
+      `}
       <button type="button" class="btn btn-outline" id="modalContinueBrowsing">Continue Browsing</button>
     </div>
   `;

@@ -1720,40 +1720,6 @@
     renderPhoneGalleryPreview();
   }
 
-  // Safe client-side image compression fallback to prevent quota overflow
-  function readFileAsDataUrl(file){
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const img = new Image();
-        img.onload = () => {
-          const maxDim = 800;
-          let w = img.width;
-          let h = img.height;
-          if (w > maxDim || h > maxDim) {
-            if (w > h) {
-              h = Math.round((h * maxDim) / w);
-              w = maxDim;
-            } else {
-              w = Math.round((w * maxDim) / h);
-              h = maxDim;
-            }
-          }
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          resolve(canvas.toDataURL('image/jpeg', 0.82));
-        };
-        img.onerror = () => resolve(reader.result);
-        img.src = reader.result;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
   function setPhonePhoto(url){
     if(!url){
       clearPhonePhoto();
@@ -1832,26 +1798,21 @@
             uploadProgressHint.textContent = `✓ ${selectedPhoneImages.length} image${selectedPhoneImages.length === 1 ? '' : 's'} ready (primary photo set)`;
           }
         } else {
-          // Fallback if server upload rejected
-          showToast(`⚠️ Upload: ${data.message || 'Attached photo locally'}`);
-          for(const file of files){
-            const dataUrl = await readFileAsDataUrl(file);
-            selectedPhoneImages.unshift(dataUrl);
-          }
-          setPhonePhotos(selectedPhoneImages);
+          const message = data.message || 'Persistent image upload failed';
+          showToast(`⚠️ Upload failed: ${message}`);
           if(uploadProgressHint){
-            uploadProgressHint.className = 'upload-hint';
-            uploadProgressHint.textContent = `Attached ${files.length} image(s) locally`;
+            uploadProgressHint.className = 'upload-hint error';
+            uploadProgressHint.textContent = `Upload failed: ${message}`;
           }
         }
       } catch(err){
         console.warn('Upload error:', err);
-        showToast('⚠️ Could not connect to upload server, attached photo locally');
-        for(const file of files){
-          const dataUrl = await readFileAsDataUrl(file);
-          selectedPhoneImages.unshift(dataUrl);
+        const message = err.message || 'Could not connect to the image upload server';
+        showToast(`⚠️ Upload failed: ${message}`);
+        if(uploadProgressHint){
+          uploadProgressHint.className = 'upload-hint error';
+          uploadProgressHint.textContent = `Upload failed: ${message}`;
         }
-        setPhonePhotos(selectedPhoneImages);
       } finally {
         if(submitBtn){
           submitBtn.disabled = false;

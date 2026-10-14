@@ -2,13 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config');
 
-let admin = null;
+let adminAppSdk = null;
+let getAdminFirestore = null;
 let getAdminDatabase = null;
+let getAdminStorage = null;
 try {
-  admin = require('firebase-admin');
+  adminAppSdk = require('firebase-admin/app');
+  getAdminFirestore = require('firebase-admin/firestore').getFirestore;
   getAdminDatabase = require('firebase-admin/database').getDatabase;
-} catch (e) {
-  // admin optional
+  getAdminStorage = require('firebase-admin/storage').getStorage;
+} catch (err) {
+  console.warn(`[Firebase] Admin SDK unavailable: ${err.message}`);
 }
 
 const { initializeApp: initClientApp, getApps: getClientApps } = require('firebase/app');
@@ -42,6 +46,8 @@ let rtdbMode = 'none';      // 'admin' | 'client' | 'none'
 
 let adminDb = null;
 let adminRtdb = null;
+let adminStorage = null;
+let adminApp = null;
 let clientDb = null;
 let clientRtdb = null;
 let clientApp = null;
@@ -52,28 +58,33 @@ function initializeFirebase() {
   }
 
   // 1. Try Admin SDK with Service Account Key if file exists
-  if (admin) {
+  if (adminAppSdk) {
     const serviceAccountPath = path.resolve(config.FIREBASE_SERVICE_ACCOUNT_PATH);
-    if (fs.existsSync(serviceAccountPath)) {
+    if (config.FIREBASE_SERVICE_ACCOUNT_JSON || fs.existsSync(serviceAccountPath)) {
       try {
-        const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-        if (admin.apps.length === 0) {
-          admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
+        const serviceAccount = config.FIREBASE_SERVICE_ACCOUNT_JSON
+          ? JSON.parse(config.FIREBASE_SERVICE_ACCOUNT_JSON)
+          : JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        const apps = adminAppSdk.getApps();
+        adminApp = apps.length > 0
+          ? apps[0]
+          : adminAppSdk.initializeApp({
+            credential: adminAppSdk.cert(serviceAccount),
             storageBucket: config.firebaseConfig.storageBucket,
             databaseURL: config.firebaseConfig.databaseURL,
             projectId: config.firebaseConfig.projectId
           });
-        }
-        adminDb = admin.firestore();
+        adminDb = getAdminFirestore(adminApp);
+        adminStorage = getAdminStorage(adminApp);
         firestoreMode = 'admin';
 
         if (getAdminDatabase) {
-          adminRtdb = getAdminDatabase();
+          adminRtdb = getAdminDatabase(adminApp);
           rtdbMode = 'admin';
         }
 
-        console.log(`[Firebase] 🔥 Initialized Firebase Admin SDK via serviceAccountKey.json (Project: ${config.firebaseConfig.projectId})`);
+        const credentialSource = config.FIREBASE_SERVICE_ACCOUNT_JSON ? 'environment variable' : 'serviceAccountKey.json';
+        console.log(`[Firebase] 🔥 Initialized Firebase Admin SDK via ${credentialSource} (Project: ${config.firebaseConfig.projectId})`);
         return true;
       } catch (err) {
         console.warn(`[Firebase] Failed initializing Admin SDK with service account: ${err.message}`);
@@ -335,9 +346,10 @@ const firestoreOps = {
 initializeFirebase();
 
 module.exports = {
-  admin,
+  adminApp,
   adminDb,
   adminRtdb,
+  adminStorage,
   clientDb,
   clientRtdb,
   firestoreMode,

@@ -9,7 +9,14 @@ const DEFAULT_PHONES = [
     model: "Galaxy S25 Ultra",
     storage: "256GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-s25-ultra.jpg",
+    image: "images/S25/001-galaxy-s25ultra-titaniumsilverblue-device-spen-front.jpg",
+    images: [
+      "images/S25/001-galaxy-s25ultra-titaniumsilverblue-device-spen-front.jpg",
+      "images/S25/002-galaxy-s25ultra-titaniumsilverblue-device-front.jpg",
+      "images/S25/015-galaxy-s25ultra-titaniumsilverblue-device-r-side.jpg",
+      "images/S25/019-galaxy-s25ultra-titaniumblack-device-spen-front.jpg",
+      "images/S25/037-galaxy-s25ultra-titaniumgray-device-spen-front.jpg"
+    ],
     specs: [
       "Snapdragon 8 Elite, 5G ready",
       "200MP Quad Camera, 100x Space Zoom",
@@ -30,7 +37,13 @@ const DEFAULT_PHONES = [
     model: "Galaxy S24 Ultra",
     storage: "256GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-s24-ultra.jpg",
+    image: "images/S24/PjcrUoXq7t-gWOXbHcUZ6dyAHayUCUMtNY73yUx15fwW2NqWoVgaxubB1ydEsLu7Kj8zGt-7fqqZ-Jc_qeNf5qMD-pl9ATSEQB8y5COp_cfql4T2OYKIIlfpTwMwNxUgCdgDwY7gRM-wyml4oiowupRcE9cmlifx9nfEeNUNbrjznOTlLw-gBm9bAyCqhLcH.jpg",
+    images: [
+      "images/S24/PjcrUoXq7t-gWOXbHcUZ6dyAHayUCUMtNY73yUx15fwW2NqWoVgaxubB1ydEsLu7Kj8zGt-7fqqZ-Jc_qeNf5qMD-pl9ATSEQB8y5COp_cfql4T2OYKIIlfpTwMwNxUgCdgDwY7gRM-wyml4oiowupRcE9cmlifx9nfEeNUNbrjznOTlLw-gBm9bAyCqhLcH.jpg",
+      "images/S24/YJAsunXELN07996THEjRn8E5yfu-n2882SncG7sb2oDaluBZtEzLj69_T9AiQvt4JM8ODET3CDp-5761KvGGT_nFd32CrE4PIQVmtdQ8jha3In3VzcePypEr-7sneezD4uM5PU1c0dTIemKsbj6DxrVOwI7PnV-p0XM1gjWGPegOWYiEIHmBXSJ5hhkAtR7H.jpg",
+      "images/S24/aS6JiPt_9AGcxdrzSZpoTdf1IdV8MfnHIy8ya_JzJdTnk3Jp_ynKy3CM3CLM2e45lyPO3SptseuGDokciADvwxDrIetBz0lxVq5r7Bi06ycU8AY-6dUEqrvDF3fgF7q2iHyZcHFSetmz11CUq56ikWn2gnwHoEpeYczwgmht-UDwniBntbt7mI_DTUKo1zJW.jpg",
+      "images/S24/kx18rKVykzFAWMDoIeHdmoSEjgdUP9V62RcFSSMtzX6M7J6yL1OTMlBpPJgAsr-XIIehv6P8u4QY5vjyC0hKTQ_gaOPWxNFv1G8RjbLIYqfTruGkh-9fOawo-tpdV4Jts2Hcpj8KubQmW8IZ8FY2N0y8nmUYM1JBxEy4n_YNYrm70lgxd16hZP5VukFr6iwF.jpg"
+    ],
     specs: [
       "Galaxy AI built-in, 5G flagship",
       "200MP Quad Pro-visual camera",
@@ -51,7 +64,13 @@ const DEFAULT_PHONES = [
     model: "Galaxy S23 Ultra",
     storage: "256GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-s23-ultra.jpg",
+    image: "images/S23/3zeKlm7xkWo-XXJGyyEycHGUX8mekIVlvBtwiqUz--MnNWABkToLeEfZE-CJahimKhCwaoO3t6V82DIq1Z3-WqUeCba4xARqb2gRLS0dS2W4rNY2wZ9AwDHubJVCR9sAssD3148HF8pdB5mK2apQz-cmIpqCxVt1FpT7zg7DSfM_NqQ4zKpwJI22H6BMgHna.jpg",
+    images: [
+      "images/S23/3zeKlm7xkWo-XXJGyyEycHGUX8mekIVlvBtwiqUz--MnNWABkToLeEfZE-CJahimKhCwaoO3t6V82DIq1Z3-WqUeCba4xARqb2gRLS0dS2W4rNY2wZ9AwDHubJVCR9sAssD3148HF8pdB5mK2apQz-cmIpqCxVt1FpT7zg7DSfM_NqQ4zKpwJI22H6BMgHna.jpg",
+      "images/S23/Y0gK5FoIedKhuoyXtp_Es6owIijavGO8OoTIfK-9BHFe18h6ZoENITtJWnzyS3ncq0_AsnrYLgCKYyACrBmOK3sA_4b__mDxNVk0cErdInmB6SmKnrx-xesi0e-FttGICJrF30lWsPZGjwI9qYsLUuI1BMujNaSqfnBHaDou1sJGIGKlwfnMqctUmU-YquuQ.jpg",
+      "images/S23/Zocerd5Tw0n4gFOScEYVaxPJXrZbGjOYXSMbYzHrD0KxSTG1MbMQHRgV0eeDoxXxecEYvwy3pkrMLIvxWjJtU7UAwsi9ClSdJusSg4aEa_w5yi6xBtpul4YMxjKcXUVxTXS8XlEGwVmIKKv0cXWvQ05q9FyioUza25nDRdsfT5WUejUS5YlmBUcXNqyU9rnd.jpg",
+      "images/S23/fC8V5QjxwKWZmagPuZtiVtV-2u7pPzaqmppB0TAy2feUMxoynBdSv8IeXqOfYIKQrolVVGxK9ujlx16FUnZlZ9zQZU0vFWb0ZS0wMdqWBGhQux8nxwtuXa7Z1_UMsdnWmUnhGypGlAnMw3IrGjBdl7C6SBoyp3OeDcz3aXCBYvieNCEdunRn3bb7OSLX0eTl.jpg"
+    ],
     specs: [
       "200MP camera, 100x Space Zoom",
       "6.8\" Dynamic AMOLED 2X 120Hz",
@@ -72,7 +91,15 @@ const DEFAULT_PHONES = [
     model: "Galaxy S22 Ultra",
     storage: "256GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-s22-ultra.jpg",
+    image: "images/s22 ultra/073_galaxys22ultra_front_graphite.jpg",
+    images: [
+      "images/s22 ultra/073_galaxys22ultra_front_graphite.jpg",
+      "images/s22 ultra/075_galaxys22ultra_device_pen_front_-graphite.jpg",
+      "images/s22 ultra/077_galaxys22ultra_device_pen_back_-graphite.jpg",
+      "images/s22 ultra/086_galaxys22ultra_l_side_-graphite.jpg",
+      "images/s22 ultra/091_galaxys22ultra_front_red-1.jpg",
+      "images/s22 ultra/109_galaxys22ultra_front_skyblue.jpg"
+    ],
     specs: [
       "108MP Quad camera, 100x zoom",
       "Dynamic AMOLED 120Hz display",
@@ -93,7 +120,15 @@ const DEFAULT_PHONES = [
     model: "Galaxy S21 Ultra 5G",
     storage: "128GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-s21-ultra.jpg",
+    image: "images/S21/001_galaxys21_ultra_phantom_black_front.jpg",
+    images: [
+      "images/S21/001_galaxys21_ultra_phantom_black_front.jpg",
+      "images/S21/001_galaxys21_ultra_s_pen_front_black.jpg",
+      "images/S21/002_galaxys21_ultra_phantom_black_back.jpg",
+      "images/S21/002_galaxys21_ultra_phantom_brown_back.jpg",
+      "images/S21/002_galaxys21_ultra_phantom_silver_back.jpg",
+      "images/S21/002_galaxys21_ultra_phantom_titanium_back.jpg"
+    ],
     specs: [
       "108MP Pro Grade Camera, 8K video",
       "6.8\" Quad HD+ 120Hz display",
@@ -156,7 +191,13 @@ const DEFAULT_PHONES = [
     model: "Galaxy S20 Ultra 5G",
     storage: "128GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-s20-ultra.jpg",
+    image: "images/S20/002_galaxys20ultra_cosmic_gray_front-3.jpg",
+    images: [
+      "images/S20/002_galaxys20ultra_cosmic_gray_front-3.jpg",
+      "images/S20/001_galaxys20ultra_cosmic_gray_back-3.jpg",
+      "images/S20/004_galaxys20ultra_cosmic_gray_l_side-1.jpg",
+      "images/S20/007_galaxys20ultra_cosmic_black_back-1.jpg"
+    ],
     specs: [
       "108MP camera, 100x Space Zoom",
       "Massive 6.9\" Dynamic AMOLED 120Hz",
@@ -259,7 +300,15 @@ const DEFAULT_PHONES = [
     model: "iPhone 12",
     storage: "128GB",
     condition: "Renewed · Grade A",
-    image: "images/iphone-12.jpg",
+    image: "images/12 plain/Ami2cOQVE-9pT41G3KFS_xLhnwYDEKT_Y8iH4JW6Q6Mk1W07jxfa3efGg_xWm8HYY-AuM7CVCdxTT1BIih_Q32RK8yx71AcHyB00Zlc2G5XGEbM5TdVHp7Zr-XmGuPmigfYhkuw4hdswWRE4yQFEeFtaA7OV-CFapr2U4xqO_Qn4KT-b4s8DUDwXrEIXV46L.jpg",
+    images: [
+      "images/12 plain/Ami2cOQVE-9pT41G3KFS_xLhnwYDEKT_Y8iH4JW6Q6Mk1W07jxfa3efGg_xWm8HYY-AuM7CVCdxTT1BIih_Q32RK8yx71AcHyB00Zlc2G5XGEbM5TdVHp7Zr-XmGuPmigfYhkuw4hdswWRE4yQFEeFtaA7OV-CFapr2U4xqO_Qn4KT-b4s8DUDwXrEIXV46L.jpg",
+      "images/12 plain/BUwHAL2CwxhHXOMItmx4MgTGsl9lMb2rpsbeHT7urzm8u8qtzRZ8Ne-LZXhdh588Tg8aoj1qE6hup8RGftYiyWZYlXyd4uGv9cyj_sS96bIyyWHtUdvOvKiv49lJMPuYrQ9ZKhC-5bpa2Iv4umwLn9oC-aR9SGcNLlh_KXoN6c6_-Jxm3aBgX3Kgd23wdlzk.jpg",
+      "images/12 plain/iLK0Um7exV0vvJ__YNbTY3CpqedeDNmEaEP0WEzS9UBSwSIeAY5wQFppfp4RhbfU3SsvssnsT13EZ5FfZyTpp9ODl33J2XttE8H4s3aclBDGPR9KFO-tYPK5FtVq-V_1rKUGnkMqMO-FovVKy6_UMJY3EqHIbVKMT3-McXKL6oVNmuo0MUzmhwoygnXniI2I.jpg",
+      "images/12 plain/jwlT6efi-w8ileEcGp0UOAVk0dZjRL0QEAnMMQ9p4hvYbZPOm7RT_ac1yhagDl8mi7I4V28KOsLdYf36QpbBCuPyhtPIN8tRDXBubZOsy8MjYF7EBwxXlbKujD4YzcgS9No9evv39CyDgt2cdMTHMn3hDJis4o_gUwogXLremGFiCSeVUm-t0kDB7quUGsEt.jpg",
+      "images/12 plain/nMMvzhCO5T24FSF4voCKEe9Aa878XXuGS4Mwl1-nApgAcbEkFAru2uQGzgk-CNrO1gi8f8LVqBv4DDamUFDXAm5yXEqaDmyFnM2TNYyMMLF81EKXeJUj0nxGmpHJ5KVfbUrGkTkcnFZPqqKfhXPqvIi4yIM4GqCAfS1MAdRvSCSMFi_8zNied-cZjRtGJh3Z.jpg",
+      "images/12 plain/rkbdffzryVSjtBZPS0rnjvTmEH1tbfwptfTd6ZClnIaD9_HjEAwZMn_kfjnPmeIuA925YZAz2qtjm0uSfpo7NEh_9WKLISibyVetXILUFD5i7v85fWOhrTObnH29GogCx6BtSGxMCRgSIvkUZYv2WA51CLEQCLATkYrW408RIva9FFTGMccw1hfdq49aM9A5.jpg"
+    ],
     specs: [
       "5G ready flagship",
       "12MP dual camera, Night mode",

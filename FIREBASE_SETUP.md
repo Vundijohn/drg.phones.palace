@@ -85,6 +85,25 @@ If you prefer to keep security rules locked and grant the backend direct admin a
 3. Save the downloaded `.json` file in the project root as `serviceAccountKey.json`.
 4. The backend will automatically detect it and connect with full administrative privileges.
 
+### Render image uploads
+
+Uploaded product images are stored in Firebase Storage; the Render service's local
+filesystem is only used temporarily while an upload is in progress. To enable uploads
+on Render:
+
+1. Ensure Cloud Storage is enabled and `FIREBASE_STORAGE_BUCKET` is set to the bucket
+   name (for this project: `phones-3355c.firebasestorage.app`).
+2. Give the Firebase service account the **Storage Object Admin** role on the bucket.
+3. In the Render service's **Environment** settings, set `USE_FIREBASE=true`,
+   `FIREBASE_STORAGE_BUCKET`, and `FIREBASE_SERVICE_ACCOUNT_JSON` to the complete
+   contents of the service-account JSON key. Keep that key private; never commit it.
+4. Save the environment variables and redeploy. Admin uploads will then return durable
+   Firebase download URLs. Without these settings, image uploads fail with a clear
+   configuration error rather than saving files that disappear when Render restarts.
+5. Re-upload any affected photos whose saved URLs start with `/uploads/` or `uploads/`;
+   those files were stored on the service's temporary filesystem and cannot be recovered
+   after that filesystem has been cleared.
+
 ---
 
 ## ⚡ Checking Database Engine Status

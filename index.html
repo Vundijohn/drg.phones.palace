@@ -384,6 +384,30 @@
   </div>
 </div>
 
+<!-- FULLSCREEN PHONE IMAGE VIEWER (LIGHTBOX) -->
+<div class="phone-fullscreen-modal" id="phoneFullscreenModal" role="dialog" aria-modal="true" aria-label="Fullscreen phone photo viewer" tabindex="-1">
+  <div class="fullscreen-header">
+    <div class="fullscreen-phone-info">
+      <h3 class="fullscreen-phone-title" id="fullscreenPhoneTitle">Phone Model</h3>
+      <span class="fullscreen-image-counter" id="fullscreenImageCounter">1 / 1</span>
+    </div>
+    <div class="fullscreen-header-actions">
+      <button type="button" class="fullscreen-action-btn" id="fullscreenToggleNativeBtn" title="Toggle browser full screen" aria-label="Toggle browser full screen">⛶</button>
+      <button type="button" class="fullscreen-close-btn" id="closeFullscreenModal" title="Close full screen" aria-label="Close full screen">&times;</button>
+    </div>
+  </div>
+
+  <div class="fullscreen-stage" id="fullscreenStage">
+    <button type="button" class="fullscreen-nav-btn prev-btn" id="fullscreenPrevBtn" title="Previous photo" aria-label="Previous photo">&#10094;</button>
+    <div class="fullscreen-image-wrapper" id="fullscreenImageWrapper">
+      <img id="fullscreenMainImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Fullscreen phone view">
+    </div>
+    <button type="button" class="fullscreen-nav-btn next-btn" id="fullscreenNextBtn" title="Next photo" aria-label="Next photo">&#10095;</button>
+  </div>
+
+  <div class="fullscreen-gallery-strip" id="fullscreenGalleryStrip" role="region" aria-label="Phone image gallery thumbnails"></div>
+</div>
+
 <!-- THREE.JS & SCRIPTS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="assets/site.js"></script>

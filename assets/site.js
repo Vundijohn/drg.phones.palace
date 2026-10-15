@@ -897,25 +897,56 @@ function renderPhones(){
     const imgs = extractPhoneImages(phone);
     const primaryImg = imgs[0] || (phone.image && String(phone.image).trim()) || '';
     const hasValidImage = Boolean(primaryImg);
-    const mediaHtml = hasValidImage ? `
-      <div class="phone-media ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}">
-        ${offerBadgeHtml}
-        ${stockBadgeHtml}
-        <img src="${primaryImg}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
-        <span class="phone-condition-badge">${condition}</span>
-      </div>
-    ` : `
-      <div class="phone-media phone-media-placeholder ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}">
-        ${offerBadgeHtml}
-        ${stockBadgeHtml}
-        <div class="placeholder-content">
-          <span class="placeholder-icon">📱</span>
-          <span class="placeholder-title">${phone.model}</span>
-          <span class="placeholder-subtitle">Verified Renewed Device</span>
+    let mediaHtml = '';
+
+    if (hasValidImage) {
+      if (imgs.length > 1) {
+        mediaHtml = `
+          <div class="phone-media ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}" data-phone-id="${phone.id}">
+            ${offerBadgeHtml}
+            ${stockBadgeHtml}
+            <button type="button" class="card-fullscreen-btn" data-phone-id="${phone.id}" title="View in Full Screen" aria-label="View ${phone.model} in full screen">⛶</button>
+            <div class="phone-media-slider" id="slider-${phone.id}">
+              ${imgs.map((src, idx) => `
+                <div class="slider-slide" data-idx="${idx}">
+                  <img src="${src}" alt="${phone.model} ${phone.storage} - Photo ${idx + 1}" loading="lazy">
+                </div>
+              `).join('')}
+            </div>
+            <button type="button" class="card-slider-arrow prev" data-slider="slider-${phone.id}" data-dir="-1" title="Previous photo" aria-label="Previous photo">&#10094;</button>
+            <button type="button" class="card-slider-arrow next" data-slider="slider-${phone.id}" data-dir="1" title="Next photo" aria-label="Next photo">&#10095;</button>
+            <div class="card-slider-dots">
+              ${imgs.map((_, idx) => `<span class="card-slider-dot ${idx === 0 ? 'active' : ''}"></span>`).join('')}
+            </div>
+            <span class="phone-media-count-badge">📷 ${imgs.length}</span>
+            <span class="phone-condition-badge">${condition}</span>
+          </div>
+        `;
+      } else {
+        mediaHtml = `
+          <div class="phone-media ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}" data-phone-id="${phone.id}">
+            ${offerBadgeHtml}
+            ${stockBadgeHtml}
+            <button type="button" class="card-fullscreen-btn" data-phone-id="${phone.id}" title="View in Full Screen" aria-label="View ${phone.model} in full screen">⛶</button>
+            <img src="${primaryImg}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.parentElement.classList.add('phone-media-placeholder');this.parentElement.innerHTML='<div class=\\'placeholder-content\\'><span class=\\'placeholder-icon\\'>📱</span><span class=\\'placeholder-title\\'>${phone.model}</span><span class=\\'placeholder-subtitle\\'>Verified Renewed Device</span></div><span class=\\'phone-condition-badge\\'>${condition}</span>';">
+            <span class="phone-condition-badge">${condition}</span>
+          </div>
+        `;
+      }
+    } else {
+      mediaHtml = `
+        <div class="phone-media phone-media-placeholder ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}" data-phone-id="${phone.id}">
+          ${offerBadgeHtml}
+          ${stockBadgeHtml}
+          <div class="placeholder-content">
+            <span class="placeholder-icon">📱</span>
+            <span class="placeholder-title">${phone.model}</span>
+            <span class="placeholder-subtitle">Verified Renewed Device</span>
+          </div>
+          <span class="phone-condition-badge">${condition}</span>
         </div>
-        <span class="phone-condition-badge">${condition}</span>
-      </div>
-    `;
+      `;
+    }
 
     const actionBtnHtml = isOutOfStock ? `
       <a class="btn card-action-btn out-of-stock-btn" href="${getRestockWaLink(phone)}" onclick="recordInquiry('${phone.id}', 'restock')" target="_blank" rel="noopener">
@@ -945,6 +976,24 @@ function renderPhones(){
       </div>
     `;
     grid.appendChild(card);
+  });
+  attachCardSliderListeners(grid);
+}
+
+function attachCardSliderListeners(container){
+  if(!container) return;
+  container.querySelectorAll('.phone-media').forEach(media => {
+    const slider = media.querySelector('.phone-media-slider');
+    const dots = media.querySelectorAll('.card-slider-dot');
+    if(slider && dots.length){
+      slider.addEventListener('scroll', () => {
+        const width = slider.clientWidth;
+        if(width > 0){
+          const currentIdx = Math.round(slider.scrollLeft / width);
+          dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIdx));
+        }
+      }, { passive: true });
+    }
   });
 }
 
@@ -1010,13 +1059,89 @@ function openPhoneDetails(phone){
   const isOffer = Boolean(phone.onOffer);
   const images = extractPhoneImages(phone);
   const image = images[0] || (phone.image && String(phone.image).trim()) || '';
+  let activeDetailsIdx = 0;
+
   phoneDetailsVisual.innerHTML = image
-    ? `${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}<img id="phoneDetailsMainImage" src="${image}" alt="${phone.model} ${phone.storage}"><div class="phone-details-gallery">${images.map((galleryImage, index) => `<button type="button" class="${index === 0 ? 'active' : ''}" data-gallery-image="${galleryImage}" aria-label="View image ${index + 1}"><img src="${galleryImage}" alt="${phone.model} image ${index + 1}"></button>`).join('')}</div><span class="phone-details-visual-label">${condition}</span>`
-    : `${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}<div class="placeholder-content"><span class="placeholder-icon">📱</span><span class="placeholder-title">${phone.model}</span><span class="placeholder-subtitle">Verified Renewed Device</span></div><span class="phone-details-visual-label">${condition}</span>`;
-  phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
-    phoneDetailsVisual.querySelector('#phoneDetailsMainImage').src = button.dataset.galleryImage;
-    phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach(item => item.classList.toggle('active', item === button));
-  }));
+    ? `
+      ${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}
+      <button type="button" class="details-fullscreen-hint" id="detailsFullscreenBtn" title="View Full Screen" aria-label="View full screen">
+        <span>⛶</span> Full Screen
+      </button>
+      <img id="phoneDetailsMainImage" src="${image}" alt="${phone.model} ${phone.storage}">
+      ${images.length > 1 ? `
+        <button type="button" class="details-nav-arrow prev" id="detailsPrevImgBtn" aria-label="Previous image">&#10094;</button>
+        <button type="button" class="details-nav-arrow next" id="detailsNextImgBtn" aria-label="Next image">&#10095;</button>
+      ` : ''}
+      <div class="phone-details-gallery">
+        ${images.map((galleryImage, index) => `
+          <button type="button" class="${index === 0 ? 'active' : ''}" data-gallery-image="${galleryImage}" data-gallery-idx="${index}" aria-label="View image ${index + 1}">
+            <img src="${galleryImage}" alt="${phone.model} image ${index + 1}">
+          </button>
+        `).join('')}
+      </div>
+      <span class="phone-details-visual-label">${condition}</span>
+    `
+    : `
+      ${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}
+      <div class="placeholder-content">
+        <span class="placeholder-icon">📱</span>
+        <span class="placeholder-title">${phone.model}</span>
+        <span class="placeholder-subtitle">Verified Renewed Device</span>
+      </div>
+      <span class="phone-details-visual-label">${condition}</span>
+    `;
+
+  const updateDetailsImage = (idx) => {
+    if(!images.length) return;
+    if(idx < 0) idx = images.length - 1;
+    if(idx >= images.length) idx = 0;
+    activeDetailsIdx = idx;
+    const mainImg = phoneDetailsVisual.querySelector('#phoneDetailsMainImage');
+    if(mainImg && images[activeDetailsIdx]){
+      mainImg.src = images[activeDetailsIdx];
+    }
+    phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach((btn, i) => {
+      btn.classList.toggle('active', i === activeDetailsIdx);
+    });
+  };
+
+  phoneDetailsVisual.querySelectorAll('[data-gallery-image]').forEach((btn, idx) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateDetailsImage(idx);
+    });
+  });
+
+  const prevBtn = phoneDetailsVisual.querySelector('#detailsPrevImgBtn');
+  const nextBtn = phoneDetailsVisual.querySelector('#detailsNextImgBtn');
+  if(prevBtn){
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateDetailsImage(activeDetailsIdx - 1);
+    });
+  }
+  if(nextBtn){
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateDetailsImage(activeDetailsIdx + 1);
+    });
+  }
+
+  // Click on main image or fullscreen hint button opens fullscreen viewer
+  const fsBtn = phoneDetailsVisual.querySelector('#detailsFullscreenBtn');
+  const mainImg = phoneDetailsVisual.querySelector('#phoneDetailsMainImage');
+  if(fsBtn){
+    fsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPhoneFullscreen(phone, activeDetailsIdx);
+    });
+  }
+  if(mainImg){
+    mainImg.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPhoneFullscreen(phone, activeDetailsIdx);
+    });
+  }
 
   const isFinancing = activeKey !== 'cash';
   const isFinancingOffer = Boolean(isOffer && isFinancing);
@@ -1060,13 +1185,227 @@ function openPhoneDetails(phone){
   document.getElementById('modalContinueBrowsing').addEventListener('click', closePhoneDetails);
 }
 
+// ==================== FULLSCREEN PHONE VIEWER ENGINE ====================
+let currentFullscreenPhone = null;
+let currentFullscreenIndex = 0;
+let currentFullscreenImages = [];
+
+const phoneFullscreenModal = document.getElementById('phoneFullscreenModal');
+const closeFullscreenModalBtn = document.getElementById('closeFullscreenModal');
+const fullscreenToggleNativeBtn = document.getElementById('fullscreenToggleNativeBtn');
+const fullscreenPrevBtn = document.getElementById('fullscreenPrevBtn');
+const fullscreenNextBtn = document.getElementById('fullscreenNextBtn');
+const fullscreenStage = document.getElementById('fullscreenStage');
+
+function openPhoneFullscreen(phone, initialIndex = 0){
+  if(!phone) return;
+  let imgs = extractPhoneImages(phone);
+  if(!imgs.length && phone.image && String(phone.image).trim()){
+    imgs = [String(phone.image).trim()];
+  }
+  if(!imgs.length) return;
+
+  currentFullscreenPhone = phone;
+  currentFullscreenImages = imgs;
+  currentFullscreenIndex = Math.max(0, Math.min(Number(initialIndex) || 0, imgs.length - 1));
+
+  const titleEl = document.getElementById('fullscreenPhoneTitle');
+  if(titleEl){
+    titleEl.textContent = `${phone.model}${phone.storage ? ` · ${phone.storage}` : ''}`;
+  }
+
+  renderFullscreenView();
+
+  if(phoneFullscreenModal){
+    phoneFullscreenModal.classList.add('open');
+    phoneFullscreenModal.focus();
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function renderFullscreenView(){
+  const img = document.getElementById('fullscreenMainImg');
+  const counter = document.getElementById('fullscreenImageCounter');
+  const strip = document.getElementById('fullscreenGalleryStrip');
+
+  if(img && currentFullscreenImages[currentFullscreenIndex]){
+    img.style.opacity = '0';
+    img.style.transform = 'scale(0.96)';
+    setTimeout(() => {
+      img.src = currentFullscreenImages[currentFullscreenIndex];
+      img.alt = `${currentFullscreenPhone?.model || 'Phone'} - Photo ${currentFullscreenIndex + 1}`;
+      img.style.opacity = '1';
+      img.style.transform = 'scale(1)';
+    }, 90);
+  }
+
+  if(counter){
+    counter.textContent = `${currentFullscreenIndex + 1} / ${currentFullscreenImages.length}`;
+  }
+
+  if(fullscreenPrevBtn) fullscreenPrevBtn.style.display = currentFullscreenImages.length > 1 ? 'flex' : 'none';
+  if(fullscreenNextBtn) fullscreenNextBtn.style.display = currentFullscreenImages.length > 1 ? 'flex' : 'none';
+
+  if(strip){
+    if(currentFullscreenImages.length > 1){
+      strip.style.display = 'flex';
+      strip.innerHTML = currentFullscreenImages.map((src, idx) => `
+        <button type="button" class="fullscreen-thumb-btn ${idx === currentFullscreenIndex ? 'active' : ''}" data-idx="${idx}" aria-label="View photo ${idx + 1}">
+          <img src="${src}" alt="Thumb ${idx + 1}">
+        </button>
+      `).join('');
+
+      strip.querySelectorAll('.fullscreen-thumb-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentFullscreenIndex = Number(btn.dataset.idx);
+          renderFullscreenView();
+        });
+      });
+
+      const activeBtn = strip.querySelector('.fullscreen-thumb-btn.active');
+      if(activeBtn){
+        activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    } else {
+      strip.style.display = 'none';
+      strip.innerHTML = '';
+    }
+  }
+}
+
+function navigateFullscreen(direction){
+  if(!currentFullscreenImages.length) return;
+  if(direction === 'next'){
+    currentFullscreenIndex = (currentFullscreenIndex + 1) % currentFullscreenImages.length;
+  } else {
+    currentFullscreenIndex = (currentFullscreenIndex - 1 + currentFullscreenImages.length) % currentFullscreenImages.length;
+  }
+  renderFullscreenView();
+}
+
+function closePhoneFullscreen(){
+  if(phoneFullscreenModal){
+    phoneFullscreenModal.classList.remove('open');
+  }
+  const detailsModal = document.getElementById('phoneDetailsModal');
+  if(!detailsModal || !detailsModal.classList.contains('open')){
+    document.body.style.overflow = '';
+  }
+  if(document.fullscreenElement){
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+
+// Fullscreen button listeners
+if(closeFullscreenModalBtn){
+  closeFullscreenModalBtn.addEventListener('click', closePhoneFullscreen);
+}
+if(fullscreenPrevBtn){
+  fullscreenPrevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateFullscreen('prev');
+  });
+}
+if(fullscreenNextBtn){
+  fullscreenNextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateFullscreen('next');
+  });
+}
+if(fullscreenToggleNativeBtn){
+  fullscreenToggleNativeBtn.addEventListener('click', () => {
+    if(!document.fullscreenElement){
+      phoneFullscreenModal?.requestFullscreen?.().catch(()=>{});
+    } else {
+      document.exitFullscreen?.().catch(()=>{});
+    }
+  });
+}
+
+// Touch swipe support for sideways scrolling on mobile in fullscreen
+let fsTouchStartX = 0;
+let fsTouchStartY = 0;
+if(fullscreenStage){
+  fullscreenStage.addEventListener('touchstart', e => {
+    fsTouchStartX = e.changedTouches[0].screenX;
+    fsTouchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+  fullscreenStage.addEventListener('touchend', e => {
+    const diffX = e.changedTouches[0].screenX - fsTouchStartX;
+    const diffY = e.changedTouches[0].screenY - fsTouchStartY;
+    if(Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)){
+      if(diffX < 0) navigateFullscreen('next');
+      else navigateFullscreen('prev');
+    }
+  }, { passive: true });
+}
+
+// Keyboard controls
+document.addEventListener('keydown', e => {
+  if(phoneFullscreenModal && phoneFullscreenModal.classList.contains('open')){
+    if(e.key === 'ArrowRight') navigateFullscreen('next');
+    else if(e.key === 'ArrowLeft') navigateFullscreen('prev');
+    else if(e.key === 'Escape') closePhoneFullscreen();
+  }
+});
+
+// Card and Grid click handling
 document.getElementById('phoneGrid').addEventListener('click', (e) => {
+  // 1. Slider arrow navigation on phone card
+  const arrow = e.target.closest('.card-slider-arrow');
+  if(arrow){
+    e.stopPropagation();
+    e.preventDefault();
+    const sliderId = arrow.dataset.slider;
+    const dir = Number(arrow.dataset.dir || 1);
+    const slider = document.getElementById(sliderId);
+    if(slider){
+      const width = slider.clientWidth;
+      slider.scrollBy({ left: dir * width, behavior: 'smooth' });
+    }
+    return;
+  }
+
+  // 2. Fullscreen button on card
+  const fsBtn = e.target.closest('.card-fullscreen-btn');
+  if(fsBtn){
+    e.stopPropagation();
+    e.preventDefault();
+    const phone = phones.find(p => p.id === fsBtn.dataset.phoneId);
+    if(phone){
+      const media = fsBtn.closest('.phone-media');
+      const slider = media ? media.querySelector('.phone-media-slider') : null;
+      let slideIdx = 0;
+      if(slider && slider.clientWidth > 0){
+        slideIdx = Math.round(slider.scrollLeft / slider.clientWidth) || 0;
+      }
+      openPhoneFullscreen(phone, slideIdx);
+    }
+    return;
+  }
+
+  // 3. Direct click on phone photo slide
+  const slide = e.target.closest('.slider-slide');
+  if(slide){
+    e.stopPropagation();
+    e.preventDefault();
+    const media = slide.closest('.phone-media');
+    const phone = phones.find(p => p.id === media?.dataset.phoneId);
+    if(phone){
+      const slideIdx = Number(slide.dataset.idx) || 0;
+      openPhoneFullscreen(phone, slideIdx);
+    }
+    return;
+  }
+
   if(e.target.closest('a,button,input,select,textarea')) return;
   const card = e.target.closest('.phone-card');
   if(!card) return;
   const phone = phones.find(item => `phone-card-${item.id}` === card.id);
   openPhoneDetails(phone);
 });
+
 document.getElementById('phoneGrid').addEventListener('keydown', (e) => {
   if(e.key !== 'Enter' && e.key !== ' ') return;
   const card = e.target.closest('.phone-card');
@@ -1080,7 +1419,9 @@ phoneDetailsModal.addEventListener('click', e => {
   if(e.target === phoneDetailsModal) closePhoneDetails();
 });
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape' && phoneDetailsModal.classList.contains('open')) closePhoneDetails();
+  if(e.key === 'Escape' && phoneDetailsModal.classList.contains('open') && (!phoneFullscreenModal || !phoneFullscreenModal.classList.contains('open'))) {
+    closePhoneDetails();
+  }
 });
 
 

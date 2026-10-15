@@ -466,18 +466,40 @@ function displayCondition(phone){
   return `Renewed - ${raw}`;
 }
 
+function extractPhoneImages(phone){
+  if(!phone) return [];
+  let list = [];
+  if(Array.isArray(phone.images)){
+    list = phone.images;
+  } else if(phone.images && typeof phone.images === 'object'){
+    list = Object.values(phone.images);
+  }
+  if(phone.image && !list.includes(phone.image)){
+    list.unshift(phone.image);
+  }
+  return list
+    .map(u => (typeof u === 'string' ? u.trim() : ''))
+    .filter(u => u && u.length > 0 && !u.includes('[object Object]'));
+}
+
 function loadPhones(){
   try {
     const stored = localStorage.getItem(INVENTORY_STORAGE_KEY) || localStorage.getItem('drg_vundi_phones_v3');
     if(stored){
       const parsed = JSON.parse(stored);
       if(Array.isArray(parsed) && parsed.length > 0){
-        phones = parsed;
+        phones = parsed.map(p => {
+          const imgs = extractPhoneImages(p);
+          return { ...p, images: imgs, image: imgs[0] || p.image || '' };
+        });
         return;
       }
     }
   } catch(err){}
-  phones = JSON.parse(JSON.stringify(DEFAULT_PHONES));
+  phones = JSON.parse(JSON.stringify(DEFAULT_PHONES)).map(p => {
+    const imgs = extractPhoneImages(p);
+    return { ...p, images: imgs, image: imgs[0] || p.image || '' };
+  });
 }
 
 function savePhones(){
@@ -536,7 +558,10 @@ async function syncBackendData(){
     if(pRes.ok){
       const pData = await pRes.json();
       if(pData.success && Array.isArray(pData.data) && pData.data.length > 0){
-        phones = pData.data;
+        phones = pData.data.map(p => {
+          const imgs = extractPhoneImages(p);
+          return { ...p, images: imgs, image: imgs[0] || p.image || '' };
+        });
         savePhones();
         renderPhones();
         renderFeaturedPhones();
@@ -720,7 +745,8 @@ function renderFeaturedPhones(){
   const rail = document.getElementById('featuredPhoneRail');
   if(!rail) return;
   rail.innerHTML = phones.slice(0, 3).map((phone, index) => {
-    const image = (phone.image && String(phone.image).trim()) || (Array.isArray(phone.images) && phone.images.length ? String(phone.images[0]).trim() : '') || 'images/phones-bg.jpg';
+    const imgs = extractPhoneImages(phone);
+    const image = imgs[0] || 'images/phones-bg.jpg';
     return `<article class="featured-phone" data-featured-phone="${phone.id}">
       <img src="${image}" alt="${phone.model} ${phone.storage}" loading="lazy" onerror="this.onerror=null;this.src='images/phones-bg.jpg';">
       <div class="featured-phone-content"><small>0${index + 1} · ${displayCondition(phone)}</small><h3>${phone.model}</h3><a href="#phones" class="featured-phone-link" data-featured-action="${phone.id}">View Details</a></div>
@@ -868,7 +894,8 @@ function renderPhones(){
     card.tabIndex = 0;
     card.setAttribute('aria-label', `View details for ${phone.model}`);
 
-    const primaryImg = (phone.image && String(phone.image).trim()) || (Array.isArray(phone.images) && phone.images.length ? String(phone.images[0]).trim() : '');
+    const imgs = extractPhoneImages(phone);
+    const primaryImg = imgs[0] || (phone.image && String(phone.image).trim()) || '';
     const hasValidImage = Boolean(primaryImg);
     const mediaHtml = hasValidImage ? `
       <div class="phone-media ${isOffer ? 'has-offer' : ''} ${isOutOfStock ? 'is-sold-out' : ''}">
@@ -981,10 +1008,8 @@ function openPhoneDetails(phone){
   const activePlan = phone.plans[activeKey] || Object.values(phone.plans)[0];
   const condition = displayCondition(phone);
   const isOffer = Boolean(phone.onOffer);
-  const images = Array.isArray(phone.images) && phone.images.length
-    ? phone.images.filter(Boolean)
-    : (phone.image && String(phone.image).trim() ? [phone.image] : []);
-  const image = images[0];
+  const images = extractPhoneImages(phone);
+  const image = images[0] || (phone.image && String(phone.image).trim()) || '';
   phoneDetailsVisual.innerHTML = image
     ? `${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}<img id="phoneDetailsMainImage" src="${image}" alt="${phone.model} ${phone.storage}"><div class="phone-details-gallery">${images.map((galleryImage, index) => `<button type="button" class="${index === 0 ? 'active' : ''}" data-gallery-image="${galleryImage}" aria-label="View image ${index + 1}"><img src="${galleryImage}" alt="${phone.model} image ${index + 1}"></button>`).join('')}</div><span class="phone-details-visual-label">${condition}</span>`
     : `${isOffer ? `<span class="offer-card-badge" style="top:1.2rem;left:1.2rem;">${phone.offerTag || 'OFFER'}</span>` : ''}<div class="placeholder-content"><span class="placeholder-icon">📱</span><span class="placeholder-title">${phone.model}</span><span class="placeholder-subtitle">Verified Renewed Device</span></div><span class="phone-details-visual-label">${condition}</span>`;

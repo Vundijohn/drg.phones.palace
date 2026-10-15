@@ -8,7 +8,9 @@ const {
   firestoreOps,
   rtdbOps,
   testFirestoreAccess,
-  testRtdbAccess
+  testRtdbAccess,
+  testStorageAccess,
+  isStorageConnected
 } = require('./firebase');
 
 // Local file paths
@@ -91,13 +93,56 @@ async function getActiveEngine() {
   return 'local';
 }
 
+// Normalize phone object to guarantee clean images array and fields
+function normalizePhone(phone) {
+  if (!phone || typeof phone !== 'object') return null;
+  const p = { ...phone };
+
+  // 1. Normalize images: ensure Array of valid non-empty string URLs
+  let imgs = [];
+  if (Array.isArray(p.images)) {
+    imgs = p.images;
+  } else if (p.images && typeof p.images === 'object') {
+    imgs = Object.values(p.images);
+  } else if (p.image) {
+    imgs = [p.image];
+  }
+
+  imgs = imgs
+    .map(u => (typeof u === 'string' ? u.trim() : ''))
+    .filter(u => u && u.length > 0 && !u.includes('[object Object]'));
+
+  p.images = imgs;
+
+  // 2. Normalize primary image
+  if ((!p.image || typeof p.image !== 'string' || p.image.includes('[object Object]')) && imgs.length > 0) {
+    p.image = imgs[0];
+  } else if (p.image && typeof p.image === 'string') {
+    p.image = p.image.trim();
+  }
+
+  // 3. Ensure specs is array
+  if (!Array.isArray(p.specs)) {
+    if (typeof p.specs === 'string') {
+      p.specs = p.specs.split(/[,;\n]/).map(s => s.trim()).filter(Boolean);
+    } else {
+      p.specs = [];
+    }
+  }
+
+  return p;
+}
+
 const db = {
+  normalizePhone,
+
   // Check active engine status
   async getStatus() {
     const engine = await getActiveEngine();
     let dbName = 'Local JSON Store';
     if (engine === 'rtdb') dbName = 'Firebase Realtime Database';
     if (engine === 'firestore') dbName = 'Google Cloud Firestore';
+    const storageOk = typeof isStorageConnected === 'function' ? isStorageConnected() : false;
 
     return {
       database: dbName,
@@ -106,7 +151,9 @@ const db = {
       databaseURL: config.firebaseConfig.databaseURL,
       firebaseEnabled: config.USE_FIREBASE,
       rtdbActive: engine === 'rtdb',
-      firestoreActive: engine === 'firestore'
+      firestoreActive: engine === 'firestore',
+      storageActive: storageOk,
+      storageEngine: storageOk ? 'Firebase Cloud Storage' : 'Local Server Storage'
     };
   },
 
@@ -152,6 +199,9 @@ const db = {
       phones = safeReadJson(PHONES_FILE, DEFAULT_PHONES);
     }
 
+    // Always normalize every phone
+    phones = phones.map(normalizePhone).filter(Boolean);
+
     const { category, search } = options;
 
     if (category && category !== 'all') {
@@ -171,29 +221,34 @@ const db = {
 
   async getPhoneById(id) {
     const engine = await getActiveEngine();
+    let phone = null;
     if (engine === 'rtdb') {
       try {
         const p = await rtdbOps.get(`phones/${id}`);
-        if (p) return p;
+        if (p) phone = p;
       } catch (e) {}
     } else if (engine === 'firestore') {
       try {
         const p = await firestoreOps.getDoc('phones', id);
-        if (p) return p;
+        if (p) phone = p;
       } catch (e) {}
     }
 
-    const phones = safeReadJson(PHONES_FILE, DEFAULT_PHONES);
-    return phones.find(p => p.id === id) || null;
+    if (!phone) {
+      const phones = safeReadJson(PHONES_FILE, DEFAULT_PHONES);
+      phone = phones.find(p => p.id === id) || null;
+    }
+
+    return normalizePhone(phone);
   },
 
   async createPhone(phoneData) {
     const id = phoneData.id || `phone-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
-    const newPhone = {
+    const newPhone = normalizePhone({
       ...phoneData,
       id,
       createdAt: new Date().toISOString()
-    };
+    });
 
     const engine = await getActiveEngine();
     if (engine === 'rtdb') {
@@ -221,32 +276,34 @@ const db = {
   },
 
   async updatePhone(id, updates) {
+    const existing = await this.getPhoneById(id);
     const engine = await getActiveEngine();
-    const payload = {
+    const merged = normalizePhone({
+      ...(existing || {}),
       ...updates,
       id,
       updatedAt: new Date().toISOString()
-    };
+    });
 
     if (engine === 'rtdb') {
       try {
-        await rtdbOps.update(`phones/${id}`, payload);
+        await rtdbOps.update(`phones/${id}`, merged);
       } catch (e) {}
     } else if (engine === 'firestore') {
       try {
-        await firestoreOps.updateDoc('phones', id, payload);
+        await firestoreOps.updateDoc('phones', id, merged);
       } catch (e) {}
     }
 
     const phones = safeReadJson(PHONES_FILE, DEFAULT_PHONES);
     const index = phones.findIndex(p => p.id === id);
     if (index !== -1) {
-      phones[index] = { ...phones[index], ...payload };
+      phones[index] = merged;
     } else {
-      phones.unshift(payload);
+      phones.unshift(merged);
     }
     safeWriteJson(PHONES_FILE, phones);
-    return payload;
+    return merged;
   },
 
   async deletePhone(id) {

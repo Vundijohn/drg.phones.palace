@@ -41,6 +41,7 @@ const {
 
 let isFirestoreConnected = false;
 let isRtdbConnected = false;
+let isStorageConnected = false;
 let firestoreMode = 'none'; // 'admin' | 'client' | 'none'
 let rtdbMode = 'none';      // 'admin' | 'client' | 'none'
 
@@ -52,30 +53,84 @@ let clientDb = null;
 let clientRtdb = null;
 let clientApp = null;
 
+function loadServiceAccountObject() {
+  // Option 1: Base64 environment variable (best for Render/PaaS)
+  if (config.FIREBASE_SERVICE_ACCOUNT_BASE64) {
+    try {
+      const decoded = Buffer.from(config.FIREBASE_SERVICE_ACCOUNT_BASE64.trim(), 'base64').toString('utf8');
+      const parsed = JSON.parse(decoded);
+      return { account: parsed, source: 'FIREBASE_SERVICE_ACCOUNT_BASE64' };
+    } catch (e) {
+      console.warn(`[Firebase] Could not parse FIREBASE_SERVICE_ACCOUNT_BASE64: ${e.message}`);
+    }
+  }
+
+  // Option 2: Raw or encoded JSON environment variable
+  if (config.FIREBASE_SERVICE_ACCOUNT_JSON) {
+    try {
+      let raw = config.FIREBASE_SERVICE_ACCOUNT_JSON.trim();
+      // Remove accidental wrapping quotes
+      if ((raw.startsWith("'") && raw.endsWith("'")) || (raw.startsWith('"') && raw.endsWith('"'))) {
+        raw = raw.slice(1, -1).trim();
+      }
+      // Check if base64 encoded
+      if (!raw.startsWith('{') && /^[A-Za-z0-9+/=]+$/.test(raw)) {
+        try {
+          raw = Buffer.from(raw, 'base64').toString('utf8');
+        } catch (e) {}
+      }
+      const parsed = JSON.parse(raw);
+      return { account: parsed, source: 'FIREBASE_SERVICE_ACCOUNT_JSON' };
+    } catch (e) {
+      console.warn(`[Firebase] Could not parse FIREBASE_SERVICE_ACCOUNT_JSON: ${e.message}`);
+    }
+  }
+
+  // Option 3: Local file path
+  const serviceAccountPath = path.resolve(config.FIREBASE_SERVICE_ACCOUNT_PATH);
+  if (fs.existsSync(serviceAccountPath)) {
+    try {
+      const content = fs.readFileSync(serviceAccountPath, 'utf8');
+      const parsed = JSON.parse(content);
+      return { account: parsed, source: 'serviceAccountKey.json' };
+    } catch (e) {
+      console.warn(`[Firebase] Could not read serviceAccountKey.json: ${e.message}`);
+    }
+  }
+
+  return null;
+}
+
 function initializeFirebase() {
   if (!config.USE_FIREBASE) {
     return false;
   }
 
-  // 1. Try Admin SDK with Service Account Key if file exists
+  // 1. Try Admin SDK with Service Account Key
   if (adminAppSdk) {
-    const serviceAccountPath = path.resolve(config.FIREBASE_SERVICE_ACCOUNT_PATH);
-    if (config.FIREBASE_SERVICE_ACCOUNT_JSON || fs.existsSync(serviceAccountPath)) {
+    const loaded = loadServiceAccountObject();
+    if (loaded && loaded.account) {
       try {
-        const serviceAccount = config.FIREBASE_SERVICE_ACCOUNT_JSON
-          ? JSON.parse(config.FIREBASE_SERVICE_ACCOUNT_JSON)
-          : JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        const serviceAccount = loaded.account;
+        // Fix escaped newlines in private key if present
+        if (serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
+          serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+        }
+
+        const bucketName = config.firebaseConfig.storageBucket || `${serviceAccount.project_id || config.firebaseConfig.projectId}.firebasestorage.app`;
         const apps = adminAppSdk.getApps();
         adminApp = apps.length > 0
           ? apps[0]
           : adminAppSdk.initializeApp({
             credential: adminAppSdk.cert(serviceAccount),
-            storageBucket: config.firebaseConfig.storageBucket,
+            storageBucket: bucketName,
             databaseURL: config.firebaseConfig.databaseURL,
-            projectId: config.firebaseConfig.projectId
+            projectId: serviceAccount.project_id || config.firebaseConfig.projectId
           });
         adminDb = getAdminFirestore(adminApp);
-        adminStorage = getAdminStorage(adminApp);
+        if (getAdminStorage) {
+          adminStorage = getAdminStorage(adminApp);
+        }
         firestoreMode = 'admin';
 
         if (getAdminDatabase) {
@@ -83,8 +138,7 @@ function initializeFirebase() {
           rtdbMode = 'admin';
         }
 
-        const credentialSource = config.FIREBASE_SERVICE_ACCOUNT_JSON ? 'environment variable' : 'serviceAccountKey.json';
-        console.log(`[Firebase] 🔥 Initialized Firebase Admin SDK via ${credentialSource} (Project: ${config.firebaseConfig.projectId})`);
+        console.log(`[Firebase] 🔥 Initialized Firebase Admin SDK via ${loaded.source} (Project: ${serviceAccount.project_id || config.firebaseConfig.projectId})`);
         return true;
       } catch (err) {
         console.warn(`[Firebase] Failed initializing Admin SDK with service account: ${err.message}`);
@@ -343,22 +397,55 @@ const firestoreOps = {
   }
 };
 
+let lastStorageTestTime = 0;
+// Test Firebase Storage connectivity
+async function testStorageAccess(force = false) {
+  if (!adminStorage) {
+    isStorageConnected = false;
+    return false;
+  }
+
+  const now = Date.now();
+  if (!force && lastStorageTestTime && (now - lastStorageTestTime < TEST_COOLDOWN_MS)) {
+    return isStorageConnected;
+  }
+  lastStorageTestTime = now;
+
+  try {
+    const bucketName = config.firebaseConfig.storageBucket || `${config.firebaseConfig.projectId}.firebasestorage.app`;
+    const bucket = adminStorage.bucket(bucketName);
+    const [exists] = await bucket.exists();
+    isStorageConnected = exists;
+    if (exists) {
+      console.log(`[Firebase] ✅ Firebase Storage bucket active: ${bucketName}`);
+    }
+    return exists;
+  } catch (err) {
+    isStorageConnected = false;
+    console.warn(`[Firebase] ⚠️ Storage bucket check notice: ${err.message}`);
+    return false;
+  }
+}
+
 initializeFirebase();
 
 module.exports = {
-  adminApp,
-  adminDb,
-  adminRtdb,
-  adminStorage,
-  clientDb,
-  clientRtdb,
-  firestoreMode,
-  rtdbMode,
+  get adminApp() { return adminApp; },
+  get adminDb() { return adminDb; },
+  get adminRtdb() { return adminRtdb; },
+  get adminStorage() { return adminStorage; },
+  get clientDb() { return clientDb; },
+  get clientRtdb() { return clientRtdb; },
+  get clientApp() { return clientApp; },
+  get firestoreMode() { return firestoreMode; },
+  get rtdbMode() { return rtdbMode; },
   initializeFirebase,
   testFirestoreAccess,
   testRtdbAccess,
+  testStorageAccess,
   isFirestoreConnected: () => isFirestoreConnected,
   isRtdbConnected: () => isRtdbConnected,
+  isStorageConnected: () => isStorageConnected,
   firestoreOps,
   rtdbOps
 };

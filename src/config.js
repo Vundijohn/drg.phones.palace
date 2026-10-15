@@ -10,6 +10,7 @@ module.exports = {
   UPLOADS_DIR: path.join(__dirname, '..', 'uploads'),
   USE_FIREBASE: process.env.USE_FIREBASE === 'true' || process.env.USE_FIREBASE === '1',
   FIREBASE_SERVICE_ACCOUNT_JSON: process.env.FIREBASE_SERVICE_ACCOUNT_JSON,
+  FIREBASE_SERVICE_ACCOUNT_BASE64: process.env.FIREBASE_SERVICE_ACCOUNT_BASE64,
   FIREBASE_SERVICE_ACCOUNT_PATH: process.env.FIREBASE_SERVICE_ACCOUNT_PATH || path.join(__dirname, '..', 'serviceAccountKey.json'),
   firebaseConfig: {
     apiKey: process.env.FIREBASE_API_KEY || 'AIzaSyDj-I8oO-JKXLXdmK-nJuw3pIrCKLpjeNw',

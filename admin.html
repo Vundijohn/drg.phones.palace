@@ -92,6 +92,7 @@
   }
   .pin-card{
     background:rgba(21,15,34,0.88);
+    -webkit-backdrop-filter:blur(20px);
     backdrop-filter:blur(20px);
     border:1px solid rgba(217,166,83,0.35);
     border-radius:24px;
@@ -320,6 +321,7 @@
     top:0;
     z-index:60;
     background:var(--header-bg);
+    -webkit-backdrop-filter:blur(12px);
     backdrop-filter:blur(12px);
     border-bottom:1px solid var(--line);
     padding:14px 0;
@@ -352,6 +354,7 @@
     box-shadow:0 4px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
     transition:all 0.28s ease;
     text-decoration:none;
+    -webkit-user-select:none;
     user-select:none;
   }
   .drg-brand-badge:hover{
@@ -390,12 +393,14 @@
     text-transform:uppercase;
     background:linear-gradient(135deg, #ffffff 0%, #f7ecd7 50%, #c8a96e 100%);
     -webkit-background-clip:text;
+    background-clip:text;
     -webkit-text-fill-color:transparent;
     display:inline-block;
   }
   body.light .drg-brand-drg{
     background:linear-gradient(135deg, #0e0e18 0%, #1f1f32 60%, #b8891e 100%);
     -webkit-background-clip:text;
+    background-clip:text;
     -webkit-text-fill-color:transparent;
   }
   .drg-brand-sparkle{
@@ -793,6 +798,7 @@
     inset:0;
     z-index:1000;
     background:rgba(5,3,10,0.82);
+    -webkit-backdrop-filter:blur(8px);
     backdrop-filter:blur(8px);
     display:none;
     align-items:center;
@@ -1200,8 +1206,8 @@
 
     <!-- Auth Mode Switch Tabs -->
     <div class="auth-tabs" role="tablist">
-      <button type="button" class="auth-tab-btn active" id="tabSignInBtn">🔑 Sign In</button>
-      <button type="button" class="auth-tab-btn" id="tabRegisterBtn">✨ Create Admin Account</button>
+      <button type="button" class="auth-tab-btn active" id="tabSignInBtn" role="tab" aria-selected="true">🔑 Sign In</button>
+      <button type="button" class="auth-tab-btn" id="tabRegisterBtn" role="tab" aria-selected="false">✨ Create Admin Account</button>
     </div>
 
     <!-- 1. SIGN IN FORM -->

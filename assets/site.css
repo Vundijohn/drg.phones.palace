@@ -440,17 +440,19 @@ html.light .catalogue-section{background:rgba(244,240,235,0.65)}
 .clear-search-btn{
   position:absolute;right:12px;background:none;border:none;color:var(--accent);
   opacity:0.5;cursor:pointer;font-size:14px;padding:4px;line-height:1;
-  transition:all 0.15s;
+  transition:all 0.15s;display:none;
 }
 .clear-search-btn:hover{opacity:1;color:var(--accent2)}
 .search-submit-btn{
   flex:0 0 auto;padding:0.75rem 1.6rem;white-space:nowrap;cursor:pointer;
 }
 .search-status-bar{
-  display:flex;align-items:center;justify-content:space-between;
+  display:none;align-items:center;justify-content:space-between;
   font-family:var(--mono);font-size:11px;color:var(--accent);opacity:0.85;
   padding:2px 4px 6px;width:100%;
 }
+.drg-name-pill .drg-brand-drg{font-size:12px}
+.drg-name-pill .drg-brand-palace{font-size:10.5px}
 .search-status-text{color:var(--accent2)}
 .search-reset-link{
   background:none;border:none;color:var(--accent2);text-decoration:underline;
@@ -907,6 +909,7 @@ html.light .help-agent-input{background:#fff;color:#111820}
   transition:transform 0.2s ease,box-shadow 0.2s ease;
 }
 .sticky-wa:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(37,211,102,0.6)}
+.sticky-help{right:84px;background:var(--accent2);font-size:18px}
 
 /* ANIMATIONS & SCROLL REVEAL */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}

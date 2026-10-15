@@ -258,6 +258,7 @@
     color:var(--text-muted);
   }
   .form-error{
+    display:none;
     color:var(--danger);
     font-size:12.5px;
     font-weight:700;
@@ -1184,6 +1185,57 @@
     .form-grid{grid-template-columns:1fr;}
     .form-group.full-width{grid-column:auto;}
   }
+
+  /* EXTRACTED STYLES FOR CLEAN HTML */
+  .pin-brand-center{display:flex;justify-content:center;margin-bottom:14px;}
+  .pin-brand-badge{padding:6px 18px 6px 8px;}
+  .pin-badge-logo{width:38px;height:38px;}
+  .pin-badge-text{gap:9px;}
+  .pin-brand-drg{font-size:18px;}
+  .pin-brand-sparkle{font-size:11px;}
+  .pin-brand-palace{font-size:12px;letter-spacing:0.22em;}
+  .pin-subtext{margin-bottom:18px;}
+  .auth-divider-box{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);text-align:center;}
+  .toggle-pin-btn{background:none;border:none;color:var(--gold-bright);font-size:12.5px;cursor:pointer;text-decoration:underline;}
+  .pin-login-section{display:none;margin-top:14px;text-align:left;}
+  .gate-pin-input{text-align:center;letter-spacing:6px;font-size:18px;}
+  .pin-unlock-btn{background:linear-gradient(135deg,var(--purple),var(--purple-deep));color:#fff;}
+  .register-success-box{display:none;color:var(--whatsapp);background:rgba(47,195,91,0.12);border:1px solid rgba(47,195,91,0.3);padding:10px;border-radius:8px;font-size:12.5px;font-weight:700;margin-bottom:14px;}
+  .admin-user-badge{background:rgba(108,75,175,0.22);border:1px solid var(--purple-soft);color:var(--text-primary);font-size:11.5px;display:inline-flex;align-items:center;gap:6px;}
+  .backend-status-badge{background:rgba(255,160,0,0.18);border:1px solid #ffa000;color:#ffb300;display:none;font-size:11px;}
+  .storage-status-badge{background:rgba(46,204,113,0.15);border:1px solid #2ecc71;color:#2ecc71;display:none;font-size:11px;}
+  .th-actions{text-align:right;}
+  .upload-subtext{font-size:9.5px;opacity:0.65;}
+  .form-hint-spaced{margin-top:4px;}
+  .form-group-financing{border-top:1px solid var(--line);padding-top:14px;margin-top:6px;}
+  .financing-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;}
+  .financing-title-label{margin:0;font-size:14px;font-weight:700;}
+  .btn-recalc{border-color:var(--gold);color:var(--gold-bright);background:transparent;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;}
+  .grid-full-col{grid-column:1/-1;}
+  .single-tier-fields{display:none;grid-column:1/-1;}
+  .stock-config-box{background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.3);border-radius:12px;padding:14px;margin:8px 0;}
+  .flex-between-center{display:flex;align-items:center;justify-content:space-between;}
+  .stock-label{margin:0;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);cursor:pointer;}
+  .stock-checkbox{width:19px;height:19px;accent-color:#2ecc71;cursor:pointer;}
+  .stock-status-text{font-weight:700;color:#2ecc71;}
+  .stock-hint{color:var(--text-muted);display:block;margin-top:6px;}
+  .offer-config-box{background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.28);border-radius:12px;padding:14px;margin:10px 0;}
+  .offer-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+  .offer-label{margin:0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-primary);cursor:pointer;}
+  .offer-checkbox{width:18px;height:18px;accent-color:#e63946;cursor:pointer;}
+  .offer-heading-text{color:#ff4d4d;}
+  .offer-badge-pill{background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em;}
+  .offer-hint{color:var(--text-muted);display:block;margin-bottom:8px;}
+  .offer-fields-grid{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+  .modal-danger-title{color:var(--danger);}
+  .delete-modal-msg{margin:0 0 8px 0;font-size:14px;color:var(--text-primary);}
+  .delete-modal-sub{margin:0;font-size:12.5px;color:var(--text-muted);}
+  .form-group-spaced{margin-top:10px;}
+  .change-pin-error{display:none;margin-top:12px;}
+  .backup-textarea{font-family:monospace;font-size:12px;}
+  .footer-between{justify-content:space-between;}
+  .modal-footer-btns{display:flex;gap:8px;}
+  #adminRegisterForm,#tableEmptyState,#photoPreviewImg,#clearPhotoBtn,#phoneFileInput{display:none;}
 </style>
 </head>
 <body>
@@ -1191,18 +1243,18 @@
 <!-- ==================== ADMIN AUTHENTICATION GATE SCREEN ==================== -->
 <div class="pin-gate-wrap" id="pinGateScreen">
   <div class="pin-card" id="pinCard">
-    <div style="display:flex;justify-content:center;margin-bottom:14px;">
-      <div class="drg-brand-badge" style="padding:6px 18px 6px 8px;">
-        <img src="images/drg-logo.png" alt="DRG Phones Palace Logo" class="drg-badge-icon" style="width:38px;height:38px;">
-        <div class="drg-badge-text" style="gap:9px;">
-          <span class="drg-brand-drg" style="font-size:18px;">DRG</span>
-          <span class="drg-brand-sparkle" style="font-size:11px;">✦</span>
-          <span class="drg-brand-palace" style="font-size:12px;letter-spacing:0.22em;">PHONES PALACE</span>
+    <div class="pin-brand-center">
+      <div class="drg-brand-badge pin-brand-badge">
+        <img src="images/drg-logo.png" alt="DRG Phones Palace Logo" class="drg-badge-icon pin-badge-logo">
+        <div class="drg-badge-text pin-badge-text">
+          <span class="drg-brand-drg pin-brand-drg">DRG</span>
+          <span class="drg-brand-sparkle pin-brand-sparkle">✦</span>
+          <span class="drg-brand-palace pin-brand-palace">PHONES PALACE</span>
         </div>
       </div>
     </div>
     <div class="pin-badge">🛡️ Admin Security Portal</div>
-    <p style="margin-bottom:18px;">Sign in to your administrator account or create a new store admin profile.</p>
+    <p class="pin-subtext">Sign in to your administrator account or create a new store admin profile.</p>
 
     <!-- Auth Mode Switch Tabs -->
     <div class="auth-tabs" role="tablist">
@@ -1220,20 +1272,20 @@
         <label for="loginPassword">Password *</label>
         <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password" autocomplete="current-password" required>
       </div>
-      <div id="loginError" class="form-error" style="display:none;"></div>
+      <div id="loginError" class="form-error"></div>
       <button type="submit" class="btn-unlock" id="loginSubmitBtn">🔓 Sign In to Dashboard</button>
 
       <!-- Quick PIN Access Collapsible -->
-      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);text-align:center;">
-        <button type="button" id="togglePinLoginBtn" style="background:none;border:none;color:var(--gold-bright);font-size:12.5px;cursor:pointer;text-decoration:underline;">
+      <div class="auth-divider-box">
+        <button type="button" id="togglePinLoginBtn" class="toggle-pin-btn">
           Need quick access? Use Master Security PIN
         </button>
-        <div id="pinLoginSection" style="display:none;margin-top:14px;text-align:left;">
+        <div id="pinLoginSection" class="pin-login-section">
           <div class="auth-form-group">
             <label for="gatePinInput">Master Security PIN</label>
-            <input type="password" id="gatePinInput" class="auth-input" placeholder="••••" maxlength="10" autocomplete="current-password" style="text-align:center;letter-spacing:6px;font-size:18px;">
+            <input type="password" id="gatePinInput" class="auth-input gate-pin-input" placeholder="••••" maxlength="10" autocomplete="current-password">
           </div>
-          <button type="button" id="pinUnlockSubmitBtn" class="btn-unlock" style="background:linear-gradient(135deg,var(--purple),var(--purple-deep));color:#fff;">
+          <button type="button" id="pinUnlockSubmitBtn" class="btn-unlock pin-unlock-btn">
             Unlock with PIN
           </button>
         </div>
@@ -1241,7 +1293,7 @@
     </form>
 
     <!-- 2. CREATE ADMIN ACCOUNT (REGISTER) FORM -->
-    <form id="adminRegisterForm" style="display:none;">
+    <form id="adminRegisterForm">
       <div class="auth-form-group">
         <label for="regFullName">Full Name *</label>
         <input type="text" id="regFullName" class="auth-input" placeholder="e.g. John Vundi" required>
@@ -1262,8 +1314,8 @@
         <label for="regConfirmPassword">Confirm Password *</label>
             <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Repeat your password" minlength="8" required autocomplete="new-password">
       </div>
-      <div id="registerError" class="form-error" style="display:none;"></div>
-      <div id="registerSuccess" style="display:none;color:var(--whatsapp);background:rgba(47,195,91,0.12);border:1px solid rgba(47,195,91,0.3);padding:10px;border-radius:8px;font-size:12.5px;font-weight:700;margin-bottom:14px;"></div>
+      <div id="registerError" class="form-error"></div>
+      <div id="registerSuccess" class="register-success-box"></div>
       <button type="submit" class="btn-unlock" id="registerSubmitBtn">✨ Create Admin Account</button>
     </form>
 
@@ -1292,11 +1344,11 @@
           </div>
         </a>
         <span class="admin-badge">Admin Console</span>
-        <span id="adminUserBadge" class="admin-badge" style="background:rgba(108,75,175,0.22); border: 1px solid var(--purple-soft); color:var(--text-primary); font-size: 11.5px; display:inline-flex; align-items:center; gap:6px;">
+        <span id="adminUserBadge" class="admin-badge admin-user-badge">
           👤 <strong id="currentAdminName">Store Administrator</strong>
         </span>
-        <span id="backendStatusBadge" class="admin-badge" style="background:rgba(255,160,0,0.18); border: 1px solid #ffa000; color:#ffb300; display:none; font-size: 11px;">🔥 Firebase</span>
-        <span id="storageStatusBadge" class="admin-badge" style="background:rgba(46,204,113,0.15); border: 1px solid #2ecc71; color:#2ecc71; display:none; font-size: 11px;" title="Image storage status">☁️ Storage</span>
+        <span id="backendStatusBadge" class="admin-badge backend-status-badge">🔥 Firebase</span>
+        <span id="storageStatusBadge" class="admin-badge storage-status-badge" title="Image storage status">☁️ Storage</span>
       </div>
       <div class="header-actions">
         <a href="index.html" target="_blank" class="btn btn-outline" title="Open customer website in new tab">
@@ -1397,7 +1449,7 @@
                 <th>Stock Status</th>
                 <th>Cash Price</th>
                 <th>Financing Details</th>
-                <th style="text-align:right;">Actions</th>
+                <th class="th-actions">Actions</th>
               </tr>
             </thead>
             <tbody id="inventoryTableBody">
@@ -1405,7 +1457,7 @@
             </tbody>
           </table>
         </div>
-        <div id="tableEmptyState" class="empty-state" style="display:none;">
+        <div id="tableEmptyState" class="empty-state">
           <div class="empty-icon">📱</div>
           <h3>No renewed phones match your search or filter</h3>
           <p>Try searching for a different keyword or add a new device.</p>
@@ -1462,18 +1514,18 @@
             <div class="photo-main-row">
               <!-- Visual Live Preview Box -->
               <div class="photo-preview-card" id="photoPreviewBox">
-                <img id="photoPreviewImg" src="" alt="Device Preview" style="display:none;">
+                <img id="photoPreviewImg" src="" alt="Device Preview">
                 <div id="photoPreviewPlaceholder" class="preview-placeholder">
                   <span class="preview-icon">📷</span>
                   <span class="preview-text">No Photo</span>
-                  <span style="font-size:9.5px;opacity:0.65;">Upload from device</span>
+                  <span class="upload-subtext">Upload from device</span>
                 </div>
-                <button type="button" id="clearPhotoBtn" class="clear-photo-btn" style="display:none;" title="Remove Photo">✕</button>
+                <button type="button" id="clearPhotoBtn" class="clear-photo-btn" title="Remove Photo">✕</button>
               </div>
 
               <!-- Upload Actions & URL Input -->
               <div class="photo-actions-col">
-                <input type="file" id="phoneFileInput" accept="image/jpeg,image/png,image/webp,image/jpg" multiple style="display:none;">
+                <input type="file" id="phoneFileInput" accept="image/jpeg,image/png,image/webp,image/jpg" multiple>
                 <button type="button" class="btn-upload-file" id="uploadPhotoBtn">
                   <span>📁</span> Select Photo from Computer / Phone
                 </button>
@@ -1486,7 +1538,7 @@
               </div>
             </div>
           </div>
-          <span class="form-hint" style="margin-top:4px;">If no photo is added, an elegant "Verified Renewed Device" placeholder card will be displayed on the storefront.</span>
+          <span class="form-hint form-hint-spaced">If no photo is added, an elegant "Verified Renewed Device" placeholder card will be displayed on the storefront.</span>
         </div>
         <div class="form-group full-width">
           <label for="newPhoneCashPrice">Full Cash Price (KES) *</label>
@@ -1494,10 +1546,10 @@
         </div>
 
         <!-- FINANCING PLAN CONFIG -->
-        <div class="form-group full-width" style="border-top:1px solid var(--line);padding-top:14px;margin-top:6px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;">
-            <label style="margin:0;font-size:14px;font-weight:700;">Financing Structure *</label>
-            <button type="button" id="recalcPlansBtn" class="btn-sm btn-outline" style="border-color:var(--gold);color:var(--gold-bright);background:transparent;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;" title="Recalculate MoSaver and MoStandard based on cash price">⚡ Auto-Recalculate Plans from Price</button>
+        <div class="form-group full-width form-group-financing">
+          <div class="financing-header-row">
+            <label class="financing-title-label">Financing Structure *</label>
+            <button type="button" id="recalcPlansBtn" class="btn-sm btn-outline btn-recalc" title="Recalculate MoSaver and MoStandard based on cash price">⚡ Auto-Recalculate Plans from Price</button>
           </div>
           <div class="plan-type-selector">
             <button type="button" class="plan-type-btn active" id="planTypeSamsungBtn">Multi-Tier Flagship (MoSaver 6M + MoStandard 12M)</button>
@@ -1506,7 +1558,7 @@
         </div>
 
         <!-- MULTI TIER SECTION -->
-        <div id="multiTierFields" class="full-width form-grid" style="grid-column:1/-1;">
+        <div id="multiTierFields" class="full-width form-grid grid-full-col">
           <div class="form-group">
             <label for="newMoSaverDeposit">MoSaver (6M) Deposit (KES) *</label>
             <input type="number" id="newMoSaverDeposit" min="0" step="any" placeholder="e.g. 16199">
@@ -1530,7 +1582,7 @@
         </div>
 
         <!-- STANDARD SINGLE TIER SECTION -->
-        <div id="singleTierFields" class="full-width form-grid" style="display:none;grid-column:1/-1;">
+        <div id="singleTierFields" class="full-width form-grid single-tier-fields">
           <div class="form-group">
             <label for="newStandardDeposit">Deposit (KES) *</label>
             <input type="number" id="newStandardDeposit" min="0" step="any" placeholder="e.g. 5000">
@@ -1546,31 +1598,31 @@
         </div>
 
         <!-- INVENTORY & STOCK AVAILABILITY -->
-        <div class="form-group full-width" style="background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.3);border-radius:12px;padding:14px;margin:8px 0;" id="stockConfigBox">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <label style="margin:0;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);cursor:pointer;">
-              <input type="checkbox" id="phoneInStock" checked style="width:19px;height:19px;accent-color:#2ecc71;cursor:pointer;">
-              <span id="phoneInStockLabel" style="font-weight:700;color:#2ecc71;">🟢 In Stock (Available for customer orders)</span>
+        <div class="form-group full-width stock-config-box" id="stockConfigBox">
+          <div class="flex-between-center">
+            <label class="stock-label">
+              <input type="checkbox" id="phoneInStock" checked class="stock-checkbox">
+              <span id="phoneInStockLabel" class="stock-status-text">🟢 In Stock (Available for customer orders)</span>
             </label>
             <span id="stockStatusBadge" class="stock-pill in-stock">IN STOCK</span>
           </div>
-          <span class="form-hint" style="color:var(--text-muted);display:block;margin-top:6px;">
+          <span class="form-hint stock-hint">
             Uncheck if this model is temporarily sold out or awaiting restock. Customers on the website will see an <strong>"Out of Stock"</strong> badge and can send you a restock inquiry via WhatsApp. You can still edit prices, specs, and photos at any time.
           </span>
         </div>
 
         <!-- SPECIAL OFFER / DISCOUNT CONFIG (ON FINANCIAL STRUCTURE ONLY) -->
-        <div class="form-group full-width" style="background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.28);border-radius:12px;padding:14px;margin:10px 0;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-            <label style="margin:0;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-primary);cursor:pointer;">
-              <input type="checkbox" id="phoneOnOffer" style="width:18px;height:18px;accent-color:#e63946;cursor:pointer;">
-              <strong style="color:#ff4d4d;">🔥 Put Financing Structure on Special Offer / Discount</strong>
+        <div class="form-group full-width offer-config-box">
+          <div class="offer-header-row">
+            <label class="offer-label">
+              <input type="checkbox" id="phoneOnOffer" class="offer-checkbox">
+              <strong class="offer-heading-text">🔥 Put Financing Structure on Special Offer / Discount</strong>
             </label>
-            <span style="background:#e63946;color:#ffffff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em;">FINANCING OFFER</span>
+            <span class="offer-badge-pill">FINANCING OFFER</span>
           </div>
-          <span class="form-hint" style="color:var(--text-muted);display:block;margin-bottom:8px;">Applies discount specifically to the Lipa Mdogo Mdogo financial structure (not cash). Displays an OFFER badge on financing plans with optional strikethrough comparison.</span>
+          <span class="form-hint offer-hint">Applies discount specifically to the Lipa Mdogo Mdogo financial structure (not cash). Displays an OFFER badge on financing plans with optional strikethrough comparison.</span>
 
-          <div id="offerFieldsWrap" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+          <div id="offerFieldsWrap" class="offer-fields-grid">
             <div class="form-group">
               <label for="phoneOriginalPrice">Original Financing Total / Comparison (KES)</label>
               <input type="number" id="phoneOriginalPrice" min="0" step="any" placeholder="e.g. 29500">
@@ -1597,12 +1649,12 @@
 <div class="modal-backdrop" id="deleteConfirmModal" aria-hidden="true">
   <div class="modal-box modal-sm">
     <div class="modal-header">
-      <h3 style="color:var(--danger);">🗑️ Delete Device</h3>
+      <h3 class="modal-danger-title">🗑️ Delete Device</h3>
       <button class="modal-close" id="closeDeleteModalBtn" aria-label="Close modal">&times;</button>
     </div>
     <div>
-      <p id="deleteModalMessage" style="margin:0 0 8px 0;font-size:14px;color:var(--text-primary);"></p>
-      <p style="margin:0;font-size:12.5px;color:var(--text-muted);">This action will immediately remove the phone from the customer storefront.</p>
+      <p id="deleteModalMessage" class="delete-modal-msg"></p>
+      <p class="delete-modal-sub">This action will immediately remove the phone from the customer storefront.</p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline" id="cancelDeleteBtn">Cancel</button>
@@ -1623,11 +1675,11 @@
         <label for="currentPinInput">Current PIN *</label>
         <input type="password" id="currentPinInput" required placeholder="••••" maxlength="10">
       </div>
-      <div class="form-group" style="margin-top:10px;">
+      <div class="form-group form-group-spaced">
         <label for="newPinInput">New PIN (4+ digits) *</label>
         <input type="password" id="newPinInput" required placeholder="Enter new PIN" minlength="4" maxlength="10">
       </div>
-      <div id="changePinError" class="form-error" style="display:none;margin-top:12px;"></div>
+      <div id="changePinError" class="form-error change-pin-error"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" id="cancelChangePinBtn">Cancel</button>
         <button type="submit" class="btn btn-gold">Update PIN</button>
@@ -1645,12 +1697,12 @@
     </div>
     <div class="form-group">
       <label for="backupJsonTextarea">Catalogue JSON Data</label>
-      <textarea id="backupJsonTextarea" rows="10" style="font-family:monospace;font-size:12px;"></textarea>
+      <textarea id="backupJsonTextarea" rows="10" class="backup-textarea"></textarea>
       <span class="form-hint">You can copy this JSON to back up your phones catalogue, or paste valid JSON to restore.</span>
     </div>
-    <div class="modal-footer" style="justify-content:space-between;">
+    <div class="modal-footer footer-between">
       <button type="button" class="btn btn-outline" id="copyJsonBtn">📋 Copy to Clipboard</button>
-      <div style="display:flex;gap:8px;">
+      <div class="modal-footer-btns">
         <button type="button" class="btn btn-outline" id="cancelBackupBtn">Close</button>
         <button type="button" class="btn btn-gold" id="importJsonBtn">📥 Import JSON</button>
       </div>

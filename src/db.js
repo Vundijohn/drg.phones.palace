@@ -112,6 +112,25 @@ function normalizePhone(phone) {
     .map(u => (typeof u === 'string' ? u.trim() : ''))
     .filter(u => u && u.length > 0 && !u.includes('[object Object]'));
 
+  // Guard Note 20 against wiped local uploads
+  if (p.id === 'note-20-128' || (p.model && /note\s*20/i.test(p.model))) {
+    const verifiedCloudImgs = [
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-hero.jpg?alt=media&token=4096eaa7-24e2-4bfb-a413-f11d30b69cbe",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-front.jpg?alt=media&token=d6e13435-03fb-4a31-80ea-f8c0de40c25c",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-angle-spen.jpg?alt=media&token=6c3699ad-0c64-4d21-ac84-6da1f35eab8e",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-back.jpg?alt=media&token=ad48616f-4db1-4021-97bf-3be58f45f15d",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-display.jpg?alt=media&token=4b524257-304c-4821-b736-66708b71d28f",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-camera.jpg?alt=media&token=98ffb63d-a6cd-4ea2-a338-de1c3c8e0f57",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-side.jpg?alt=media&token=699e8a88-2ce0-4971-8a05-0fd4d73eb77d",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-lifestyle.jpg?alt=media&token=73cfd8c2-b018-43e0-8e8c-8eb30a6e6e9b"
+    ];
+    // Remove dead uploads from array
+    imgs = imgs.filter(u => !u.startsWith('uploads/'));
+    if (!imgs.length) {
+      imgs = verifiedCloudImgs;
+    }
+  }
+
   p.images = imgs;
 
   // 2. Normalize primary image
@@ -142,7 +161,7 @@ const db = {
     let dbName = 'Local JSON Store';
     if (engine === 'rtdb') dbName = 'Firebase Realtime Database';
     if (engine === 'firestore') dbName = 'Google Cloud Firestore';
-    const storageOk = typeof isStorageConnected === 'function' ? isStorageConnected() : false;
+    const storageOk = typeof testStorageAccess === 'function' ? await testStorageAccess() : false;
 
     return {
       database: dbName,

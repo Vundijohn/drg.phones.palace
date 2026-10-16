@@ -218,11 +218,21 @@ const DEFAULT_PHONES = [
     model: "Galaxy Note 20 5G",
     storage: "128GB",
     condition: "Renewed · Grade A+",
-    image: "images/galaxy-note-20.jpg",
+    image: "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-hero.jpg?alt=media&token=4096eaa7-24e2-4bfb-a413-f11d30b69cbe",
+    images: [
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-hero.jpg?alt=media&token=4096eaa7-24e2-4bfb-a413-f11d30b69cbe",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-front.jpg?alt=media&token=d6e13435-03fb-4a31-80ea-f8c0de40c25c",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-angle-spen.jpg?alt=media&token=6c3699ad-0c64-4d21-ac84-6da1f35eab8e",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-back.jpg?alt=media&token=ad48616f-4db1-4021-97bf-3be58f45f15d",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-display.jpg?alt=media&token=4b524257-304c-4821-b736-66708b71d28f",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-camera.jpg?alt=media&token=98ffb63d-a6cd-4ea2-a338-de1c3c8e0f57",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-side.jpg?alt=media&token=699e8a88-2ce0-4971-8a05-0fd4d73eb77d",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fnote-20%2Fnote-20-lifestyle.jpg?alt=media&token=73cfd8c2-b018-43e0-8e8c-8eb30a6e6e9b"
+    ],
     specs: [
       "Signature S-Pen stylus with air gestures",
-      "6.7\" Super AMOLED Plus display",
-      "64MP triple camera, 5G ready"
+      "6.7\" Super AMOLED Plus display (Note 20 Series)",
+      "64MP triple camera, 30x Space Zoom, 5G ready"
     ],
     cashPrice: 35999,
     plans: {

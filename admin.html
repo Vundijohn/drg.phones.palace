@@ -3009,7 +3009,7 @@
       }
 
       const imgHtml = phone.image 
-        ? `<img src="${phone.image}" class="device-thumb" alt="${phone.model}" onerror="this.outerHTML='<div class=\\'device-thumb-fallback\\'>📱</div>'">`
+        ? `<img src="${phone.image}" class="device-thumb" alt="${phone.model}" onerror="this.onerror=null;if(this.src!=='images/galaxy-note-20.jpg' && this.alt.toLowerCase().includes('note')){this.src='images/galaxy-note-20.jpg';}else{this.outerHTML='<div class=\\'device-thumb-fallback\\'>📱</div>';}">`
         : `<div class="device-thumb-fallback">📱</div>`;
 
       const offerBadge = phone.onOffer 

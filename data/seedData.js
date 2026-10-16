@@ -309,27 +309,30 @@ const DEFAULT_PHONES = [
     categoryLabel: "iPhone",
     model: "iPhone 12",
     storage: "128GB",
-    condition: "Renewed · Grade A",
-    image: "images/12 plain/Ami2cOQVE-9pT41G3KFS_xLhnwYDEKT_Y8iH4JW6Q6Mk1W07jxfa3efGg_xWm8HYY-AuM7CVCdxTT1BIih_Q32RK8yx71AcHyB00Zlc2G5XGEbM5TdVHp7Zr-XmGuPmigfYhkuw4hdswWRE4yQFEeFtaA7OV-CFapr2U4xqO_Qn4KT-b4s8DUDwXrEIXV46L.jpg",
+    condition: "Renewed · Grade A+",
+    image: "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-hero.jpg?alt=media&token=bf59dd68-e7a9-4263-8ecf-cfb076c7d1d3",
     images: [
-      "images/12 plain/Ami2cOQVE-9pT41G3KFS_xLhnwYDEKT_Y8iH4JW6Q6Mk1W07jxfa3efGg_xWm8HYY-AuM7CVCdxTT1BIih_Q32RK8yx71AcHyB00Zlc2G5XGEbM5TdVHp7Zr-XmGuPmigfYhkuw4hdswWRE4yQFEeFtaA7OV-CFapr2U4xqO_Qn4KT-b4s8DUDwXrEIXV46L.jpg",
-      "images/12 plain/BUwHAL2CwxhHXOMItmx4MgTGsl9lMb2rpsbeHT7urzm8u8qtzRZ8Ne-LZXhdh588Tg8aoj1qE6hup8RGftYiyWZYlXyd4uGv9cyj_sS96bIyyWHtUdvOvKiv49lJMPuYrQ9ZKhC-5bpa2Iv4umwLn9oC-aR9SGcNLlh_KXoN6c6_-Jxm3aBgX3Kgd23wdlzk.jpg",
-      "images/12 plain/iLK0Um7exV0vvJ__YNbTY3CpqedeDNmEaEP0WEzS9UBSwSIeAY5wQFppfp4RhbfU3SsvssnsT13EZ5FfZyTpp9ODl33J2XttE8H4s3aclBDGPR9KFO-tYPK5FtVq-V_1rKUGnkMqMO-FovVKy6_UMJY3EqHIbVKMT3-McXKL6oVNmuo0MUzmhwoygnXniI2I.jpg",
-      "images/12 plain/jwlT6efi-w8ileEcGp0UOAVk0dZjRL0QEAnMMQ9p4hvYbZPOm7RT_ac1yhagDl8mi7I4V28KOsLdYf36QpbBCuPyhtPIN8tRDXBubZOsy8MjYF7EBwxXlbKujD4YzcgS9No9evv39CyDgt2cdMTHMn3hDJis4o_gUwogXLremGFiCSeVUm-t0kDB7quUGsEt.jpg",
-      "images/12 plain/nMMvzhCO5T24FSF4voCKEe9Aa878XXuGS4Mwl1-nApgAcbEkFAru2uQGzgk-CNrO1gi8f8LVqBv4DDamUFDXAm5yXEqaDmyFnM2TNYyMMLF81EKXeJUj0nxGmpHJ5KVfbUrGkTkcnFZPqqKfhXPqvIi4yIM4GqCAfS1MAdRvSCSMFi_8zNied-cZjRtGJh3Z.jpg",
-      "images/12 plain/rkbdffzryVSjtBZPS0rnjvTmEH1tbfwptfTd6ZClnIaD9_HjEAwZMn_kfjnPmeIuA925YZAz2qtjm0uSfpo7NEh_9WKLISibyVetXILUFD5i7v85fWOhrTObnH29GogCx6BtSGxMCRgSIvkUZYv2WA51CLEQCLATkYrW408RIva9FFTGMccw1hfdq49aM9A5.jpg"
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-hero.jpg?alt=media&token=bf59dd68-e7a9-4263-8ecf-cfb076c7d1d3",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-blue-front.jpg?alt=media&token=71a127fe-b5f1-4dfc-be99-85a5dd642cda",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-blue-back.jpg?alt=media&token=57bfeb00-4358-4b37-9914-463b1ae31c03",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-angle.jpg?alt=media&token=d5ea2a49-3441-47ae-9a8c-740676fae9fe",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-colors.jpg?alt=media&token=20f46df5-4ad1-4f72-b6a2-44adcccb8e36",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-dual-camera.jpg?alt=media&token=065a2766-0577-4fb8-a1b2-2fa0b46a7002",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-lifestyle.jpg?alt=media&token=6f42b5e6-f318-4476-85ff-0f033f0365fc"
     ],
     specs: [
-      "5G ready flagship",
-      "12MP dual camera, Night mode",
-      "Face ID, Ceramic Shield"
+      "Super Retina XDR OLED display",
+      "A14 Bionic chip with Next-Gen Neural Engine",
+      "Advanced dual 12MP camera with Night mode & 4K Dolby Vision",
+      "Ceramic Shield · 5G ready · MagSafe fast wireless charging"
     ],
-    cashPrice: 23000,
+    cashPrice: 47699,
     plans: {
-      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 23000, hint: "One-time cash payment" },
-      standard: { label: "Weekly (10 Wks)", deposit: 5000, weekly: 1800, weeks: 10, total: 23000, hint: "10 Weeks Lipa Mdogo Mdogo" }
+      cash: { label: "Cash", deposit: 0, weekly: 0, weeks: 0, total: 47699, hint: "One-time payment · 0% financing fee" },
+      mosaver: { label: "MoSaver (6M)", deposit: 21499, weekly: 1810, weeks: 26, total: 68559, hint: "⚡ 6 Months · Save KES 23,420 vs 12M" },
+      mostandard: { label: "MoStandard (12M)", deposit: 11899, weekly: 1540, weeks: 52, total: 91979, hint: "Low deposit · 52 easy weekly payments" }
     },
-    defaultPlan: "standard"
+    defaultPlan: "mostandard"
   },
   {
     id: "galaxy-a14",

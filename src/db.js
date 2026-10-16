@@ -112,6 +112,23 @@ function normalizePhone(phone) {
     .map(u => (typeof u === 'string' ? u.trim() : ''))
     .filter(u => u && u.length > 0 && !u.includes('[object Object]'));
 
+  // Guard iPhone 12 against wiped local uploads
+  if (p.id === 'iphone-12' || (p.model && /iphone\s*12/i.test(p.model))) {
+    const verifiedIp12Imgs = [
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-hero.jpg?alt=media&token=bf59dd68-e7a9-4263-8ecf-cfb076c7d1d3",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-blue-front.jpg?alt=media&token=71a127fe-b5f1-4dfc-be99-85a5dd642cda",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-blue-back.jpg?alt=media&token=57bfeb00-4358-4b37-9914-463b1ae31c03",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-angle.jpg?alt=media&token=d5ea2a49-3441-47ae-9a8c-740676fae9fe",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-colors.jpg?alt=media&token=20f46df5-4ad1-4f72-b6a2-44adcccb8e36",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-dual-camera.jpg?alt=media&token=065a2766-0577-4fb8-a1b2-2fa0b46a7002",
+      "https://firebasestorage.googleapis.com/v0/b/phones-3355c.firebasestorage.app/o/phones%2Fiphone-12%2Fiphone-12-lifestyle.jpg?alt=media&token=6f42b5e6-f318-4476-85ff-0f033f0365fc"
+    ];
+    imgs = imgs.filter(u => !u.startsWith('uploads/'));
+    if (!imgs.length) {
+      imgs = verifiedIp12Imgs;
+    }
+  }
+
   // Guard Note 20 against wiped local uploads
   if (p.id === 'note-20-128' || (p.model && /note\s*20/i.test(p.model))) {
     const verifiedCloudImgs = [

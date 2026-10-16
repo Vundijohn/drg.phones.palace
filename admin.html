@@ -1972,14 +1972,22 @@
 
         const data = await res.json();
         if(res.ok && data.success){
-          const uploadedUrls = (data.urls && data.urls.length) ? data.urls : (data.url ? [data.url] : []);
+          let uploadedUrls = (data.urls && data.urls.length) ? data.urls : (data.url ? [data.url] : []);
+          const isCloud = Boolean(data.isCloudStorage || data.storage === 'firebase');
+
+          // PERMANENCE GUARANTEE:
+          // If cloud storage is not connected and server returned an ephemeral local upload path,
+          // prefer the compressed base64 dataUrl so the photo is saved into database and never disappears on server restarts/spindowns!
+          if(!isCloud && compressedList.length){
+            uploadedUrls = compressedList.filter(Boolean);
+          }
+
           if(uploadedUrls.length){
             // Prepend new images to front so newly uploaded image becomes the primary image!
             const existingWithoutBlobs = selectedPhoneImages.filter(u => u && !u.startsWith('blob:'));
             selectedPhoneImages = [...uploadedUrls, ...existingWithoutBlobs];
             setPhonePhotos(selectedPhoneImages);
-            const isCloud = data.isCloudStorage || data.storage === 'firebase';
-            showToast(`✅ Uploaded ${uploadedUrls.length} photo${uploadedUrls.length === 1 ? '' : 's'} (${isCloud ? 'Cloud Storage' : 'Server Storage'})!`);
+            showToast(`✅ Uploaded ${uploadedUrls.length} photo${uploadedUrls.length === 1 ? '' : 's'} (${isCloud ? '☁️ Firebase Cloud Storage' : '💾 Persistent Base64 Mode'})!`);
           }
           if(uploadProgressHint){
             const isCloud = data.isCloudStorage || data.storage === 'firebase';
